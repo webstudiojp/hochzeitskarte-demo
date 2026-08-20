@@ -38,6 +38,12 @@
       <mask id="revealMask">
         <rect id="reveal-rect" x="0" y="0" width="1000" height="0" fill="#fff"/>
       </mask>
+      <filter id="tempo" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur id="tempo-blur" stdDeviation="0 0"/>
+      </filter>
+      <filter id="weich" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="20"/>
+      </filter>
       <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%"   stop-color="#2a2118" stop-opacity=".5"/>
         <stop offset="26%"  stop-color="#2a2118" stop-opacity="0"/>
@@ -65,8 +71,11 @@
 
     <!-- Der Wagen -->
     <g id="car" opacity="0">
-      <ellipse cx="0" cy="40" rx="120" ry="300" fill="#191309" opacity=".3"/>
-      <image href="assets/img/wagen.webp" x="-150" y="-346" width="300" height="693"/>
+      <!-- Sonne steht links: der Schatten faellt nach rechts unten -->
+      <ellipse cx="92" cy="104" rx="112" ry="330" fill="#120d07" opacity=".44" filter="url(#weich)"/>
+      <g filter="url(#tempo)">
+        <image href="assets/img/wagen.webp" x="-150" y="-401" width="300" height="802"/>
+      </g>
     </g>
 
     <!-- Licht + Vignette -->

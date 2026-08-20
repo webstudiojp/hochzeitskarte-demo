@@ -9,6 +9,7 @@
   const heartEl = $('heart');
   const maskR   = $('reveal-rect');
   const pearlG  = $('pearls');
+  const unschaerfe = $('tempo-blur');
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const T = k => k * (C.hero.tempo || 1);
@@ -167,21 +168,43 @@
      3. Die Fahrt
      --------------------------------------------------------- */
   const START_Y = 1660, END_Y = 250;
-  const START_S = 0.98, END_S = 0.54;   // das Foto hat flache Perspektive
-  const easeOut = t => 1 - Math.pow(1 - t, 2.1);
+  const WAGEN_B = 300;        // Breite des Wagenbildes bei scale 1
   const easeIO  = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
-  let carY = START_Y;
+  // Ein anfahrender Wagen beschleunigt. Erst zaeh, dann zuegig, am Ende
+  // leicht auslaufend - nicht die alte Kurve, die sofort losschoss.
+  const fahrKurve = t => {
+    if (t < 0.34) return 1.55 * t * t;                 // anfahren
+    return 0.179 + (t - 0.34) * 1.244;                 // dann gleichmaessig weiter
+  };
 
-  function wagenSetzen(p) {                 // p: 0..1
-    const e = easeOut(p);
+  // Der Wagen fuellt immer denselben Anteil der Fahrbahn - das ist die
+  // Perspektive, die vorher per Handwert geschaetzt war.
+  const wagenScale = y => (roadEdge(y, 'r') - roadEdge(y, 'l')) * 0.46 / WAGEN_B;
+
+  let carY = START_Y, letzteY = START_Y, letzteZeit = 0;
+
+  function wagenSetzen(p, now) {              // p: 0..1
+    const e = fahrKurve(Math.max(0, Math.min(1, p)));
     const y = START_Y + (END_Y - START_Y) * e;
-    const s = START_S + (END_S - START_S) * e;
-    const x = mitteX(y) + Math.sin(p * Math.PI * 1.7) * 18 * (1 - p);  // leichtes Pendeln
-    carY = y;
+    const s = wagenScale(y);
+
+    // Fahrbahn ist nicht spiegelglatt: winziges Zittern, mit dem Tempo staerker
+    const v = (letzteZeit && now) ? Math.abs(y - letzteY) / Math.max(1, now - letzteZeit) : 0;
+    const zitter = Math.sin(p * 61) * 1.1 * s + Math.sin(p * 37) * 0.7 * s;
+
+    const x = mitteX(y) + Math.sin(p * Math.PI * 1.7) * 14 * (1 - p) + zitter;
+    const kipp = Math.sin(p * 23) * 0.22;     // minimales Wanken um die Hochachse
+
     car.setAttribute('transform',
-      'translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ') scale(' + s.toFixed(3) + ')');
-    car.setAttribute('opacity', Math.min(1, p * 9).toFixed(2));
+      'translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ') '
+      + 'rotate(' + kipp.toFixed(2) + ') scale(' + s.toFixed(3) + ')');
+    car.setAttribute('opacity', Math.min(1, p * 7).toFixed(2));
+
+    // Bewegungsunschaerfe laengs der Fahrtrichtung, an das Tempo gekoppelt
+    if (unschaerfe) unschaerfe.setAttribute('stdDeviation', '0 ' + Math.min(2.2, v * 7).toFixed(2));
+
+    letzteY = y; letzteZeit = now || letzteZeit;
     return { x, y, s };
   }
 
@@ -207,7 +230,7 @@
   function endzustand() {
     maskeSetzen(1);
     if (C.hero.herzZeigen) heartEl.setAttribute('opacity', 1);
-    wagenSetzen(1);
+    wagenSetzen(1, 0);
     car.setAttribute('opacity', 0);
     $('hero-caption').classList.add('show');
     $('scroll-cue').classList.add('show');
@@ -238,7 +261,7 @@
       const t = now - t0;
 
       const pf = Math.min(1, Math.max(0, (t - FAHRT_START) / FAHRT_DAUER));
-      const pos = wagenSetzen(pf);
+      const pos = wagenSetzen(pf, now);
       if (pf >= 1) car.setAttribute('opacity', Math.max(0, 1 - (t - FAHRT_START - FAHRT_DAUER) / T(500)).toFixed(2));
 
       if (t > PERL_START && t < PERL_ENDE && now - letztePerle > 34) {
