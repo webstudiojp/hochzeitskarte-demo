@@ -18,7 +18,8 @@ window.HOCHZEIT = {
   /* ---------- Hero-Animation ---------- */
   hero: {
     schriftzug:   '',              // leer => nutzt `namen`
-    ausrichtung:  'gestapelt',     // 'gestapelt' | 'strasse' | 'quer'
+    ausrichtung:  'strasse',        // 'strasse' = Spur des Wagens, laengs der Fahrbahn
+                                     // 'gestapelt' = Zeilen untereinander | 'quer' = waagerecht
     trenner:      'herz',          // 'herz' | 'zeichen'
     herzZeigen:   true,
     tempo:        1.0,

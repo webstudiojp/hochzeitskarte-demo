@@ -74,7 +74,7 @@ html{scrollbar-color:var(--linie) var(--leinen)}
   position:absolute;border-radius:60% 40% 55% 45%;opacity:.5;
   animation:schweben linear infinite;
 }
-.sek.kopf > *:not(.blueten){position:relative;z-index:1}
+.sek.kopf > *:not(.blueten):not(.kulisse){position:relative;z-index:1}
 @keyframes schweben{
   from{transform:translate3d(0,-14vh,0) rotate(0deg)}
   to  {transform:translate3d(var(--drift,20px),108vh,0) rotate(var(--dreh,220deg))}
@@ -396,4 +396,56 @@ html{scrollbar-color:var(--linie) var(--leinen)}
   .gal-bild:nth-child(5){grid-column:span 6;aspect-ratio:21/9}
   .wahl-reihe{flex-direction:row;gap:26px}
   .knopf-paar .knopf{flex:none}
+}
+
+/* =========================================================
+   Die Einladung als gerahmte Karte:
+   Vorhang-Kulisse, Blumenbogen, fliegende Tauben
+   ========================================================= */
+.sek.kopf{
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding-top:clamp(96px,20vw,180px);
+}
+.kulisse{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.kulisse-grund{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  animation:kulisse-atmen 34s ease-in-out infinite alternate;
+}
+@keyframes kulisse-atmen{
+  from{transform:scale(1.04) translate3d(-0.8%,0,0)}
+  to  {transform:scale(1.11) translate3d(1%,-1%,0)}
+}
+/* Heller Schleier, damit die Schrift auf dem Foto sicher lesbar bleibt */
+.kulisse-schleier{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(246,241,231,.34) 0%,
+    rgba(246,241,231,.62) 34%,
+    rgba(246,241,231,.86) 72%,
+    var(--leinen) 100%);
+}
+.kulisse-bogen{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:min(150%,760px);height:auto;
+  filter:drop-shadow(0 14px 26px rgba(58,48,34,.10));
+}
+
+/* ---- Tauben: zwei Flügelstellungen im Wechsel ---- */
+.taube{position:absolute;will-change:transform;animation:flug linear infinite}
+.taube img{
+  position:absolute;top:0;left:0;width:100%;height:auto;
+  animation:schlag .62s steps(1,end) infinite;
+}
+.taube img.ab{animation-delay:.31s}
+@keyframes schlag{0%,49.9%{opacity:1}50%,100%{opacity:0}}
+@keyframes flug{
+  from{transform:translate3d(-26vw,0,0) rotate(-3deg)}
+  45% {transform:translate3d(30vw,-4vh,0) rotate(2deg)}
+  to  {transform:translate3d(118vw,-9vh,0) rotate(-1deg)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .kulisse-grund,.taube,.taube img{animation:none}
+  .taube{display:none}
 }

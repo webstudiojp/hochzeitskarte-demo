@@ -122,6 +122,37 @@
   })();
 
   /* =========================================================
+     2c. Tauben ueber der Einladung
+     ========================================================= */
+  (function tauben() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const feld = $('tauben');
+    if (!feld) return;
+    // Groesse, Flughoehe, Dauer und Versatz je Vogel unterschiedlich,
+    // sonst fliegen sie wie eine Formation aus der Konservendose
+    const bahnen = [
+      { breite: 74, oben: '17%', dauer: 21, verzug: -3 },
+      { breite: 46, oben: '31%', dauer: 28, verzug: -13 },
+      { breite: 58, oben: '9%',  dauer: 24, verzug: -19 },
+    ];
+    bahnen.forEach(b => {
+      const t = document.createElement('div');
+      t.className = 'taube';
+      t.style.cssText = 'width:' + b.breite + 'px;top:' + b.oben + ';left:0;'
+        + 'animation-duration:' + b.dauer + 's;animation-delay:' + b.verzug + 's;';
+      ['taube-auf', 'taube-ab'].forEach((datei, i) => {
+        const img = document.createElement('img');
+        img.src = 'assets/img/' + datei + '.webp';
+        img.alt = '';
+        img.loading = 'lazy';
+        if (i) img.className = 'ab';
+        t.appendChild(img);
+      });
+      feld.appendChild(t);
+    });
+  })();
+
+  /* =========================================================
      3. Countdown
      ========================================================= */
   const ziel = new Date(C.beginnISO).getTime();

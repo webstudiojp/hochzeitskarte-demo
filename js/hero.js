@@ -45,7 +45,7 @@
   const urlNamen = (params.get('namen') || '').slice(0, 60).trim();
   if (urlNamen) { C.namen = urlNamen; C.hero.schriftzug = urlNamen; }
   const urlAus = params.get('schrift');
-  const AUS = urlAus || C.hero.ausrichtung || 'gestapelt';
+  const AUS = urlAus || C.hero.ausrichtung || 'strasse';
   const QUER = AUS === 'quer';
 
   const SCHRIFT_VON = 400,  SCHRIFT_BIS = 1230;   // laengs der Fahrbahn
@@ -157,8 +157,9 @@
       const dy = -(bb2.y + bb2.height / 2);
       g.setAttribute('transform', QUER
         ? 'translate(' + mitteX(QUER_Y).toFixed(1) + ',' + QUER_Y + ') translate(0,' + dy.toFixed(1) + ')'
-        : 'translate(' + mitteX(MITTE_Y).toFixed(1) + ',' + MITTE_Y + ') rotate(90) translate(0,' + dy.toFixed(1) + ')');
-      heartEl.setAttribute('transform', QUER ? 'translate(0,20)' : 'translate(0,0)');
+        : 'translate(' + mitteX(MITTE_Y).toFixed(1) + ',' + MITTE_Y + ') rotate(-90) translate(0,' + dy.toFixed(1) + ')');
+      heartEl.setAttribute('transform', QUER ? 'translate(0,20)'
+        : 'translate(' + (mitteX(1330) - 500).toFixed(1) + ',0)');
     }
 
     if (!C.hero.herzZeigen) heartEl.style.display = 'none';
@@ -167,7 +168,7 @@
   /* ---------------------------------------------------------
      3. Die Fahrt
      --------------------------------------------------------- */
-  const START_Y = 1660, END_Y = 250;
+  const START_Y = 1900, END_Y = 250;   // faehrt davon, die Spur bleibt zurueck
   const WAGEN_B = 300;        // Breite des Wagenbildes bei scale 1
   const easeIO  = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
@@ -202,29 +203,63 @@
     car.setAttribute('opacity', Math.min(1, p * 7).toFixed(2));
 
     // Bewegungsunschaerfe laengs der Fahrtrichtung, an das Tempo gekoppelt
-    if (unschaerfe) unschaerfe.setAttribute('stdDeviation', '0 ' + Math.min(2.2, v * 7).toFixed(2));
+    if (unschaerfe) unschaerfe.setAttribute('stdDeviation', '0 ' + Math.min(0.9, v * 3).toFixed(2));
 
     letzteY = y; letzteZeit = now || letzteZeit;
     return { x, y, s };
   }
 
-  function perleStreuen(x, y, s) {
-    const p = el('circle', {
-      cx: (x + (rnd() - 0.5) * 108 * s).toFixed(1),
-      cy: (y + 320 * s + rnd() * 26 * s).toFixed(1),
-      r: (2.6 + rnd() * 3.0) * s,
-      fill: '#fffaf0',
+  const BLUETEN_TON = ['#fffaf0', '#fdf3e4', '#f7e6da', '#efe3d0', '#fff7ea'];
+
+  // Bluetenblatt statt runder Perle: gedrehtes Oval, das kurz nachtrudelt
+  function blueteStreuen(x, y, s, wucht) {
+    const gr = (3.4 + rnd() * 3.6) * s * (wucht || 1);
+    const bx = x + (rnd() - 0.5) * 120 * s * (wucht || 1);
+    const by = y + 300 * s + (rnd() - 0.5) * 40 * s;
+    const p = el('ellipse', {
+      cx: bx.toFixed(1), cy: by.toFixed(1),
+      rx: gr.toFixed(2), ry: (gr * 0.66).toFixed(2),
+      fill: BLUETEN_TON[Math.floor(rnd() * BLUETEN_TON.length)],
+      transform: 'rotate(' + (rnd() * 360).toFixed(0) + ' ' + bx.toFixed(1) + ' ' + by.toFixed(1) + ')',
     });
-    p.style.opacity = '0.95';
-    p.style.transition = 'opacity 1.5s ease';
+    p.style.opacity = (0.85 + rnd() * 0.15).toFixed(2);
+    p.style.transition = 'opacity 1.8s ease';
     pearlG.appendChild(p);
     requestAnimationFrame(() => { p.style.opacity = '0'; });
-    setTimeout(() => p.remove(), 1700);
+    setTimeout(() => p.remove(), 2000);
   }
 
+  // p = 0 nichts sichtbar, 1 alles. Laengs waechst die Spur von unten herauf.
   function maskeSetzen(p) {
-    if (QUER) { maskR.setAttribute('width', (p * 1000).toFixed(1)); maskR.setAttribute('height', 1800); }
-    else      { maskR.setAttribute('height', (p * 1800).toFixed(1)); }
+    if (QUER) { maskR.setAttribute('width', (p * 1000).toFixed(1)); maskR.setAttribute('height', 1800); return; }
+    if (AUS === 'strasse') {
+      const oben = 1800 - p * 1800;
+      maskR.setAttribute('y', oben.toFixed(1));
+      maskR.setAttribute('height', (1800 - oben).toFixed(1));
+    } else {
+      maskR.setAttribute('height', (p * 1800).toFixed(1));
+    }
+  }
+
+  // Zum Schluss treibt der Fahrtwind den ganzen Weg voller Blueten
+  function bluetensturm(fertig) {
+    if (reduced) { fertig(); return; }
+    const t0 = performance.now(), DAUER = T(1500);
+    let letzte = 0;
+    (function welle(now) {
+      const t = now - t0;
+      if (now - letzte > 16) {
+        letzte = now;
+        const dichte = t < DAUER * 0.45 ? 6 : 3;
+        for (let i = 0; i < dichte; i++) {
+          const x = rnd() * 1000;
+          const y = 200 + rnd() * 1500;
+          blueteStreuen(x, y - 300 * 1.1, 1.1 + rnd() * 0.9, 1.6);
+        }
+      }
+      if (t < DAUER) requestAnimationFrame(welle);
+      else fertig();
+    })(performance.now());
   }
 
   function endzustand() {
@@ -236,11 +271,24 @@
     $('scroll-cue').classList.add('show');
     $('skip').hidden = true;
     document.body.classList.remove('locked');
+    weiterZurKarte();
+  }
+
+  // Sanft in die Einladung uebergehen - aber nur, wenn der Gast nicht
+  // laengst selbst gescrollt hat. Sonst reisst man ihm die Seite weg.
+  function weiterZurKarte() {
+    if (reduced || abbruch) return;
+    const startY = window.scrollY;
+    setTimeout(() => {
+      if (Math.abs(window.scrollY - startY) > 40) return;   // er scrollt schon selbst
+      const ziel = $('sek-kopf');
+      if (ziel) ziel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, T(1400));
   }
 
   if (QUER) maskR.setAttribute('width', 0);
 
-  let laeuft = false, abbruch = false;
+  let laeuft = false, abbruch = false, sturmLaeuft = false;
 
   function fahrtStarten() {
     if (laeuft) return;
@@ -250,7 +298,7 @@
     if (C.hero.ueberspringbar) $('skip').hidden = false;
 
     const t0 = performance.now();
-    const FAHRT_START = T(200),  FAHRT_DAUER  = T(6400);
+    const FAHRT_START = T(260),  FAHRT_DAUER  = T(6600);
     const PERL_START  = T(560),  PERL_ENDE    = T(6000);
     const REVEAL_START= T(950),  REVEAL_DAUER = T(5600);
     const ENDE        = T(7200);
@@ -266,16 +314,17 @@
 
       if (t > PERL_START && t < PERL_ENDE && now - letztePerle > 34) {
         letztePerle = now;
-        perleStreuen(pos.x, pos.y, pos.s);
+        blueteStreuen(pos.x, pos.y, pos.s);
       }
 
-      const pr = Math.min(1, Math.max(0, (t - REVEAL_START) / REVEAL_DAUER));
-      maskeSetzen(easeIO(pr));
+      // Die Schrift ist die Spur des Wagens: sie reicht exakt bis an sein Heck.
+      const heck = pos.y + 300 * pos.s;
+      maskeSetzen(Math.max(0, Math.min(1, (1800 - heck) / 1800)));
       if (C.hero.herzZeigen) heartEl.setAttribute('opacity',
-        Math.min(1, Math.max(0, (t - REVEAL_START - REVEAL_DAUER * 0.92) / T(700))).toFixed(2));
+        Math.min(1, Math.max(0, (1420 - heck) / 140)).toFixed(2));
 
       if (t < ENDE) requestAnimationFrame(frame);
-      else endzustand();
+      else if (!sturmLaeuft) { sturmLaeuft = true; bluetensturm(endzustand); }
     }
     requestAnimationFrame(frame);
   }
