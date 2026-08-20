@@ -1,0 +1,293 @@
+(() => {
+  'use strict';
+  const C = window.HOCHZEIT;
+  const SVG = 'http://www.w3.org/2000/svg';
+  const $ = id => document.getElementById(id);
+
+  const scene   = $('scene');
+  const car     = $('car');
+  const heartEl = $('heart');
+  const maskR   = $('reveal-rect');
+  const pearlG  = $('pearls');
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const T = k => k * (C.hero.tempo || 1);
+
+  /* ---------------------------------------------------------
+     1. Geometrie der Fahrbahn im Hintergrundfoto
+        Werte am Bild abgemessen (assets/img/allee.webp, 1000x1800).
+     --------------------------------------------------------- */
+  let seed = 20270101;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+
+  const el = (tag, attrs) => {
+    const n = document.createElementNS(SVG, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  };
+
+  // Fahrbahnkante bei gegebener Hoehe - die Strasse laeuft leicht schraeg
+  const roadEdge = (y, side) => {
+    const t = Math.max(0, Math.min(1, y / 1800));
+    return side === 'l' ? 345 - 165 * t : 660 + 80 * t;
+  };
+  // Die Strassenmitte wandert nach unten leicht nach links
+  const mitteX = y => (roadEdge(y, 'l') + roadEdge(y, 'r')) / 2;
+
+  /* ---------------------------------------------------------
+     2. Schriftzug setzen — Groesse passt sich der Laenge an
+     --------------------------------------------------------- */
+  // Zum Vergleichen: ?schrift=quer bzw. ?schrift=strasse haengt die Konfiguration ab
+  const params = new URLSearchParams(location.search);
+  // Zum Vorfuehren: ?namen=Lea+%26+Tom setzt das Paar ohne Datei-Aenderung.
+  // Wird ausschliesslich per textContent gesetzt, nie als HTML.
+  const urlNamen = (params.get('namen') || '').slice(0, 60).trim();
+  if (urlNamen) { C.namen = urlNamen; C.hero.schriftzug = urlNamen; }
+  const urlAus = params.get('schrift');
+  const AUS = urlAus || C.hero.ausrichtung || 'gestapelt';
+  const QUER = AUS === 'quer';
+
+  const SCHRIFT_VON = 400,  SCHRIFT_BIS = 1230;   // laengs der Fahrbahn
+  const QUER_Y = 1060, QUER_BREITE = 530;         // waagerecht, einzeilig
+  const STAPEL_VON = 520, STAPEL_BIS = 1235;      // gestapelt, perspektivisch
+  const MITTE_Y = (SCHRIFT_VON + SCHRIFT_BIS) / 2;
+
+  // "Furkan & Dilara" -> ["Furkan", "&", "Dilara"]
+  function zeilenTeilen(txt) {
+    const m = txt.split(/\s+(&|und|\+)\s+/i);
+    return m.length === 3 ? [m[0], m[1], m[2]] : [txt];
+  }
+  const istTrenner = z => /^(&|und|\+)$/i.test(z);
+  const HERZ_D = 'M0 -26 c-24 -36 -76 -27 -76 13 c0 36 48 60 76 88 c28 -28 76 -52 76 -88 c0 -40 -52 -49 -76 -13 z';
+  const HERZ_B = 152;   // Breite der Herzform in Pfadeinheiten
+  const trennerAlsHerz = (C.hero.trenner || 'herz') === 'herz';
+
+  // Verfuegbare Textbreite auf der Fahrbahn in dieser Hoehe
+  const bahnBreite = y => (roadEdge(y, 'r') - roadEdge(y, 'l')) * 0.73;
+
+  function schriftSetzen() {
+    const txt = (C.hero.schriftzug || C.namen || '').trim();
+    const g = $('script-group');
+    g.innerHTML = '';
+    g.removeAttribute('transform');
+
+    const PROBE = 200;
+    const neueZeile = inhalt => {
+      const t = el('text', {
+        'text-anchor': 'middle', x: 0, y: 0, fill: 'none', stroke: '#fff6e8',
+        'stroke-linecap': 'round', 'font-family': "'Great Vibes', cursive",
+        'font-size': PROBE,
+      });
+      t.textContent = inhalt;
+      g.appendChild(t);
+      return t;
+    };
+    const perlen = (n, size) => {
+      const sw = Math.max(3.2, size * 0.033);
+      n.setAttribute('stroke-width', sw.toFixed(2));
+      n.setAttribute('stroke-dasharray', '0.5 ' + (sw * 1.45).toFixed(2));
+      return sw;
+    };
+
+    /* ---- gestapelt: jede Zeile waagerecht, perspektivisch gestaffelt ---- */
+    if (AUS === 'gestapelt') {
+      const zeilen = zeilenTeilen(txt);
+      const n = zeilen.length;
+      // Zeilen nach unten hin weiter auseinander - das erzeugt die Tiefe
+      const ys = zeilen.map((_, i) => {
+        const t = n === 1 ? 0.5 : i / (n - 1);
+        return STAPEL_VON + (STAPEL_BIS - STAPEL_VON) * Math.pow(t, 1.28);
+      });
+
+      // Erst die Namenszeilen messen, damit der Trenner sich daran orientiert
+      const knoten = zeilen.map(z => neueZeile(z));
+      const groessen = knoten.map((t, i) => {
+        const bb = t.getBBox();
+        return PROBE * (bahnBreite(ys[i]) / bb.width);
+      });
+      const namensGroessen = groessen.filter((_, i) => !istTrenner(zeilen[i]));
+      const mittel = namensGroessen.reduce((a, b) => a + b, 0) / (namensGroessen.length || 1);
+
+      let maxSw = 3.2;
+      knoten.forEach((t, i) => {
+        const trenner = istTrenner(zeilen[i]);
+
+        if (trenner && trennerAlsHerz) {
+          // Statt "&" ein kleines Perlenherz - spart Platz und ersetzt das Herz am Ende
+          const zielB = bahnBreite(ys[i]) * 0.19;
+          const h = el('path', {
+            d: HERZ_D, fill: 'none', stroke: '#fff6e8', 'stroke-linecap': 'round',
+            transform: 'translate(' + mitteX(ys[i]).toFixed(1) + ',' + ys[i].toFixed(1) + ') scale(' + (zielB / HERZ_B).toFixed(3) + ')',
+          });
+          const sw = Math.max(3.2, (mittel * 0.42) * 0.033) / (zielB / HERZ_B);
+          h.setAttribute('stroke-width', sw.toFixed(2));
+          h.setAttribute('stroke-dasharray', '0.5 ' + (sw * 1.45).toFixed(2));
+          g.replaceChild(h, t);
+          return;
+        }
+
+        const size = trenner ? mittel * 0.42 : Math.min(groessen[i], 230);
+        t.setAttribute('font-size', size);
+        const bb = t.getBBox();
+        maxSw = Math.max(maxSw, perlen(t, size));
+        t.setAttribute('transform',
+          'translate(' + mitteX(ys[i]).toFixed(1) + ',' + ys[i].toFixed(1) + ') '
+          + 'translate(0,' + (-(bb.y + bb.height / 2)).toFixed(1) + ')');
+      });
+
+      if (trennerAlsHerz && zeilen.length === 3) {
+        heartEl.style.display = 'none';          // Herz sitzt jetzt in der Mitte
+      } else {
+        heartEl.setAttribute('transform', 'translate(0,64)');
+        perlen(heartEl, maxSw / 0.033);
+      }
+    }
+
+    /* ---- strasse / quer: eine Zeile ---- */
+    else {
+      const t = neueZeile(txt);
+      const bb = t.getBBox();
+      const ziel = QUER ? QUER_BREITE : (SCHRIFT_BIS - SCHRIFT_VON);
+      const size = Math.min(PROBE * (ziel / bb.width), QUER ? 170 : 250);
+      t.setAttribute('font-size', size);
+      const sw = perlen(t, size);
+      perlen(heartEl, size);
+      const bb2 = t.getBBox();
+      const dy = -(bb2.y + bb2.height / 2);
+      g.setAttribute('transform', QUER
+        ? 'translate(' + mitteX(QUER_Y).toFixed(1) + ',' + QUER_Y + ') translate(0,' + dy.toFixed(1) + ')'
+        : 'translate(' + mitteX(MITTE_Y).toFixed(1) + ',' + MITTE_Y + ') rotate(90) translate(0,' + dy.toFixed(1) + ')');
+      heartEl.setAttribute('transform', QUER ? 'translate(0,20)' : 'translate(0,0)');
+    }
+
+    if (!C.hero.herzZeigen) heartEl.style.display = 'none';
+  }
+
+  /* ---------------------------------------------------------
+     3. Die Fahrt
+     --------------------------------------------------------- */
+  const START_Y = 1660, END_Y = 250;
+  const START_S = 0.98, END_S = 0.54;   // das Foto hat flache Perspektive
+  const easeOut = t => 1 - Math.pow(1 - t, 2.1);
+  const easeIO  = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+  let carY = START_Y;
+
+  function wagenSetzen(p) {                 // p: 0..1
+    const e = easeOut(p);
+    const y = START_Y + (END_Y - START_Y) * e;
+    const s = START_S + (END_S - START_S) * e;
+    const x = mitteX(y) + Math.sin(p * Math.PI * 1.7) * 18 * (1 - p);  // leichtes Pendeln
+    carY = y;
+    car.setAttribute('transform',
+      'translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ') scale(' + s.toFixed(3) + ')');
+    car.setAttribute('opacity', Math.min(1, p * 9).toFixed(2));
+    return { x, y, s };
+  }
+
+  function perleStreuen(x, y, s) {
+    const p = el('circle', {
+      cx: (x + (rnd() - 0.5) * 108 * s).toFixed(1),
+      cy: (y + 320 * s + rnd() * 26 * s).toFixed(1),
+      r: (2.6 + rnd() * 3.0) * s,
+      fill: '#fffaf0',
+    });
+    p.style.opacity = '0.95';
+    p.style.transition = 'opacity 1.5s ease';
+    pearlG.appendChild(p);
+    requestAnimationFrame(() => { p.style.opacity = '0'; });
+    setTimeout(() => p.remove(), 1700);
+  }
+
+  function maskeSetzen(p) {
+    if (QUER) { maskR.setAttribute('width', (p * 1000).toFixed(1)); maskR.setAttribute('height', 1800); }
+    else      { maskR.setAttribute('height', (p * 1800).toFixed(1)); }
+  }
+
+  function endzustand() {
+    maskeSetzen(1);
+    if (C.hero.herzZeigen) heartEl.setAttribute('opacity', 1);
+    wagenSetzen(1);
+    car.setAttribute('opacity', 0);
+    $('hero-caption').classList.add('show');
+    $('scroll-cue').classList.add('show');
+    $('skip').hidden = true;
+    document.body.classList.remove('locked');
+  }
+
+  if (QUER) maskR.setAttribute('width', 0);
+
+  let laeuft = false, abbruch = false;
+
+  function fahrtStarten() {
+    if (laeuft) return;
+    laeuft = true;
+    if (reduced) { endzustand(); return; }
+
+    if (C.hero.ueberspringbar) $('skip').hidden = false;
+
+    const t0 = performance.now();
+    const FAHRT_START = T(200),  FAHRT_DAUER  = T(6400);
+    const PERL_START  = T(560),  PERL_ENDE    = T(6000);
+    const REVEAL_START= T(950),  REVEAL_DAUER = T(5600);
+    const ENDE        = T(7200);
+    let letztePerle = 0;
+
+    function frame(now) {
+      if (abbruch) return;
+      const t = now - t0;
+
+      const pf = Math.min(1, Math.max(0, (t - FAHRT_START) / FAHRT_DAUER));
+      const pos = wagenSetzen(pf);
+      if (pf >= 1) car.setAttribute('opacity', Math.max(0, 1 - (t - FAHRT_START - FAHRT_DAUER) / T(500)).toFixed(2));
+
+      if (t > PERL_START && t < PERL_ENDE && now - letztePerle > 34) {
+        letztePerle = now;
+        perleStreuen(pos.x, pos.y, pos.s);
+      }
+
+      const pr = Math.min(1, Math.max(0, (t - REVEAL_START) / REVEAL_DAUER));
+      maskeSetzen(easeIO(pr));
+      if (C.hero.herzZeigen) heartEl.setAttribute('opacity',
+        Math.min(1, Math.max(0, (t - REVEAL_START - REVEAL_DAUER * 0.92) / T(700))).toFixed(2));
+
+      if (t < ENDE) requestAnimationFrame(frame);
+      else endzustand();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------------------------------------------------------
+     4. Umschlag oeffnen
+     --------------------------------------------------------- */
+  function oeffnen() {
+    const env = $('envelope');
+    if (env.dataset.done) return;
+    env.dataset.done = '1';
+    $('env-flap').classList.add('open');
+    setTimeout(() => {
+      $('envelope-screen').classList.add('gone');
+      fahrtStarten();
+    }, reduced ? 60 : 620);
+  }
+
+  /* ---------------------------------------------------------
+     5. Texte aus der Konfiguration + Start
+     --------------------------------------------------------- */
+  const t = C.texte;
+  $('env-kicker').textContent = t.umschlagKicker;
+  document.querySelector('.env-hint').textContent = t.umschlagHinweis;
+  document.querySelector('.hc-line').textContent = t.heroZeile;
+  $('hc-date').textContent = C.datumLang;
+  $('skip').textContent = t.ueberspringen;
+  document.querySelector('.scroll-cue span').textContent = t.weiter;
+  document.title = C.namen + ' — Wir heiraten';
+
+  $('envelope').addEventListener('click', oeffnen);
+  $('skip').addEventListener('click', () => { abbruch = true; endzustand(); });
+
+  document.body.classList.add('locked');
+
+  // getBBox braucht die geladene Schrift, sonst stimmt die Groesse nicht
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(schriftSetzen);
+})();
