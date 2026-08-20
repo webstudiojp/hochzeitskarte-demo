@@ -293,6 +293,16 @@
      ========================================================= */
   const ziel = new Date(C.beginnISO).getTime();
   const zwei = n => String(n).padStart(2, '0');
+  // Rollt nur, wenn sich der Wert geaendert hat - sonst zappelt die
+  // Sekundenanzeige und alles andere ruckelt sinnlos mit.
+  function ziffer(id, wert) {
+    const n = $(id);
+    if (!n || n.textContent === String(wert)) return;
+    n.textContent = wert;
+    n.classList.remove('rollt');
+    void n.offsetWidth;
+    n.classList.add('rollt');
+  }
   function countdown() {
     const rest = ziel - Date.now();
     if (rest <= 0) {
@@ -301,10 +311,10 @@
       return false;
     }
     const s = Math.floor(rest / 1000);
-    setzen('cd-t', Math.floor(s / 86400));
-    setzen('cd-s', zwei(Math.floor(s / 3600) % 24));
-    setzen('cd-m', zwei(Math.floor(s / 60) % 60));
-    setzen('cd-k', zwei(s % 60));
+    ziffer('cd-t', Math.floor(s / 86400));
+    ziffer('cd-s', zwei(Math.floor(s / 3600) % 24));
+    ziffer('cd-m', zwei(Math.floor(s / 60) % 60));
+    ziffer('cd-k', zwei(s % 60));
     return true;
   }
 
@@ -401,6 +411,7 @@
     rHinweis.hidden = false;
     rHinweis.textContent = zusage.value === 'ja' ? S.rsvpJa : S.rsvpNein;
     rHinweis.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (zusage.value === 'ja') bluetenregen();
   });
 
   /* =========================================================
@@ -485,6 +496,127 @@
     new IntersectionObserver(([e]) => {
       document.body.classList.toggle('hell-oben', !e.isIntersecting);
     }, { threshold: 0, rootMargin: '-56px 0px 0px 0px' }).observe(hero);
+  })();
+
+  // Kleine Belohnung fuer die Zusage - nur dann, eine Absage mit
+  // Konfetti zu feiern waere taktlos.
+  function bluetenregen() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const feld = document.createElement('div');
+    feld.className = 'regen';
+    feld.setAttribute('aria-hidden', 'true');
+    const toene = ['#f3ddd0', '#e7ecdc', '#f6e7cf', '#dde7ee', '#f0d9cd'];
+    let z = 4711;
+    const rnd = () => (z = (z * 1103515245 + 12345) % 2147483648) / 2147483648;
+    for (let i = 0; i < 34; i++) {
+      const b = document.createElement('span');
+      const gr = 8 + rnd() * 12;
+      b.style.cssText =
+        'left:' + (rnd() * 100).toFixed(1) + '%;' +
+        'width:' + gr.toFixed(1) + 'px;height:' + (gr * 0.7).toFixed(1) + 'px;' +
+        'background:' + toene[i % toene.length] + ';' +
+        'animation-duration:' + (2.6 + rnd() * 2.4).toFixed(1) + 's;' +
+        'animation-delay:' + (rnd() * 0.9).toFixed(2) + 's;' +
+        '--drift:' + (rnd() * 120 - 60).toFixed(0) + 'px;' +
+        '--dreh:' + (rnd() * 540 - 270).toFixed(0) + 'deg;';
+      feld.appendChild(b);
+    }
+    document.body.appendChild(feld);
+    setTimeout(() => feld.remove(), 6000);
+  }
+
+  /* =========================================================
+     Bewegung, die an den Bildlauf gekoppelt ist
+     Alles laeuft in einem einzigen rAF-Takt: zwei getrennte
+     Scroll-Listener sind auf dem Handy sofort spuerbar.
+     ========================================================= */
+  (function scrollEffekte() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const kulisse = document.querySelector('.kulisse-grund');
+    const kopf = $('sek-kopf');
+    const leiste = $('zeitleiste');
+    let offen = false;
+
+    function takt() {
+      offen = false;
+      // Kulisse zieht langsamer mit als der Text darueber
+      if (kulisse && kopf) {
+        const r = kopf.getBoundingClientRect();
+        if (r.bottom > -200 && r.top < innerHeight + 200) {
+          const weg = Math.max(-1, Math.min(1, -r.top / Math.max(1, r.height)));
+          kulisse.style.transform = 'translate3d(0,' + (weg * 7).toFixed(2) + '%,0) scale(1.14)';
+        }
+      }
+      // Die Linie der Zeitleiste waechst mit dem Lesen
+      if (leiste) {
+        const r = leiste.getBoundingClientRect();
+        const p = (innerHeight * 0.72 - r.top) / Math.max(1, r.height);
+        leiste.style.setProperty('--zl-fortschritt', Math.max(0, Math.min(1, p)).toFixed(3));
+      }
+    }
+    addEventListener('scroll', () => {
+      if (offen) return;
+      offen = true;
+      requestAnimationFrame(takt);
+    }, { passive: true });
+    addEventListener('resize', takt, { passive: true });
+    takt();
+  })();
+
+  /* =========================================================
+     Galerie in gross, mit Wischen
+     ========================================================= */
+  (function lupe() {
+    const kasten = $('lupe'), bild = $('lupe-bild'), text = $('lupe-text');
+    if (!kasten) return;
+    let stelle = 0;
+
+    function zeige(i) {
+      const bilder = C.galerie.slice(0, 4);
+      stelle = (i + bilder.length) % bilder.length;
+      const b = bilder[stelle];
+      bild.src = mitVersion(b.datei);
+      bild.alt = S.bildtexte[b.schluessel] || '';
+      text.textContent = bild.alt;
+    }
+    function auf(i) {
+      zeige(i);
+      kasten.classList.add('auf');
+      requestAnimationFrame(() => kasten.classList.add('sichtbar'));
+      document.body.style.overflow = 'hidden';
+      $('lupe-zu').focus();
+    }
+    function zu() {
+      kasten.classList.remove('sichtbar');
+      setTimeout(() => { kasten.classList.remove('auf'); bild.removeAttribute('src'); }, 320);
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('click', e => {
+      const fig = e.target.closest('.gal-bild');
+      if (!fig) return;
+      auf([...document.querySelectorAll('.gal-bild')].indexOf(fig));
+    });
+    $('lupe-zu').addEventListener('click', zu);
+    $('lupe-vor').addEventListener('click', () => zeige(stelle + 1));
+    $('lupe-zurueck').addEventListener('click', () => zeige(stelle - 1));
+    kasten.addEventListener('click', e => { if (e.target === kasten) zu(); });
+    addEventListener('keydown', e => {
+      if (!kasten.classList.contains('auf')) return;
+      if (e.key === 'Escape') zu();
+      if (e.key === 'ArrowRight') zeige(stelle + 1);
+      if (e.key === 'ArrowLeft') zeige(stelle - 1);
+    });
+    // Wischen
+    let startX = 0, startY = 0;
+    kasten.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    }, { passive: true });
+    kasten.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy)) zeige(stelle + (dx < 0 ? 1 : -1));
+      else if (dy > 90) zu();
+    }, { passive: true });
   })();
 
   /* ---------- Start ---------- */

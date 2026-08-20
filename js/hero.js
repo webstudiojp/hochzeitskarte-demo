@@ -362,10 +362,12 @@
     env.dataset.done = '1';
     if (window.HOCHZEIT_MUSIK_START) window.HOCHZEIT_MUSIK_START();
     $('env-flap').classList.add('open');
+    env.classList.add('offen');
+    // Die Karte braucht ihren Auftritt, bevor die Allee uebernimmt
     setTimeout(() => {
       $('envelope-screen').classList.add('gone');
       fahrtStarten();
-    }, reduced ? 60 : 620);
+    }, reduced ? 60 : 1750);
   }
 
   /* ---------------------------------------------------------
@@ -378,6 +380,7 @@
     document.querySelector('.env-hint').textContent = S.umschlagHinweis;
     document.querySelector('.hc-line').textContent = S.heroZeile;
     $('hc-date').textContent = S.datumLang;
+    const ek = $('ek-namen'); if (ek) ek.textContent = C.namen;
     $('skip').textContent = S.ueberspringen;
     document.querySelector('.scroll-cue span').textContent = S.weiter;
   }

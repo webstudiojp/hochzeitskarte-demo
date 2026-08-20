@@ -578,3 +578,100 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 @media (prefers-reduced-motion:reduce){
   .musikknopf.laeuft .mk-note{animation:none}
 }
+
+/* =========================================================
+   Bewegung, die beim Scrollen entsteht
+   ========================================================= */
+
+/* ---- Kulisse liegt tiefer als der Text und zieht langsamer mit ---- */
+.kulisse-grund{will-change:transform}
+
+/* ---- Zeitleiste: die Linie waechst mit dem Lesen ---- */
+.zeitleiste{position:relative}
+.zeitleiste::before{
+  content:'';position:absolute;left:calc(4.4rem / 2);top:8px;bottom:8px;width:1px;
+  background:var(--salbei-tief);opacity:.28;
+  transform:scaleY(var(--zl-fortschritt,0));transform-origin:top;
+  transition:transform .18s linear;
+}
+.zl-punkt{position:relative}
+.zl-zeit{position:relative;background:var(--salbei);padding-right:6px;z-index:1}
+.zl-punkt::before{
+  content:'';position:absolute;left:calc(4.4rem / 2 - 3.5px);top:1.55em;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--salbei);border:1px solid var(--salbei-tief);
+  opacity:.4;transform:scale(.6);
+  transition:opacity .5s var(--ease-out-expo),transform .5s var(--ease-out-expo),background .5s;
+  z-index:2;
+}
+.zl-punkt.da::before{opacity:1;transform:scale(1);background:var(--salbei-tief)}
+
+/* ---- Countdown: die Ziffern rollen beim Wechsel ---- */
+.cd-zahl{display:inline-block;position:relative;overflow:hidden}
+.cd-zahl.rollt{animation:ziffer-roll .42s var(--ease-out-quart)}
+@keyframes ziffer-roll{
+  0%  {transform:translateY(-52%);opacity:0}
+  55% {opacity:1}
+  100%{transform:translateY(0);opacity:1}
+}
+
+/* ---- Galerie antippbar ---- */
+.gal-bild{cursor:zoom-in}
+.gal-bild::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,14,8,0) 62%,rgba(20,14,8,.2));
+  opacity:0;transition:opacity .45s var(--ease-out-quart);
+}
+.gal-bild:hover::after{opacity:1}
+
+.lupe{
+  position:fixed;inset:0;z-index:200;display:none;
+  background:rgba(24,19,13,.94);
+  align-items:center;justify-content:center;
+  opacity:0;transition:opacity .32s var(--ease-out-quart);
+}
+.lupe.auf{display:flex}
+.lupe.sichtbar{opacity:1}
+.lupe img{
+  max-width:94vw;max-height:82svh;object-fit:contain;
+  transform:scale(.94);transition:transform .38s var(--ease-out-expo);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.lupe.sichtbar img{transform:scale(1)}
+.lupe-zu{
+  position:absolute;top:max(16px,env(safe-area-inset-top));right:16px;z-index:2;
+  width:42px;height:42px;border-radius:999px;cursor:pointer;
+  background:rgba(255,253,248,.14);border:1px solid rgba(255,253,248,.3);
+  color:#f4efe4;display:grid;place-items:center;
+}
+.lupe-zu svg{width:18px;height:18px}
+.lupe-text{
+  position:absolute;left:0;right:0;bottom:max(22px,env(safe-area-inset-bottom));
+  text-align:center;color:#cbbda4;font-size:var(--t-s);padding:0 26px;
+}
+.lupe-blaettern{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:46px;height:46px;border-radius:999px;cursor:pointer;
+  background:rgba(255,253,248,.12);border:1px solid rgba(255,253,248,.26);
+  color:#f4efe4;display:grid;place-items:center;
+}
+.lupe-blaettern svg{width:20px;height:20px}
+.lupe-zurueck{left:12px}
+.lupe-vor{right:12px}
+
+@media (prefers-reduced-motion:reduce){
+  .cd-zahl.rollt{animation:none}
+  .zeitleiste::before{transform:scaleY(1)}
+  .lupe img{transform:none}
+}
+
+/* ---- Blütenregen nach der Zusage ---- */
+.regen{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+.regen span{
+  position:absolute;top:-8vh;border-radius:60% 40% 55% 45%;
+  opacity:.9;animation:regen-fall linear forwards;
+}
+@keyframes regen-fall{
+  from{transform:translate3d(0,-10vh,0) rotate(0)}
+  to  {transform:translate3d(var(--drift,0),112vh,0) rotate(var(--dreh,180deg));opacity:.15}
+}

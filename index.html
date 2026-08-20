@@ -23,8 +23,8 @@
 <meta property="og:locale:alternate" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f4efe4">
-<link rel="stylesheet" href="css/style.css?v=202608201718">
-<link rel="stylesheet" href="css/karte.css?v=202608201718">
+<link rel="stylesheet" href="css/style.css?v=202608201756">
+<link rel="stylesheet" href="css/karte.css?v=202608201756">
 </head>
 <body>
 
@@ -74,14 +74,25 @@
   <div class="env-inner">
     <p class="env-kicker" id="env-kicker">Eine Einladung für dich</p>
     <button class="envelope" id="envelope" aria-label="Einladung öffnen">
-      <svg viewBox="0 0 200 140" class="env-svg" aria-hidden="true">
-        <rect x="4" y="24" width="192" height="112" rx="6" class="env-body"/>
-        <path d="M4 30 L100 96 L196 30" class="env-flap-back"/>
-        <path class="env-seal-ring" d="M100 74 m-13 0 a13 13 0 1 0 26 0 a13 13 0 1 0 -26 0"/>
-        <g class="env-flap" id="env-flap">
-          <path d="M4 30 L100 96 L196 30 L196 24 L4 24 Z" class="env-flap-shape"/>
-        </g>
-      </svg>
+      <div class="env-buehne">
+        <!-- Die Karte steckt im Umschlag und gleitet beim Oeffnen heraus -->
+        <div class="env-karte" id="env-karte" aria-hidden="true">
+          <span class="ek-linie"></span>
+          <span class="ek-namen" id="ek-namen">Furkan &amp; Dilara</span>
+          <span class="ek-linie"></span>
+        </div>
+        <svg viewBox="0 0 200 140" class="env-svg" aria-hidden="true">
+          <rect x="4" y="24" width="192" height="112" rx="6" class="env-body"/>
+          <path d="M4 30 L100 96 L196 30" class="env-flap-back"/>
+          <!-- Vorderseite verdeckt die Karte, bis sie ganz heraus ist -->
+          <path d="M4 136 L100 74 L196 136 Z" class="env-front"/>
+          <path d="M4 136 L4 30 L100 92 L196 30 L196 136 Z" class="env-front"/>
+          <path class="env-seal-ring" d="M100 74 m-13 0 a13 13 0 1 0 26 0 a13 13 0 1 0 -26 0"/>
+          <g class="env-flap" id="env-flap">
+            <path d="M4 30 L100 96 L196 30 L196 24 L4 24 Z" class="env-flap-shape"/>
+          </g>
+        </svg>
+      </div>
     </button>
     <p class="env-hint">Tippe auf den Umschlag</p>
   </div>
@@ -112,7 +123,7 @@
     </defs>
 
     <!-- Die Allee -->
-    <image href="assets/img/allee.webp?v=202608201718" x="0" y="0" width="1000" height="1800"
+    <image href="assets/img/allee.webp?v=202608201756" x="0" y="0" width="1000" height="1800"
            preserveAspectRatio="xMidYMid slice"/>
 
     <!-- Perlen, die aus dem Heck rieseln -->
@@ -133,7 +144,7 @@
       <!-- Sonne steht links: der Schatten faellt nach rechts unten -->
       <ellipse cx="92" cy="104" rx="112" ry="330" fill="#120d07" opacity=".44" filter="url(#weich)"/>
       <g filter="url(#tempo)">
-        <image href="assets/img/wagen.webp?v=202608201718" x="-150" y="-401" width="300" height="802"/>
+        <image href="assets/img/wagen.webp?v=202608201756" x="-150" y="-401" width="300" height="802"/>
       </g>
     </g>
 
@@ -157,7 +168,7 @@
   <!-- ---------- Kopf der Karte ---------- -->
   <section class="sek kopf" id="sek-kopf">
     <div class="kulisse" aria-hidden="true">
-      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608201718" alt="" loading="eager" decoding="async">
+      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608201756" alt="" loading="eager" decoding="async">
       <div class="tauben" id="tauben"></div>
       <span class="kulisse-schleier"></span>
     </div>
@@ -334,8 +345,23 @@
   </footer>
 </main>
 
-<script src="js/config.js?v=202608201718"></script>
-<script src="js/hero.js?v=202608201718"></script>
-<script src="js/karte.js?v=202608201718"></script>
+<!-- Galerie in gross -->
+<div class="lupe" id="lupe" role="dialog" aria-modal="true" aria-label="Bild in groß">
+  <button class="lupe-blaettern lupe-zurueck" id="lupe-zurueck" type="button" aria-label="Vorheriges Bild">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <img id="lupe-bild" alt="" decoding="async">
+  <button class="lupe-blaettern lupe-vor" id="lupe-vor" type="button" aria-label="Nächstes Bild">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="lupe-zu" id="lupe-zu" type="button" aria-label="Schließen">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <p class="lupe-text" id="lupe-text"></p>
+</div>
+
+<script src="js/config.js?v=202608201756"></script>
+<script src="js/hero.js?v=202608201756"></script>
+<script src="js/karte.js?v=202608201756"></script>
 </body>
 </html>
