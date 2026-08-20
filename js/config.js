@@ -93,7 +93,7 @@ window.HOCHZEIT = {
     hinweis:    'Danach steht die Bestellung beim Caterer fest.',
   },
 
-  /* ---------- Galerie (Platzhalter bis echte Fotos da sind) ---------- */
+  /* ---------- Galerie ---------- */
   galerie: [
     { datei: 'assets/img/g1-strauss.webp',  alt: 'Dilaras Brautstrauß aus weißen Rosen und Eukalyptus auf der Fensterbank' },
     { datei: 'assets/img/g2-ringe.webp',    alt: 'Die beiden Trauringe auf hellem Stoff, umgeben von Rosenblättern' },

@@ -113,16 +113,6 @@ body.locked{overflow:hidden}
 .scroll-cue svg{width:22px;height:22px}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 
-/* ---------- Platzhalter darunter ---------- */
-.next-placeholder{
-  min-height:64svh;display:grid;place-content:center;text-align:center;
-  background:var(--papier);padding:64px 26px;
-}
-.np-eyebrow{
-  margin:0 0 14px;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
-}
-.np-text{margin:0;font-size:clamp(17px,4.4vw,21px);line-height:1.75;color:#6d6152;font-weight:300}
-
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
 }
