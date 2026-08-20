@@ -23,8 +23,19 @@
 <meta property="og:locale:alternate" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f4efe4">
-<link rel="stylesheet" href="css/style.css?v=202608202009">
-<link rel="stylesheet" href="css/karte.css?v=202608202009">
+<script>
+/* Browser stellen beim Neuladen die alte Bildlaufposition wieder her.
+   Bei einer Karte mit Umschlag-Intro heisst das: der Gast landet mitten
+   im Ablauf statt am Anfang. Ein Sprungziel in der Adresse bleibt gueltig. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash) {
+  window.scrollTo(0, 0);
+  addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
+  addEventListener('load', () => { if (!location.hash) window.scrollTo(0, 0); });
+}
+</script>
+<link rel="stylesheet" href="css/style.css?v=202608202012">
+<link rel="stylesheet" href="css/karte.css?v=202608202012">
 </head>
 <body>
 
@@ -103,7 +114,7 @@
   <button id="skip" class="skip" hidden>Überspringen</button>
 
   <div class="hero-grund" aria-hidden="true">
-    <img src="assets/img/allee.webp?v=202608202009" alt="" decoding="async">
+    <img src="assets/img/allee.webp?v=202608202012" alt="" decoding="async">
   </div>
 
   <svg id="scene" class="scene" viewBox="0 0 1000 1800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -127,7 +138,7 @@
     </defs>
 
     <!-- Die Allee -->
-    <image href="assets/img/allee.webp?v=202608202009" x="0" y="0" width="1000" height="1800"
+    <image href="assets/img/allee.webp?v=202608202012" x="0" y="0" width="1000" height="1800"
            preserveAspectRatio="xMidYMid slice"/>
 
     <!-- Perlen, die aus dem Heck rieseln -->
@@ -148,7 +159,7 @@
       <!-- Sonne steht links: der Schatten faellt nach rechts unten -->
       <ellipse cx="92" cy="104" rx="112" ry="330" fill="#120d07" opacity=".44" filter="url(#weich)"/>
       <g filter="url(#tempo)">
-        <image href="assets/img/wagen.webp?v=202608202009" x="-150" y="-401" width="300" height="802"/>
+        <image href="assets/img/wagen.webp?v=202608202012" x="-150" y="-401" width="300" height="802"/>
       </g>
     </g>
 
@@ -172,7 +183,7 @@
   <!-- ---------- Kopf der Karte ---------- -->
   <section class="sek kopf" id="sek-kopf">
     <div class="kulisse" aria-hidden="true">
-      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608202009" alt="" loading="eager" decoding="async">
+      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608202012" alt="" loading="eager" decoding="async">
       <div class="tauben" id="tauben"></div>
       <span class="kulisse-schleier"></span>
     </div>
@@ -209,7 +220,7 @@
 
   <!-- ---------- Ein Bild, das die Seite einmal aufreisst ---------- -->
   <section class="grossbild" id="sek-zitat" aria-label="Bildmoment">
-    <img class="gb-bild" src="assets/img/g4-tafel.webp?v=202608202009" alt="" loading="lazy" decoding="async">
+    <img class="gb-bild" src="assets/img/g4-tafel.webp?v=202608202012" alt="" loading="lazy" decoding="async">
     <span class="gb-schleier"></span>
     <div class="gb-text">
       <p class="gb-gross rv" data-rv="1" id="zitat-gross"></p>
@@ -219,7 +230,7 @@
 
   <!-- ---------- Countdown (Kontrastmoment, volle Breite) ---------- -->
   <section class="sek-breit countdown" id="sek-countdown" aria-label="Countdown">
-    <img class="cd-grund" src="assets/img/g5-lichter.webp?v=202608202009" alt="" loading="lazy" decoding="async">
+    <img class="cd-grund" src="assets/img/g5-lichter.webp?v=202608202012" alt="" loading="lazy" decoding="async">
     <span class="cd-schleier"></span>
     <p class="ueberzeile hell" id="cd-ueber">Noch</p>
     <div class="cd-reihe" id="cd-reihe" role="timer" aria-live="off">
@@ -241,7 +252,7 @@
   <section class="sek ort" id="sek-ort">
     <h2 class="sek-titel rv" data-rv="1" id="ort-titel">Wo</h2>
     <figure class="ort-bild rv" data-rv="2">
-      <img src="assets/img/g3-bogen.webp?v=202608202009" id="ort-foto" alt="" loading="lazy" decoding="async">
+      <img src="assets/img/g3-bogen.webp?v=202608202012" id="ort-foto" alt="" loading="lazy" decoding="async">
     </figure>
     <div class="ort-raster">
       <div>
@@ -349,7 +360,7 @@
 
   <!-- ---------- Abschied ---------- -->
   <section class="grossbild abschied" id="sek-abschied" aria-label="Abschied">
-    <img class="gb-bild" src="assets/img/g1-strauss.webp?v=202608202009" alt="" loading="lazy" decoding="async">
+    <img class="gb-bild" src="assets/img/g1-strauss.webp?v=202608202012" alt="" loading="lazy" decoding="async">
     <span class="gb-schleier"></span>
     <div class="gb-text">
       <p class="ab-gross rv" data-rv="1" id="abschied-gross"></p>
@@ -382,8 +393,8 @@
   <p class="lupe-text" id="lupe-text"></p>
 </div>
 
-<script src="js/config.js?v=202608202009"></script>
-<script src="js/hero.js?v=202608202009"></script>
-<script src="js/karte.js?v=202608202009"></script>
+<script src="js/config.js?v=202608202012"></script>
+<script src="js/hero.js?v=202608202012"></script>
+<script src="js/karte.js?v=202608202012"></script>
 </body>
 </html>
