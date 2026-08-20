@@ -10,7 +10,17 @@
      ========================================================= */
   setzen('k-namen', C.namen);
   setzen('k-zeile', C.anrede.zeile);
-  setzen('k-datum', C.datumLang);
+  // Datum in Monat / Zahl / Jahr zerlegen, wie im Vorbild
+  (function datumSetzen() {
+    const d = new Date(C.datumISO + 'T12:00:00');
+    const monate = ['Januar','Februar','März','April','Mai','Juni','Juli',
+                    'August','September','Oktober','November','Dezember'];
+    const tage = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+    setzen('d-monat', monate[d.getMonth()]);
+    setzen('d-tag', d.getDate());
+    setzen('d-jahr', d.getFullYear());
+    setzen('d-wochentag', tage[d.getDay()]);
+  })();
   setzen('a-text',  C.anrede.text);
   setzen('a-gruss', C.anrede.gruss);
   setzen('o-name',    C.ort.name);
@@ -122,41 +132,49 @@
   })();
 
   /* =========================================================
-     2c. Tauben ueber der Einladung
+     2c. Voegel am Himmel ueber der Einladung
      ========================================================= */
-  (function tauben() {
+  (function voegel() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const feld = $('tauben');
     if (!feld) return;
-    // Groesse, Flughoehe, Dauer und Versatz je Vogel unterschiedlich,
-    // sonst fliegen sie wie eine Formation aus der Konservendose
-    // Groesse, Flughoehe und Schlagrhythmus je Vogel verschieden, sonst
-    // ziehen sie wie eine Formation durchs Bild
-    const bahnen = [
-      { klasse: 'b1', breite: 72, oben: '16%', verzug: -4,  schlag: 4.2 },
-      { klasse: 'b2', breite: 44, oben: '30%', verzug: -17, schlag: 3.4 },
-      { klasse: 'b3', breite: 56, oben: '8%',  verzug: -25, schlag: 4.9 },
+
+    // Zwei Fluegelstellungen als Silhouette - mehr braucht es aus der
+    // Entfernung nicht, und weniger Detail heisst weniger, das falsch wirkt.
+    // Gleitstellung: flaches M mit erkennbarem Knick, sonst wirkt es
+    // bei dieser Groesse wie ein Kratzer und nicht wie ein Vogel.
+    const GLEIT  = 'M-23 -4 C-16 -7 -8 -7 0 1 C8 -7 16 -7 23 -4';
+    const SCHLAG = 'M-17 -13 C-13 -10 -6 -6 0 1 C6 -6 13 -10 17 -13';
+
+    // Lose Gruppe plus Einzelgaenger - gleichmaessig verteilt sieht gestellt aus
+    const schwarm = [
+      { bahn: 'z1', breite: 32, oben: '13%', verzug: -6,  deckung: .62, schlag: 3.8 },
+      { bahn: 'z1', breite: 25, oben: '17%', verzug: -3,  deckung: .52, schlag: 4.3 },
+      { bahn: 'z2', breite: 22, oben: '20%', verzug: -1,  deckung: .44, schlag: 3.3 },
+      { bahn: 'z3', breite: 27, oben: '9%',  verzug: -24, deckung: .55, schlag: 4.7 },
+      { bahn: 'z4', breite: 18, oben: '25%', verzug: -38, deckung: .38, schlag: 3.6 },
+      { bahn: 'z2', breite: 34, oben: '6%',  verzug: -51, deckung: .6,  schlag: 4.1 },
     ];
-    bahnen.forEach(b => {
-      const t = document.createElement('div');
-      t.className = 'taube ' + b.klasse;
-      t.style.cssText = 'width:' + b.breite + 'px;top:' + b.oben + ';left:0;'
-        + 'animation-delay:' + b.verzug + 's;';
-      // Gleitstellung zuerst - sie liegt unten und ist immer sichtbar
-      ['taube-ab', 'taube-auf'].forEach(datei => {
-        const img = document.createElement('img');
-        img.src = 'assets/img/' + datei + '.webp';
-        img.alt = '';
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        if (datei === 'taube-auf') {
-          img.className = 'auf';
-          img.style.animationDuration = b.schlag + 's';
-          img.style.animationDelay = (b.verzug * 0.6) + 's';
-        }
-        t.appendChild(img);
-      });
-      feld.appendChild(t);
+
+    schwarm.forEach(v => {
+      const svg = document.createElementNS(SVGNS, 'svg');
+      svg.setAttribute('class', 'vogel ' + v.bahn);
+      svg.setAttribute('viewBox', '-26 -14 52 28');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.cssText = 'width:' + v.breite + 'px;top:' + v.oben + ';left:0;'
+        + 'opacity:' + v.deckung + ';animation-delay:' + v.verzug + 's;';
+
+      const gleit = document.createElementNS(SVGNS, 'path');
+      gleit.setAttribute('d', GLEIT);
+      const schlag = document.createElementNS(SVGNS, 'path');
+      schlag.setAttribute('d', SCHLAG);
+      schlag.setAttribute('class', 'v-schlag');
+      schlag.style.animationDuration = v.schlag + 's';
+      schlag.style.animationDelay = (v.verzug * 0.7) + 's';
+
+      svg.appendChild(gleit);
+      svg.appendChild(schlag);
+      feld.appendChild(svg);
     });
   })();
 
@@ -210,6 +228,21 @@
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
+
+  (function googleKalender() {
+    const g = $('btn-google-cal');
+    if (!g) return;
+    const stanz = iso => iso.replace(/[-:]/g, '').replace(/\.\d+/, '') + '00'.slice(0, 0);
+    const von = C.beginnISO.replace(/[-:]/g, '');
+    const bis = C.endeISO.replace(/[-:]/g, '');
+    const adresse = C.ort.name + ', ' + C.ort.strasse + ', ' + C.ort.plz + ' ' + C.ort.stadt;
+    g.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      + '&text=' + encodeURIComponent('Hochzeit von ' + C.namen)
+      + '&dates=' + von + '/' + bis
+      + '&location=' + encodeURIComponent(adresse)
+      + '&details=' + encodeURIComponent('Trauung um ' + C.ablauf[0].zeit
+          + ' Uhr. Rückmeldung bis ' + C.rsvp.frist + '.');
+  })();
 
   /* =========================================================
      5. Route — Links statt eingebetteter Karte.
