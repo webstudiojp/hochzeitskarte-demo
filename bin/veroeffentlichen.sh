@@ -10,8 +10,8 @@ V="$(date +%Y%m%d%H%M)"
 # Version an Stylesheets und Skripte in der index.html
 perl -0777 -i -pe "s|(href=\"css/[a-z-]+\\.css)(\\?v=\\d+)?\"|\$1?v=$V\"|g" index.html
 perl -0777 -i -pe "s|(src=\"js/[a-z-]+\\.js)(\\?v=\\d+)?\"|\$1?v=$V\"|g" index.html
-# Bilder, die direkt im HTML stehen
-perl -0777 -i -pe "s|(src=\"assets/img/[a-z0-9-]+\\.webp)(\\?v=\\d+)?\"|\$1?v=$V\"|g" index.html
+# Bilder, die direkt im HTML stehen - als img src und als SVG href
+perl -0777 -i -pe "s|((?:src\|href)=\"assets/img/[a-z0-9-]+\\.webp)(\\?v=\\d+)?\"|\$1?v=$V\"|g" index.html
 # Dieselbe Version fuer die Bilder, die erst aus dem Skript geladen werden
 perl -0777 -i -pe "s|(^  version:\\s*')[^']*(')|\${1}$V\${2}|m" js/config.js
 
