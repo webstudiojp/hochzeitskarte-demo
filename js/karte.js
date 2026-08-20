@@ -4,6 +4,8 @@
   const $ = id => document.getElementById(id);
   const SVGNS = 'http://www.w3.org/2000/svg';
   const setzen = (id, wert) => { const n = $(id); if (n) n.textContent = wert; };
+  // Version anhaengen, sonst zeigt der Browser nach einem Bildtausch das alte
+  const mitVersion = pfad => pfad + (C.version && C.version !== '0' ? '?v=' + C.version : '');
 
   /* =========================================================
      1. Texte aus der Konfiguration
@@ -91,7 +93,7 @@
     fig.dataset.rv = String(i + 1);
     if (b.datei) {
       const img = document.createElement('img');
-      img.src = b.datei;
+      img.src = mitVersion(b.datei);
       img.alt = b.alt;
       img.loading = i === 0 ? 'eager' : 'lazy';
       img.decoding = 'async';

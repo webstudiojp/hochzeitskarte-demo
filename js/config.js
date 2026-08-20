@@ -5,6 +5,10 @@
    ========================================================= */
 window.HOCHZEIT = {
 
+  // Wird von bin/veroeffentlichen.sh gesetzt und an alle Bilder gehaengt,
+  // damit Browser nach einer Aenderung nicht die alte Fassung zeigen.
+  version: '202608201615',
+
   /* ---------- Das Paar ---------- */
   braut:        'Dilara',
   braeutigam:   'Furkan',
