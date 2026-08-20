@@ -360,6 +360,7 @@
     const env = $('envelope');
     if (env.dataset.done) return;
     env.dataset.done = '1';
+    if (window.HOCHZEIT_MUSIK_START) window.HOCHZEIT_MUSIK_START();
     $('env-flap').classList.add('open');
     setTimeout(() => {
       $('envelope-screen').classList.add('gone');
@@ -370,14 +371,18 @@
   /* ---------------------------------------------------------
      5. Texte aus der Konfiguration + Start
      --------------------------------------------------------- */
-  const t = C.texte;
-  $('env-kicker').textContent = t.umschlagKicker;
-  document.querySelector('.env-hint').textContent = t.umschlagHinweis;
-  document.querySelector('.hc-line').textContent = t.heroZeile;
-  $('hc-date').textContent = C.datumLang;
-  $('skip').textContent = t.ueberspringen;
-  document.querySelector('.scroll-cue span').textContent = t.weiter;
-  document.title = C.namen + ' — Wir heiraten';
+  // Hero-Beschriftungen aus der aktiven Sprache; wird beim Umschalten erneut gerufen
+  function heroTexte() {
+    const S = (window.HOCHZEIT_SPRACHE && window.HOCHZEIT_SPRACHE()) || C.sprachen[C.standardsprache];
+    $('env-kicker').textContent = S.umschlagKicker;
+    document.querySelector('.env-hint').textContent = S.umschlagHinweis;
+    document.querySelector('.hc-line').textContent = S.heroZeile;
+    $('hc-date').textContent = S.datumLang;
+    $('skip').textContent = S.ueberspringen;
+    document.querySelector('.scroll-cue span').textContent = S.weiter;
+  }
+  window.HOCHZEIT_HERO_TEXTE = heroTexte;
+  heroTexte();
 
   $('envelope').addEventListener('click', oeffnen);
   $('skip').addEventListener('click', () => { abbruch = true; endzustand(); });

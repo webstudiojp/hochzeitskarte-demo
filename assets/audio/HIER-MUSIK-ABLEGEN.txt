@@ -1,0 +1,19 @@
+Die Hintergrundmusik gehört als "musik.mp3" in diesen Ordner.
+
+Sie startet, sobald der Gast den Umschlag antippt — vorher darf kein
+Browser Ton abspielen. Über den Notenknopf oben links lässt sie sich
+jederzeit abschalten, und diese Entscheidung wird gemerkt.
+
+Solange keine Datei hier liegt, bleibt der Notenknopf unsichtbar.
+Die Seite funktioniert vollständig ohne Musik.
+
+WICHTIG ZUR LIZENZ
+Türkische Hochzeitsmusik ist praktisch immer urheberrechtlich geschützt.
+Eine Aufnahme aus YouTube oder Spotify hier abzulegen ist eine öffentliche
+Zugänglichmachung — dafür haften der Betreiber der Seite und der Auftraggeber.
+Für eine Seite, die verkauft wird, braucht es eine Lizenz für genau diesen
+Zweck. Saubere Quellen sind zum Beispiel Epidemic Sound, Artlist oder
+Musicbed; dort gibt es auch instrumentale türkische Stücke.
+
+Dateiformat: MP3, Mono reicht, 96–128 kBit/s. Bei drei Minuten sind das
+rund 2 MB — mehr sollte es für eine Handyseite nicht sein.

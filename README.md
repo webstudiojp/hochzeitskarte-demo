@@ -16,10 +16,41 @@ Location und Bankverbindung existieren nicht.
 | `assets/img/` | Kulisse, Wagen, Rahmen und Fotos (WebP). |
 | `assets/fonts/` | Schriften lokal, keine Anfragen an Google. |
 
+## Sprachen
+
+Alles Übersetzbare steht in `js/config.js` unter `sprachen`. Angaben, die in
+jeder Sprache gleich sind — Namen, Termine, Uhrzeiten, Adresse, Bankverbindung —
+stehen darüber und werden nur einmal gepflegt. Eine dritte Sprache ergänzt man,
+indem man einen Block kopiert und den Schlüssel in `sprachfolge` einträgt.
+
+Die Sprache richtet sich nach der Wahl des Gastes, sonst nach `?lang=tr` in der
+Adresse, sonst nach der Browsersprache, sonst nach `standardsprache`.
+
+## Musik
+
+Datei als `assets/audio/musik.mp3` ablegen — siehe den Hinweis in diesem Ordner,
+besonders zur Lizenzfrage. Ohne Datei bleibt der Notenknopf verborgen und die
+Seite funktioniert vollständig.
+
+## Vorschau beim Teilen
+
+Die Open-Graph-Angaben stehen im Kopf der `index.html`, das Bild ist
+`assets/img/vorschau.jpg` (1200×630). **Bei jedem neuen Projekt müssen dort die
+eigene Adresse und das eigene Vorschaubild eingetragen werden** — Messenger
+ignorieren relative Pfade.
+
 ## Zum Ausprobieren
 
 - `?namen=Lea+%26+Tom` — setzt das Paar ohne Datei-Änderung
+- `?lang=tr` / `?lang=de` — Sprache erzwingen
 - `?schrift=strasse` / `?schrift=quer` — andere Ausrichtung des Schriftzugs
+
+## Veröffentlichen
+
+    ./bin/veroeffentlichen.sh "Was geändert wurde"
+
+Setzt eine frische Versionsnummer an alle eigenen Dateien und stellt live.
+Ohne das liefern Browser tagelang die alte Fassung aus dem Zwischenspeicher.
 
 ## Bildmaterial
 
