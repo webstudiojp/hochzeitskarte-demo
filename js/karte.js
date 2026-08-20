@@ -184,6 +184,7 @@
       if (i) adr.appendChild(document.createElement('br'));
       adr.appendChild(document.createTextNode(z));
     });
+    const of = $('ort-foto'); if (of) of.alt = S.ortBildAlt;
     kartenbild();
 
     // Familien
@@ -253,20 +254,12 @@
     setzen('l-nein', S.fNein);
     setzen('e-zusage', S.fZusageFehler);
     setzen('l-anzahl', S.fAnzahl);
-    setzen('l-essen', S.fEssen);
-    $('f-essen').placeholder = S.fEssenPlatz;
     setzen('l-gruss', S.fGruss);
     $('f-gruss').placeholder = S.fGrussPlatz;
     document.querySelectorAll('.feld-optional').forEach(n => { n.textContent = S.fOptional; });
     setzen('l-einwilligung', S.fEinwilligung);
     setzen('e-dsgvo', S.fDsgvoFehler);
     setzen('btn-senden', S.fSenden);
-
-    // Teilen
-    setzen('teilen-frage', S.teilenFrage);
-    setzen('btn-whatsapp-text', S.teilenKnopf);
-    $('btn-whatsapp').href = 'https://wa.me/?text='
-      + encodeURIComponent(S.teilenText(C.namen, C.datumKurz, location.origin + location.pathname));
 
     // Fuss
     setzen('f-namen', C.namen);
@@ -306,10 +299,11 @@
   const zwei = n => String(n).padStart(2, '0');
   // Rollt nur, wenn sich der Wert geaendert hat - sonst zappelt die
   // Sekundenanzeige und alles andere ruckelt sinnlos mit.
-  function ziffer(id, wert) {
+  function ziffer(id, wert, rollen) {
     const n = $(id);
     if (!n || n.textContent === String(wert)) return;
     n.textContent = wert;
+    if (rollen === false) return;
     n.classList.remove('rollt');
     void n.offsetWidth;
     n.classList.add('rollt');
@@ -325,7 +319,7 @@
     ziffer('cd-t', Math.floor(s / 86400));
     ziffer('cd-s', zwei(Math.floor(s / 3600) % 24));
     ziffer('cd-m', zwei(Math.floor(s / 60) % 60));
-    ziffer('cd-k', zwei(s % 60));
+    ziffer('cd-k', zwei(s % 60), false);   // Sekunden ruhig lassen
     return true;
   }
 
@@ -401,7 +395,7 @@
   form.addEventListener('change', e => {
     if (e.target.name !== 'zusage') return;
     const kommt = e.target.value === 'ja';
-    [$('feld-anzahl'), $('feld-essen')].forEach(f => { f.style.display = kommt ? '' : 'none'; });
+    $('feld-anzahl').style.display = kommt ? '' : 'none';
   });
   const fehler = (id, feld, an) => {
     $(id).hidden = !an;

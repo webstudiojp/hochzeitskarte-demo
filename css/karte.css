@@ -169,16 +169,41 @@ html{scrollbar-color:var(--linie) var(--leinen)}
 }
 .cd-reihe{
   display:grid;grid-template-columns:repeat(4,1fr);
-  gap:clamp(6px,3vw,20px);max-width:30rem;margin:0 auto;
+  gap:clamp(7px,2.4vw,14px);max-width:32rem;margin:0 auto;
 }
-.cd-feld{display:flex;flex-direction:column;gap:6px}
+/* Echte Kacheln statt freistehender Ziffern - auf dem Foto braucht
+   die Zahl einen eigenen Grund, sonst frisst das Bokeh sie auf. */
+.cd-feld{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  padding:clamp(13px,3.4vw,20px) clamp(4px,1.6vw,10px) clamp(10px,2.6vw,15px);
+  background:rgba(28,21,14,.42);
+  border:1px solid rgba(240,229,210,.20);
+  border-radius:3px;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  box-shadow:0 10px 30px rgba(10,7,4,.34),inset 0 1px 0 rgba(255,250,240,.09);
+}
 .cd-zahl{
-  font-family:Arial,Helvetica,sans-serif;font-size:clamp(2rem,10vw,3rem);
-  line-height:1;letter-spacing:-0.02em;font-variant-numeric:lining-nums tabular-nums;
+  font-size:clamp(1.9rem,9vw,2.9rem);
+  line-height:1;letter-spacing:-0.02em;
+  font-variant-numeric:lining-nums tabular-nums;
+  display:inline-block;position:relative;overflow:hidden;
+}
+.cd-zahl.rollt{animation:ziffer-roll .42s var(--ease-out-quart)}
+@keyframes ziffer-roll{
+  0%  {transform:translateY(-38%);opacity:.35}
+  60% {opacity:1}
+  100%{transform:translateY(0);opacity:1}
+}
+/* Feine Trennlinie zwischen Zahl und Bezeichnung */
+.cd-label::before{
+  content:'';display:block;width:22px;height:1px;
+  margin:clamp(8px,2vw,11px) auto clamp(7px,1.8vw,10px);
+  background:rgba(240,229,210,.26);
 }
 .cd-label{
-  font-size:var(--t-xs);letter-spacing:.18em;text-transform:uppercase;
-  color:#a4947c;
+  font-size:clamp(9px,2.4vw,11px);letter-spacing:.16em;text-transform:uppercase;
+  color:#c9b795;white-space:nowrap;
 }
 .cd-fuss{
   margin:30px 0 0;font-size:var(--t-s);color:#a4947c;
@@ -610,8 +635,8 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 .cd-zahl{display:inline-block;position:relative;overflow:hidden}
 .cd-zahl.rollt{animation:ziffer-roll .42s var(--ease-out-quart)}
 @keyframes ziffer-roll{
-  0%  {transform:translateY(-52%);opacity:0}
-  55% {opacity:1}
+  0%  {transform:translateY(-38%);opacity:.35}
+  60% {opacity:1}
   100%{transform:translateY(0);opacity:1}
 }
 
@@ -727,13 +752,16 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 .countdown .cd-zahl{text-shadow:0 2px 6px rgba(12,8,4,.9),0 4px 26px rgba(12,8,4,.75)}
 .countdown .cd-label,.countdown .cd-fuss{color:#c9b795;text-shadow:0 2px 12px rgba(12,8,4,.7)}
 
-/* ---- Blumenbogen hinter dem Ort, sehr zurueckgenommen ---- */
-.sek.ort{position:relative;overflow:hidden;isolation:isolate}
-.ort-grund{
-  position:absolute;top:-6%;right:-24%;width:78%;height:auto;
-  opacity:.14;z-index:-1;pointer-events:none;
-  -webkit-mask-image:radial-gradient(70% 60% at 60% 40%,#000 30%,transparent 78%);
-  mask-image:radial-gradient(70% 60% at 60% 40%,#000 30%,transparent 78%);
+/* ---- Die Location als Bild, darunter die Lageskizze ---- */
+.sek.ort{position:relative}
+.ort-bild{
+  margin:0 0 26px;overflow:hidden;
+  aspect-ratio:4/3;position:relative;
+}
+.ort-bild img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 44%;
+  animation:wandern 30s ease-in-out infinite alternate;
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -748,9 +776,8 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
    die Breite auch nutzen.
    ========================================================= */
 @media (min-width:700px){
-  /* Der Bogen ist auf schmalen Schirmen eine Andeutung; auf breiten
-     wuerde er in dieser Groesse aus dem Abschnitt herausragen. */
-  .ort-grund{top:-4%;right:-8%;width:38%}
+  /* Auf breiten Schirmen steht das Bild neben den Angaben */
+  .ort-bild{aspect-ratio:3/2;margin-bottom:0}
 
   :root{
     --t-m:1.12rem; --t-l:1.42rem; --t-xl:1.8rem;
@@ -766,6 +793,7 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
     display:grid;grid-template-columns:1fr 1.15fr;
     gap:clamp(26px,4vw,44px);align-items:start;
   }
+  .sek.ort .ort-bild{grid-column:1 / -1}
   .kartenbild{margin-top:0}
   .knopf-paar{margin-top:20px}
 

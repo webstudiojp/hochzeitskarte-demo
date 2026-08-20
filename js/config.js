@@ -11,7 +11,7 @@ window.HOCHZEIT = {
 
   // Wird von bin/veroeffentlichen.sh gesetzt und an alle Bilder gehaengt,
   // damit Browser nach einer Aenderung nicht die alte Fassung zeigen.
-  version: '202608201946',
+  version: '202608202009',
 
   /* ---------- Sprachen ---------- */
   standardsprache: 'de',
@@ -137,6 +137,7 @@ window.HOCHZEIT = {
 
       ortTitel: 'Wo',
       ortName: 'Schloss Benrath, Orangerie',
+      ortBildAlt: 'Blumenbogen vor der Orangerie, dahinter die Stuhlreihen für die Trauung',
       ortHinweis: 'Parkplätze gibt es am Westflügel. Vom Bahnhof Benrath sind es acht Minuten zu Fuß.',
       routeGoogle: 'Route mit Google Maps',
       routeApple:  'Apple Karten',
@@ -178,7 +179,6 @@ window.HOCHZEIT = {
       fKommt: 'Kommt ihr?', fJa: 'Wir kommen', fNein: 'Wir können leider nicht',
       fZusageFehler: 'Bitte wählt eine der beiden Antworten.',
       fAnzahl: 'Wie viele Personen',
-      fEssen: 'Beim Essen zu beachten', fEssenPlatz: 'vegetarisch, ohne Nüsse, …',
       fGruss: 'Ein paar Worte an uns', fGrussPlatz: 'Wir freuen uns schon!',
       fOptional: 'optional',
       fEinwilligung: 'Ich bin einverstanden, dass meine Angaben zur Planung der Feier '
@@ -189,9 +189,6 @@ window.HOCHZEIT = {
             + 'für den Versand und die Gästeliste fehlt die Serveranbindung.',
       rsvpNein: 'Schade. Die Eingaben sind vollständig – in dieser Vorschau wird noch nichts versendet.',
 
-      teilenFrage: 'Kennt ihr jemanden, der die Einladung noch nicht hat?',
-      teilenKnopf: 'Einladung weiterleiten',
-      teilenText: (namen, datum, url) => namen + ' heiraten am ' + datum + '. Hier ist die Einladung: ' + url,
 
       musikAn: 'Musik ausschalten', musikAus: 'Musik einschalten',
 
@@ -247,6 +244,7 @@ window.HOCHZEIT = {
 
       ortTitel: 'Konum',
       ortName: 'Benrath Sarayı, Orangerie',
+      ortBildAlt: 'Orangerie önünde çiçekli kemer, arkasında nikâh için sandalye sıraları',
       ortHinweis: 'Otopark batı kanadındadır. Benrath tren istasyonundan yürüyerek sekiz dakika.',
       routeGoogle: 'Google Haritalar ile yol tarifi',
       routeApple:  'Apple Haritalar',
@@ -288,7 +286,6 @@ window.HOCHZEIT = {
       fKommt: 'Katılacak mısınız?', fJa: 'Katılıyoruz', fNein: 'Maalesef katılamıyoruz',
       fZusageFehler: 'Lütfen iki seçenekten birini işaretleyin.',
       fAnzahl: 'Kaç kişi',
-      fEssen: 'Yemek tercihiniz', fEssenPlatz: 'vejetaryen, fındıksız, …',
       fGruss: 'Bize birkaç kelime', fGrussPlatz: 'Şimdiden heyecanlıyız!',
       fOptional: 'isteğe bağlı',
       fEinwilligung: 'Bilgilerimin düğün planlaması için saklanmasını ve düğünden sonra '
@@ -299,9 +296,6 @@ window.HOCHZEIT = {
             + 'gönderim ve konuk listesi için sunucu bağlantısı eksik.',
       rsvpNein: 'Üzüldük. Bilgiler eksiksiz – bu önizlemede henüz gönderim yapılmıyor.',
 
-      teilenFrage: 'Davetiyeyi henüz almamış biri var mı?',
-      teilenKnopf: 'Davetiyeyi paylaş',
-      teilenText: (namen, datum, url) => namen + ' ' + datum + ' tarihinde evleniyor. Davetiye burada: ' + url,
 
       musikAn: 'Müziği kapat', musikAus: 'Müziği aç',
 
