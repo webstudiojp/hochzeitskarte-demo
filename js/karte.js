@@ -226,6 +226,7 @@
       img.alt = S.bildtexte[b.schluessel] || '';
       img.loading = i === 0 ? 'eager' : 'lazy';
       img.decoding = 'async';
+      img.dataset.px = '6';
       fig.appendChild(img);
       gal.appendChild(fig);
     });
@@ -535,49 +536,6 @@
      Alles laeuft in einem einzigen rAF-Takt: zwei getrennte
      Scroll-Listener sind auf dem Handy sofort spuerbar.
      ========================================================= */
-  (function scrollEffekte() {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const kulisse = document.querySelector('.kulisse-grund');
-    const kopf = $('sek-kopf');
-    const leiste = $('zeitleiste');
-    const flaechen = [...document.querySelectorAll('.gb-bild,.cd-grund')];
-    let offen = false;
-
-    function takt() {
-      offen = false;
-      // Kulisse zieht langsamer mit als der Text darueber
-      if (kulisse && kopf) {
-        const r = kopf.getBoundingClientRect();
-        if (r.bottom > -200 && r.top < innerHeight + 200) {
-          const weg = Math.max(-1, Math.min(1, -r.top / Math.max(1, r.height)));
-          kulisse.style.transform = 'translate3d(0,' + (weg * 7).toFixed(2) + '%,0) scale(1.14)';
-        }
-      }
-      // Bildflaechen ziehen langsamer als die Seite - das erzeugt Tiefe
-      flaechen.forEach(b => {
-        const r = b.parentElement.getBoundingClientRect();
-        if (r.bottom < -120 || r.top > innerHeight + 120) return;
-        const mitte = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
-        const versatz = Math.max(-1, Math.min(1, mitte)) * -5.5;
-        b.style.transform = 'translate3d(0,' + versatz.toFixed(2) + '%,0) scale(1.16)';
-      });
-
-      // Die Linie der Zeitleiste waechst mit dem Lesen
-      if (leiste) {
-        const r = leiste.getBoundingClientRect();
-        const p = (innerHeight * 0.72 - r.top) / Math.max(1, r.height);
-        leiste.style.setProperty('--zl-fortschritt', Math.max(0, Math.min(1, p)).toFixed(3));
-      }
-    }
-    addEventListener('scroll', () => {
-      if (offen) return;
-      offen = true;
-      requestAnimationFrame(takt);
-    }, { passive: true });
-    addEventListener('resize', takt, { passive: true });
-    takt();
-  })();
-
   /* =========================================================
      Galerie in gross, mit Wischen
      ========================================================= */
@@ -637,8 +595,80 @@
 
   /* ---------- Start ---------- */
   aufbauen();
+
   // hero.js laeuft vorher und kannte die Sprachwahl noch nicht
   if (window.HOCHZEIT_HERO_TEXTE) window.HOCHZEIT_HERO_TEXTE();
   if (countdown()) setInterval(countdown, 1000);
   reveals();
+
+  (function scrollEffekte() {
+    const leise = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const leiste = $('zeitleiste');
+
+    /* ---- Parallaxe ----
+       Jedes Bild traegt data-px mit seiner Staerke in Prozent. Genau um
+       diesen Wert ist es oben und unten groesser als sein Rahmen, also
+       kann selbst am Anschlag kein Rand auftauchen. Gerechnet wird in
+       Pixeln, weil translateY in Prozent sich auf die Bildhoehe bezoege
+       und nicht auf den Rahmen. */
+    // Auf schmalen Schirmen kuerzere Wege: die Bilder sind dort knapper
+    // aufgeloest, und jeder Prozentpunkt Ueberstand kostet Schaerfe.
+    const faktor = () => (innerWidth < 700 ? 0.62 : 1);
+
+    const bilder = leise ? [] : [...document.querySelectorAll('[data-px]')].map(el => ({
+      el,
+      rahmen: el.parentElement,
+      roh: parseFloat(el.dataset.px) || 6,
+      staerke: 0,
+      letzter: null,
+    }));
+
+    // Ueberstand und Weg aus derselben Zahl - sonst faehrt das Bild weiter
+    // als seine Reserve reicht und am Rand klafft eine Luecke.
+    function masseSetzen() {
+      const f = faktor();
+      bilder.forEach(b => {
+        b.staerke = b.roh * f;
+        b.el.style.setProperty('--px-weg', b.staerke.toFixed(2) + '%');
+        b.letzter = null;
+      });
+    }
+    masseSetzen();
+
+    let offen = false;
+    function takt() {
+      offen = false;
+      const H = innerHeight;
+
+      bilder.forEach(b => {
+        const r = b.rahmen.getBoundingClientRect();
+        if (r.height < 1 || r.bottom < -140 || r.top > H + 140) return;
+        // 0 = Rahmen betritt das Fenster von unten, 1 = verlaesst es oben
+        const lauf = Math.max(0, Math.min(1, (H - r.top) / (H + r.height)));
+        const weg = r.height * b.staerke / 100;      // Reserve in Pixeln
+        const y = (lauf - 0.5) * 2 * weg;
+        const gerundet = Math.round(y * 100) / 100;
+        if (gerundet === b.letzter) return;          // nichts Neues, nichts setzen
+        b.letzter = gerundet;
+        b.el.style.transform = 'translate3d(0,' + gerundet + 'px,0)';
+      });
+
+      // Die Linie der Zeitleiste waechst mit dem Lesen
+      if (leiste) {
+        const r = leiste.getBoundingClientRect();
+        const p = (H * 0.72 - r.top) / Math.max(1, r.height);
+        leiste.style.setProperty('--zl-fortschritt', Math.max(0, Math.min(1, p)).toFixed(3));
+      }
+    }
+
+    addEventListener('scroll', () => {
+      if (offen) return;
+      offen = true;
+      requestAnimationFrame(takt);
+    }, { passive: true });
+    addEventListener('resize', () => { masseSetzen(); takt(); }, { passive: true });
+    takt();
+    // Nach dem Laden der Bilder noch einmal, dann stimmen die Hoehen
+    addEventListener('load', takt);
+  })();
 })();

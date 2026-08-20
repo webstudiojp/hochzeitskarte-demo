@@ -289,14 +289,8 @@ html{scrollbar-color:var(--linie) var(--leinen)}
 }
 /* Platz fuer die echten Fotos, sobald sie da sind */
 .gal-bild img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  object-position:center 42%;   /* Gesichter liegen etwas ueber der Mitte */
-  animation:wandern 26s ease-in-out infinite alternate;
+  object-fit:cover;object-position:center 42%;   /* Gesichter etwas ueber der Mitte */
 }
-.gal-bild:nth-child(2) img{animation-duration:31s;animation-delay:-7s}
-.gal-bild:nth-child(3) img{animation-duration:28s;animation-delay:-14s}
-.gal-bild:nth-child(4) img{animation-duration:34s;animation-delay:-4s}
-.gal-bild:nth-child(5) img{animation-duration:29s;animation-delay:-19s}
 /* Der Farbverlauf ist nur der Leerzustand - mit Foto wird er nicht gebraucht */
 .gal-bild:has(img)::before{display:none}
 
@@ -434,14 +428,7 @@ html{scrollbar-color:var(--linie) var(--leinen)}
   padding-top:clamp(96px,20vw,180px);
 }
 .kulisse{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.kulisse-grund{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  animation:kulisse-atmen 34s ease-in-out infinite alternate;
-}
-@keyframes kulisse-atmen{
-  from{transform:scale(1.04) translate3d(-0.8%,0,0)}
-  to  {transform:scale(1.11) translate3d(1%,-1%,0)}
-}
+.kulisse-grund{object-fit:cover}
 /* Heller Schleier, damit die Schrift auf dem Foto sicher lesbar bleibt */
 .kulisse-schleier{
   position:absolute;inset:0;
@@ -711,12 +698,7 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
   padding:clamp(48px,9vw,80px) clamp(26px,7vw,44px);
   isolation:isolate;
 }
-.gb-bild{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  object-position:center 46%;
-  transform:scale(1.16);              /* Reserve fuer die Parallaxe */
-  will-change:transform;z-index:-2;
-}
+.gb-bild{object-fit:cover;object-position:center 46%;z-index:-2}
 .gb-schleier{
   position:absolute;inset:0;z-index:-1;
   background:linear-gradient(180deg,
@@ -741,10 +723,7 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 
 /* ---- Countdown auf den Lichterketten ---- */
 .countdown{position:relative;overflow:hidden;isolation:isolate}
-.cd-grund{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transform:scale(1.14);will-change:transform;z-index:-2;
-}
+.cd-grund{object-fit:cover;z-index:-2}
 .cd-schleier{
   position:absolute;inset:0;z-index:-1;
   background:linear-gradient(180deg,rgba(20,15,10,.84),rgba(20,15,10,.76) 46%,rgba(20,15,10,.88));
@@ -758,11 +737,7 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
   margin:0 0 26px;overflow:hidden;
   aspect-ratio:4/3;position:relative;
 }
-.ort-bild img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  object-position:center 44%;
-  animation:wandern 30s ease-in-out infinite alternate;
-}
+.ort-bild img{object-fit:cover;object-position:center 44%}
 
 @media (prefers-reduced-motion:reduce){
   .gb-bild,.cd-grund{transform:scale(1.06)}
@@ -874,4 +849,32 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
   .grossbild{min-height:min(72svh,720px)}
   .countdown{padding-block:clamp(84px,9vh,132px)}
   .gb-text{max-width:38rem}
+}
+
+
+/* =========================================================
+   Parallaxe
+   Ein Bild wirkt nur dann hinter dem Fenster liegend, wenn es
+   langsamer zieht als die Seite - und wenn dabei nie ein Rand
+   auftaucht. Deshalb ist jedes Bild oben und unten um genau den
+   Weg groesser, den es zuruecklegt: --px-weg.
+   ========================================================= */
+[data-px]{
+  --px-weg:6%;
+  position:absolute;left:0;width:100%;
+  top:calc(-1 * var(--px-weg));
+  height:calc(100% + 2 * var(--px-weg));
+  will-change:transform;
+  backface-visibility:hidden;      /* verhindert Flimmern beim Bewegen */
+}
+.gal-bild,.ort-bild,.grossbild,.countdown,.kulisse{overflow:hidden}
+
+/* --px-weg wird vom Skript gesetzt, damit Ueberstand und zurueckgelegter
+   Weg zwingend denselben Wert haben. Der Startwert hier greift nur, falls
+   kein Javascript laeuft. */
+
+@media (prefers-reduced-motion:reduce){
+  [data-px]{
+    top:0;height:100%;transform:none !important;
+  }
 }

@@ -50,6 +50,20 @@ ignorieren relative Pfade.
 - `?lang=tr` / `?lang=de` — Sprache erzwingen
 - `?schrift=strasse` / `?schrift=quer` — andere Ausrichtung des Schriftzugs
 
+## Parallaxe
+
+Jedes Bild mit Tiefenwirkung trägt `data-px="<stärke in prozent>"`. Das Skript
+setzt daraus `--px-weg`, und das CSS macht das Bild oben und unten um genau
+diesen Wert größer als seinen Rahmen. Weg und Überstand kommen damit zwingend
+aus derselben Zahl — sonst fährt das Bild weiter, als seine Reserve reicht,
+und am Rand klafft eine Lücke.
+
+Auf Schirmen unter 700px werden die Wege auf 62 % gekürzt: Dort sind die
+Bilder knapper aufgelöst, und jeder Prozentpunkt Überstand kostet Schärfe.
+
+Gerechnet wird in einem gemeinsamen rAF-Takt, nur für Bilder im Fenster, und
+nur wenn sich der Wert tatsächlich geändert hat.
+
 ## Bildschirmgrößen
 
 Geprüft auf 360×640, 375×812, 430×932, 768×1024, 1024×768, 1440×900 und
