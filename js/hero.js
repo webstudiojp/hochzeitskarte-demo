@@ -367,7 +367,7 @@
     setTimeout(() => {
       $('envelope-screen').classList.add('gone');
       fahrtStarten();
-    }, reduced ? 60 : 1750);
+    }, reduced ? 60 : 3100);   // Karte steht, dann erst die Allee
   }
 
   /* ---------------------------------------------------------

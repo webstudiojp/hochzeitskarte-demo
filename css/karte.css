@@ -739,3 +739,111 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 @media (prefers-reduced-motion:reduce){
   .gb-bild,.cd-grund{transform:scale(1.06)}
 }
+
+/* =========================================================
+   Tablet und Laptop
+   Die Karte lief bis hierher in einer Handy-Spalte von 34rem,
+   auf einem 1440er Laptop waren das 38 Prozent der Breite. Ab hier
+   bekommt sie mehr Raum, groessere Schrift und Abschnitte, die
+   die Breite auch nutzen.
+   ========================================================= */
+@media (min-width:700px){
+  /* Der Bogen ist auf schmalen Schirmen eine Andeutung; auf breiten
+     wuerde er in dieser Groesse aus dem Abschnitt herausragen. */
+  .ort-grund{top:-4%;right:-8%;width:38%}
+
+  :root{
+    --t-m:1.12rem; --t-l:1.42rem; --t-xl:1.8rem;
+    --t-2xl:2.4rem; --t-3xl:3.1rem;
+  }
+  .sek{max-width:40rem;padding-inline:clamp(34px,5vw,56px)}
+  .sek.ablauf > *,.sek.familien > *,.sek.geschenk > *{max-width:40rem}
+
+  /* Ort: Angaben und Skizze nebeneinander */
+  .sek.ort{max-width:52rem}
+  .sek.ort > *{max-width:none}
+  .ort-raster{
+    display:grid;grid-template-columns:1fr 1.15fr;
+    gap:clamp(26px,4vw,44px);align-items:start;
+  }
+  .kartenbild{margin-top:0}
+  .knopf-paar{margin-top:20px}
+
+  /* Familien nebeneinander statt untereinander */
+  .fam-liste{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:0 clamp(20px,3vw,34px);
+  }
+  .fam-zeile{border-top:1px solid var(--linie);border-bottom:0}
+  .sek.familien .fam-zeile{border-color:#eed6c8}
+
+  .dc-farben{gap:26px}
+  .grossbild{min-height:clamp(440px,58svh,620px)}
+  .gb-text{max-width:34rem}
+  .kalender-knoepfe{flex-direction:row;justify-content:center}
+  .kalender-knoepfe .knopf{max-width:18rem}
+  .wahl-reihe{gap:34px}
+}
+
+@media (min-width:1100px){
+  :root{--t-2xl:2.7rem; --t-3xl:3.6rem}
+  .sek{max-width:44rem}
+  .sek.ort{max-width:58rem}
+  .sek.ablauf > *,.sek.familien > *,.sek.geschenk > *{max-width:44rem}
+  .gal-band{max-width:70rem}
+  .sek.kopf{max-width:none;padding-inline:clamp(60px,8vw,120px)}
+  /* Der Rahmen ist hochformatig - auf breiten Schirmen mittig halten,
+     sonst zieht er sich zu einem Streifen auseinander */
+  .kulisse-grund{object-fit:cover;object-position:center}
+  .sek.kopf .paarnamen{font-size:clamp(3.4rem,6vw,5rem)}
+}
+
+/* ---- Zeitleiste: jeder Punkt tritt einzeln ein ---- */
+.zl-punkt{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .62s var(--ease-out-expo),transform .62s var(--ease-out-expo);
+}
+.zl-punkt.da{opacity:1;transform:none}
+.zl-punkt .zl-zeit{
+  opacity:0;transform:translateX(-10px);
+  transition:opacity .5s .12s var(--ease-out-quart),transform .5s .12s var(--ease-out-quart);
+}
+.zl-punkt.da .zl-zeit{opacity:1;transform:none}
+/* Der Punkt springt an, wenn die Zeile steht */
+.zl-punkt.da::before{
+  animation:punkt-an .6s .16s var(--ease-out-expo) backwards;
+}
+@keyframes punkt-an{
+  0%  {transform:scale(.2);opacity:0}
+  62% {transform:scale(1.35);opacity:1}
+  100%{transform:scale(1);opacity:1}
+}
+/* Der aktuell gelesene Punkt bekommt einen leisen Ring */
+.zl-punkt.da::after{
+  content:'';position:absolute;left:calc(4.4rem + 4.5px);top:1.6em;
+  width:7px;height:7px;border-radius:50%;
+  border:1px solid var(--salbei-tief);opacity:0;
+  animation:punkt-ring 1.5s .3s var(--ease-out-expo) backwards;
+  pointer-events:none;
+}
+@keyframes punkt-ring{
+  0%  {transform:scale(1);opacity:.6}
+  100%{transform:scale(3.6);opacity:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .zl-punkt{opacity:1;transform:none}
+  .zl-punkt .zl-zeit{opacity:1;transform:none}
+  .zl-punkt.da::before,.zl-punkt.da::after{animation:none}
+  .zl-punkt.da::after{display:none}
+}
+
+@media (min-width:1400px){
+  :root{--t-m:1.16rem; --t-l:1.5rem}
+  .sek{max-width:46rem}
+  .sek.ablauf > *,.sek.familien > *,.sek.geschenk > *{max-width:46rem}
+  /* Auf breiten Schirmen wirkten die Bildflaechen wie schmale Baender */
+  .grossbild{min-height:min(72svh,720px)}
+  .countdown{padding-block:clamp(84px,9vh,132px)}
+  .gb-text{max-width:38rem}
+}

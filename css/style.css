@@ -161,3 +161,41 @@ body.locked{overflow:hidden}
   #envelope.offen .env-karte,#envelope.offen .env-svg{animation:none}
   .env-karte{opacity:1}
 }
+
+/* =========================================================
+   Breite Bildschirme
+   Die Szene ist hochformatig (1000:1800). Auf einem Laptop wurde
+   sie so stark beschnitten, dass vom Wagen und der Schrift nichts
+   mehr zu sehen war. Also: Szene in voller Hoehe mittig als Buehne,
+   daneben dieselbe Allee unscharf und abgedunkelt.
+   ========================================================= */
+.hero-grund{
+  position:absolute;inset:0;overflow:hidden;z-index:0;
+  display:none;
+}
+.hero-grund img{
+  position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;
+  filter:blur(34px) brightness(.5) saturate(.85);
+  transform:scale(1.08);
+}
+.hero-grund::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(72% 62% at 50% 46%,rgba(20,15,10,.1),rgba(20,15,10,.72));
+}
+
+@media (min-aspect-ratio: 3/4){
+  .hero-grund{display:block}
+  .scene{
+    position:relative;
+    height:100%;width:auto;max-width:100%;
+    aspect-ratio:1000 / 1800;
+    margin-inline:auto;
+    box-shadow:0 0 90px rgba(0,0,0,.55);
+  }
+  .hero{display:flex;align-items:stretch;justify-content:center}
+  .hero-caption,.scroll-cue{
+    left:50%;transform:translateX(-50%);
+    width:min(100%,calc(100svh * 0.5556));
+  }
+  .hero-caption.show{transform:translateX(-50%)}
+}

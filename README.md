@@ -50,12 +50,26 @@ ignorieren relative Pfade.
 - `?lang=tr` / `?lang=de` — Sprache erzwingen
 - `?schrift=strasse` / `?schrift=quer` — andere Ausrichtung des Schriftzugs
 
+## Bildschirmgrößen
+
+Geprüft auf 360×640, 375×812, 430×932, 768×1024, 1024×768, 1440×900 und
+1920×1080 — jeweils auf seitlichen Überlauf, Hero-Höhe, Lücken zwischen
+Abschnitten und Zeilenlänge.
+
+Die Hero-Szene ist hochformatig (1000:1800). Auf Schirmen, die breiter als
+hoch sind, würde sie so stark beschnitten, dass vom Wagen nichts übrig bliebe.
+Dort steht sie deshalb als Bühne in voller Höhe mittig, daneben dieselbe Allee
+unscharf und abgedunkelt.
+
 ## Veröffentlichen
 
     ./bin/veroeffentlichen.sh "Was geändert wurde"
 
 Setzt eine frische Versionsnummer an alle eigenen Dateien und stellt live.
 Ohne das liefern Browser tagelang die alte Fassung aus dem Zwischenspeicher.
+
+Beim Arbeiten am lokalen Server reicht `./bin/frisch.sh` — das setzt nur die
+Versionsnummer neu, damit der Browser nicht das alte Stylesheet festhält.
 
 ## Bildmaterial
 

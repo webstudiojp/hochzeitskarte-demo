@@ -117,8 +117,10 @@
   /* =========================================================
      4. Alle Texte und Listen in der aktiven Sprache aufbauen
      ========================================================= */
+  let ersterAufbau = true;
   function aufbauen() {
     S = C.sprachen[sprache];
+    const sichtbar = ersterAufbau ? '' : ' da';
     const d = new Date(C.datumISO + 'T12:00:00');
     const frist = new Date(C.rsvp.frist_iso + 'T12:00:00');
     const fristText = frist.getDate() + '. ' + S.monate[frist.getMonth()] + ' ' + frist.getFullYear();
@@ -159,7 +161,7 @@
     const zl = $('zeitleiste');
     zl.innerHTML = '';
     S.ablauf.forEach((p, i) => {
-      const li = el('li', 'zl-punkt rv da');
+      const li = el('li', 'zl-punkt rv' + sichtbar);
       li.dataset.rv = String(i + 1);
       li.appendChild(el('span', 'zl-zeit', C.zeiten[i]));
       const rechts = el('div');
@@ -189,7 +191,7 @@
     const fam = $('fam-liste');
     fam.innerHTML = '';
     C.familien.forEach((gruppe, i) => {
-      const div = el('div', 'fam-zeile rv da');
+      const div = el('div', 'fam-zeile rv' + sichtbar);
       div.dataset.rv = String(i + 1);
       div.appendChild(el('p', 'fam-rolle', S.rollen[gruppe.schluessel]));
       div.appendChild(el('p', 'fam-namen', gruppe.namen.join(' · ')));
@@ -216,7 +218,7 @@
     const gal = $('gal-band');
     gal.innerHTML = '';
     C.galerie.slice(0, 4).forEach((b, i) => {
-      const fig = el('figure', 'gal-bild rv da');
+      const fig = el('figure', 'gal-bild rv' + sichtbar);
       fig.dataset.rv = String(i + 1);
       const img = document.createElement('img');
       img.src = mitVersion(b.datei);
@@ -292,6 +294,9 @@
 
     // Musikknopf
     musikKnopfBeschriften();
+
+    if (ersterAufbau) ersterAufbau = false;
+    else if (typeof reveals === 'function') reveals();
   }
 
   /* =========================================================
