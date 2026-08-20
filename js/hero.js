@@ -168,7 +168,8 @@
   /* ---------------------------------------------------------
      3. Die Fahrt
      --------------------------------------------------------- */
-  const START_Y = 1900, END_Y = 250;   // faehrt davon, die Spur bleibt zurueck
+  const START_Y = 1900, END_Y = 40;    // faehrt bis aus dem Bild, sonst bleibt
+                                      // der letzte Buchstabe unenthuellt
   const WAGEN_B = 300;        // Breite des Wagenbildes bei scale 1
   const easeIO  = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
@@ -264,6 +265,8 @@
 
   function endzustand() {
     maskeSetzen(1);
+    maskR.setAttribute('y', 0);
+    maskR.setAttribute('height', 1800);
     if (C.hero.herzZeigen) heartEl.setAttribute('opacity', 1);
     wagenSetzen(1, 0);
     car.setAttribute('opacity', 0);
@@ -321,7 +324,7 @@
       const heck = pos.y + 300 * pos.s;
       maskeSetzen(Math.max(0, Math.min(1, (1800 - heck) / 1800)));
       if (C.hero.herzZeigen) heartEl.setAttribute('opacity',
-        Math.min(1, Math.max(0, (1420 - heck) / 140)).toFixed(2));
+        Math.min(1, Math.max(0, (1408 - heck) / 130)).toFixed(2));
 
       if (t < ENDE) requestAnimationFrame(frame);
       else if (!sturmLaeuft) { sturmLaeuft = true; bluetensturm(endzustand); }

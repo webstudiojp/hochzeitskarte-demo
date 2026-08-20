@@ -130,22 +130,30 @@
     if (!feld) return;
     // Groesse, Flughoehe, Dauer und Versatz je Vogel unterschiedlich,
     // sonst fliegen sie wie eine Formation aus der Konservendose
+    // Groesse, Flughoehe und Schlagrhythmus je Vogel verschieden, sonst
+    // ziehen sie wie eine Formation durchs Bild
     const bahnen = [
-      { breite: 74, oben: '17%', dauer: 21, verzug: -3 },
-      { breite: 46, oben: '31%', dauer: 28, verzug: -13 },
-      { breite: 58, oben: '9%',  dauer: 24, verzug: -19 },
+      { klasse: 'b1', breite: 72, oben: '16%', verzug: -4,  schlag: 4.2 },
+      { klasse: 'b2', breite: 44, oben: '30%', verzug: -17, schlag: 3.4 },
+      { klasse: 'b3', breite: 56, oben: '8%',  verzug: -25, schlag: 4.9 },
     ];
     bahnen.forEach(b => {
       const t = document.createElement('div');
-      t.className = 'taube';
+      t.className = 'taube ' + b.klasse;
       t.style.cssText = 'width:' + b.breite + 'px;top:' + b.oben + ';left:0;'
-        + 'animation-duration:' + b.dauer + 's;animation-delay:' + b.verzug + 's;';
-      ['taube-auf', 'taube-ab'].forEach((datei, i) => {
+        + 'animation-delay:' + b.verzug + 's;';
+      // Gleitstellung zuerst - sie liegt unten und ist immer sichtbar
+      ['taube-ab', 'taube-auf'].forEach(datei => {
         const img = document.createElement('img');
         img.src = 'assets/img/' + datei + '.webp';
         img.alt = '';
         img.loading = 'lazy';
-        if (i) img.className = 'ab';
+        img.decoding = 'async';
+        if (datei === 'taube-auf') {
+          img.className = 'auf';
+          img.style.animationDuration = b.schlag + 's';
+          img.style.animationDelay = (b.verzug * 0.6) + 's';
+        }
         t.appendChild(img);
       });
       feld.appendChild(t);
