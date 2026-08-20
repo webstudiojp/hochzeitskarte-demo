@@ -28,9 +28,14 @@ Adresse, sonst nach der Browsersprache, sonst nach `standardsprache`.
 
 ## Musik
 
-Datei als `assets/audio/musik.mp3` ablegen — siehe den Hinweis in diesem Ordner,
-besonders zur Lizenzfrage. Ohne Datei bleibt der Notenknopf verborgen und die
-Seite funktioniert vollständig.
+Eingebunden ist ein Ney-Solo (türkische Rohrflöte) unter **CC0 1.0** —
+kommerziell nutzbar, ohne Namensnennung, ohne Share-Alike.
+Quelle und Bearbeitung stehen in `assets/audio/HIER-MUSIK-ABLEGEN.txt`.
+
+Sie startet, wenn der Gast den Umschlag antippt — vorher lässt kein Browser
+Ton zu — blendet sanft ein und lässt sich über den Notenknopf abschalten.
+Diese Entscheidung wird gemerkt. Zum Tauschen einfach `assets/audio/musik.mp3`
+ersetzen; ohne Datei bleibt der Knopf verborgen.
 
 ## Vorschau beim Teilen
 

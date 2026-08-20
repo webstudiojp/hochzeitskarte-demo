@@ -277,10 +277,12 @@
       + '&dates=' + C.beginnISO.replace(/[-:]/g, '') + '/' + C.endeISO.replace(/[-:]/g, '')
       + '&location=' + ziel;
 
-    // Sprachumschalter beschriften
-    const andere = VERFUEGBAR.find(x => x !== sprache);
-    setzen('sw-aktiv', S.kuerzel);
-    setzen('sw-andere', C.sprachen[andere].kuerzel);
+    // Sprachumschalter: aktive Flagge farbig, die andere zurueckgenommen
+    document.querySelectorAll('.flagge').forEach(f => {
+      const ist = f.dataset.lang === sprache;
+      f.classList.toggle('aktiv', ist);
+      f.title = C.sprachen[f.dataset.lang].name;
+    });
 
     // Musikknopf
     musikKnopfBeschriften();

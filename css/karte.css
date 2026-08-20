@@ -545,13 +545,18 @@ html{scrollbar-color:var(--linie) var(--leinen)}
   transition:background .22s var(--ease-out-quart),color .22s var(--ease-out-quart);
 }
 .sprachwahl{
-  padding:8px 14px;font-size:12px;letter-spacing:.12em;
-  display:flex;align-items:center;gap:6px;
+  padding:6px 9px;display:flex;align-items:center;gap:7px;
 }
+.flagge{
+  display:block;width:23px;height:23px;line-height:0;
+  opacity:.38;filter:saturate(.5);
+  transition:opacity .25s var(--ease-out-quart),filter .25s var(--ease-out-quart),
+             transform .25s var(--ease-out-quart);
+}
+.flagge svg{width:100%;height:100%;display:block}
+.flagge.aktiv{opacity:1;filter:none;transform:scale(1.09)}
+.sprachwahl:hover .flagge:not(.aktiv){opacity:.62}
 .sprachwahl:hover,.musikknopf:hover{background:rgba(30,24,18,.66)}
-.sw-aktiv{font-weight:700}
-.sw-trenn{opacity:.45}
-.sw-andere{opacity:.62}
 .musikknopf{
   width:38px;height:38px;padding:0;
   display:grid;place-items:center;

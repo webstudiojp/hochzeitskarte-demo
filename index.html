@@ -23,8 +23,8 @@
 <meta property="og:locale:alternate" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f4efe4">
-<link rel="stylesheet" href="css/style.css?v=202608201656">
-<link rel="stylesheet" href="css/karte.css?v=202608201656">
+<link rel="stylesheet" href="css/style.css?v=202608201718">
+<link rel="stylesheet" href="css/karte.css?v=202608201718">
 </head>
 <body>
 
@@ -32,7 +32,32 @@
 <audio id="musik" loop preload="none"></audio>
 <div class="knopfleiste">
 <button class="sprachwahl" id="sprachwahl" type="button" aria-label="Sprache wechseln / Dili değiştir">
-  <span class="sw-aktiv" id="sw-aktiv">DE</span><span class="sw-trenn">·</span><span class="sw-andere" id="sw-andere">TR</span>
+  <!-- Als SVG gezeichnet, nicht als Emoji: Windows stellt Flaggen-Emoji
+       nur als Buchstabenpaar dar, dann staende dort "DE" statt einer Flagge. -->
+  <span class="flagge" id="fl-de" data-lang="de">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <clipPath id="rund-de"><circle cx="12" cy="12" r="11"/></clipPath>
+      <g clip-path="url(#rund-de)">
+        <rect x="0" y="1"  width="24" height="7.34" fill="#1a1a19"/>
+        <rect x="0" y="8.34" width="24" height="7.33" fill="#c8102e"/>
+        <rect x="0" y="15.67" width="24" height="7.33" fill="#e8b71a"/>
+      </g>
+      <circle cx="12" cy="12" r="11" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1"/>
+    </svg>
+  </span>
+  <span class="flagge" id="fl-tr" data-lang="tr">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <clipPath id="rund-tr"><circle cx="12" cy="12" r="11"/></clipPath>
+      <g clip-path="url(#rund-tr)">
+        <rect x="0" y="0" width="24" height="24" fill="#e30a17"/>
+        <!-- Halbmond: weisser Kreis, vom roten teilweise ueberdeckt -->
+        <circle cx="10.4" cy="12" r="5" fill="#fff"/>
+        <circle cx="11.9" cy="12" r="4" fill="#e30a17"/>
+        <path d="M16.9 12 l3.72 1.21 -2.3 -3.16 0 3.9 2.3 -3.16 z" fill="#fff"/>
+      </g>
+      <circle cx="12" cy="12" r="11" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="1"/>
+    </svg>
+  </span>
 </button>
 <button class="musikknopf" id="btn-musik" type="button" hidden aria-label="Musik">
   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -87,7 +112,7 @@
     </defs>
 
     <!-- Die Allee -->
-    <image href="assets/img/allee.webp?v=202608201656" x="0" y="0" width="1000" height="1800"
+    <image href="assets/img/allee.webp?v=202608201718" x="0" y="0" width="1000" height="1800"
            preserveAspectRatio="xMidYMid slice"/>
 
     <!-- Perlen, die aus dem Heck rieseln -->
@@ -108,7 +133,7 @@
       <!-- Sonne steht links: der Schatten faellt nach rechts unten -->
       <ellipse cx="92" cy="104" rx="112" ry="330" fill="#120d07" opacity=".44" filter="url(#weich)"/>
       <g filter="url(#tempo)">
-        <image href="assets/img/wagen.webp?v=202608201656" x="-150" y="-401" width="300" height="802"/>
+        <image href="assets/img/wagen.webp?v=202608201718" x="-150" y="-401" width="300" height="802"/>
       </g>
     </g>
 
@@ -132,7 +157,7 @@
   <!-- ---------- Kopf der Karte ---------- -->
   <section class="sek kopf" id="sek-kopf">
     <div class="kulisse" aria-hidden="true">
-      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608201656" alt="" loading="eager" decoding="async">
+      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608201718" alt="" loading="eager" decoding="async">
       <div class="tauben" id="tauben"></div>
       <span class="kulisse-schleier"></span>
     </div>
@@ -309,8 +334,8 @@
   </footer>
 </main>
 
-<script src="js/config.js?v=202608201656"></script>
-<script src="js/hero.js?v=202608201656"></script>
-<script src="js/karte.js?v=202608201656"></script>
+<script src="js/config.js?v=202608201718"></script>
+<script src="js/hero.js?v=202608201718"></script>
+<script src="js/karte.js?v=202608201718"></script>
 </body>
 </html>
