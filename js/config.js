@@ -11,7 +11,7 @@ window.HOCHZEIT = {
 
   // Wird von bin/veroeffentlichen.sh gesetzt und an alle Bilder gehaengt,
   // damit Browser nach einer Aenderung nicht die alte Fassung zeigen.
-  version: '202608201756',
+  version: '202608201811',
 
   /* ---------- Sprachen ---------- */
   standardsprache: 'de',
@@ -114,6 +114,11 @@ window.HOCHZEIT = {
                 + 'Wir würden uns freuen, wenn ihr dabei seid – zur Trauung, '
                 + 'zum Essen und danach so lange, wie ihr mögt.',
       anredeGruss: 'Dilara und Furkan',
+
+      zitat: 'Ein Tag. Und danach alle anderen.',
+      zitatKlein: 'Wir freuen uns darauf, ihn mit euch anzufangen.',
+      abschiedGross: 'Bis bald',
+      abschiedText: 'Bringt gute Schuhe mit. Es wird spät.',
 
       countdownUeber: 'Noch',
       cdTage: 'Tage', cdStunden: 'Stunden', cdMinuten: 'Minuten', cdSekunden: 'Sekunden',
@@ -219,6 +224,11 @@ window.HOCHZEIT = {
                 + 'Bu özel günümüzde sizi de aramızda görmekten mutluluk duyarız – '
                 + 'nikâhta, yemekte ve sonrasında dilediğiniz kadar.',
       anredeGruss: 'Dilara ve Furkan',
+
+      zitat: 'Bir gün. Ve ardından bütün diğerleri.',
+      zitatKlein: 'Bu güne sizinle başlamak bizi mutlu edecek.',
+      abschiedGross: 'Görüşmek üzere',
+      abschiedText: 'Rahat ayakkabı getirin. Gece uzun sürecek.',
 
       countdownUeber: 'Geri sayım',
       cdTage: 'Gün', cdStunden: 'Saat', cdMinuten: 'Dakika', cdSekunden: 'Saniye',

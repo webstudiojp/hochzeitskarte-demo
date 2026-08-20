@@ -59,10 +59,10 @@ Ohne das liefern Browser tagelang die alte Fassung aus dem Zwischenspeicher.
 
 ## Bildmaterial
 
-`paar1`–`paar4` sind die echten Fotos des Paares und gehören in die Galerie.
-`g1`–`g5` sind generierte Ersatzmotive (Brautstrauß, Ringe, Blumenbogen,
-Festtafel, Lichterketten) für Paare, die keine eigenen Bilder liefern —
-sie werden derzeit nicht eingebunden.
+`paar1`–`paar4` sind die echten Fotos des Paares und stehen in der Galerie.
+Die generierten Motive tragen die großen Flächen: `g4-tafel` den Zitat-Moment,
+`g5-lichter` den Countdown, `g3-bogen` liegt zurückgenommen hinter dem Ort,
+`g1-strauss` unter dem Abschied. `g2-ringe` ist frei als Ersatz.
 
 ## Noch nicht angebunden
 

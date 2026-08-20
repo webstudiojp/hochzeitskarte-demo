@@ -142,6 +142,12 @@
     setzen('a-text', S.anredeText);
     setzen('a-gruss', S.anredeGruss);
 
+    // Bildmomente
+    setzen('zitat-gross', S.zitat);
+    setzen('zitat-klein', S.zitatKlein);
+    setzen('abschied-gross', S.abschiedGross);
+    setzen('abschied-text', S.abschiedText);
+
     // Countdown
     setzen('cd-ueber', S.countdownUeber);
     setzen('cd-l-tage', S.cdTage); setzen('cd-l-stunden', S.cdStunden);
@@ -535,6 +541,7 @@
     const kulisse = document.querySelector('.kulisse-grund');
     const kopf = $('sek-kopf');
     const leiste = $('zeitleiste');
+    const flaechen = [...document.querySelectorAll('.gb-bild,.cd-grund')];
     let offen = false;
 
     function takt() {
@@ -547,6 +554,15 @@
           kulisse.style.transform = 'translate3d(0,' + (weg * 7).toFixed(2) + '%,0) scale(1.14)';
         }
       }
+      // Bildflaechen ziehen langsamer als die Seite - das erzeugt Tiefe
+      flaechen.forEach(b => {
+        const r = b.parentElement.getBoundingClientRect();
+        if (r.bottom < -120 || r.top > innerHeight + 120) return;
+        const mitte = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+        const versatz = Math.max(-1, Math.min(1, mitte)) * -5.5;
+        b.style.transform = 'translate3d(0,' + versatz.toFixed(2) + '%,0) scale(1.16)';
+      });
+
       // Die Linie der Zeitleiste waechst mit dem Lesen
       if (leiste) {
         const r = leiste.getBoundingClientRect();
@@ -570,6 +586,7 @@
     const kasten = $('lupe'), bild = $('lupe-bild'), text = $('lupe-text');
     if (!kasten) return;
     let stelle = 0;
+    const LEER = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
     function zeige(i) {
       const bilder = C.galerie.slice(0, 4);
@@ -588,7 +605,7 @@
     }
     function zu() {
       kasten.classList.remove('sichtbar');
-      setTimeout(() => { kasten.classList.remove('auf'); bild.removeAttribute('src'); }, 320);
+      setTimeout(() => { kasten.classList.remove('auf'); bild.src = LEER; }, 320);
       document.body.style.overflow = '';
     }
     document.addEventListener('click', e => {

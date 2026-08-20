@@ -23,8 +23,8 @@
 <meta property="og:locale:alternate" content="tr_TR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f4efe4">
-<link rel="stylesheet" href="css/style.css?v=202608201756">
-<link rel="stylesheet" href="css/karte.css?v=202608201756">
+<link rel="stylesheet" href="css/style.css?v=202608201811">
+<link rel="stylesheet" href="css/karte.css?v=202608201811">
 </head>
 <body>
 
@@ -123,7 +123,7 @@
     </defs>
 
     <!-- Die Allee -->
-    <image href="assets/img/allee.webp?v=202608201756" x="0" y="0" width="1000" height="1800"
+    <image href="assets/img/allee.webp?v=202608201811" x="0" y="0" width="1000" height="1800"
            preserveAspectRatio="xMidYMid slice"/>
 
     <!-- Perlen, die aus dem Heck rieseln -->
@@ -144,7 +144,7 @@
       <!-- Sonne steht links: der Schatten faellt nach rechts unten -->
       <ellipse cx="92" cy="104" rx="112" ry="330" fill="#120d07" opacity=".44" filter="url(#weich)"/>
       <g filter="url(#tempo)">
-        <image href="assets/img/wagen.webp?v=202608201756" x="-150" y="-401" width="300" height="802"/>
+        <image href="assets/img/wagen.webp?v=202608201811" x="-150" y="-401" width="300" height="802"/>
       </g>
     </g>
 
@@ -168,7 +168,7 @@
   <!-- ---------- Kopf der Karte ---------- -->
   <section class="sek kopf" id="sek-kopf">
     <div class="kulisse" aria-hidden="true">
-      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608201756" alt="" loading="eager" decoding="async">
+      <img class="kulisse-grund" src="assets/img/rahmen.webp?v=202608201811" alt="" loading="eager" decoding="async">
       <div class="tauben" id="tauben"></div>
       <span class="kulisse-schleier"></span>
     </div>
@@ -203,8 +203,20 @@
     <p class="signatur rv" data-rv="2" id="a-gruss"></p>
   </section>
 
+  <!-- ---------- Ein Bild, das die Seite einmal aufreisst ---------- -->
+  <section class="grossbild" id="sek-zitat" aria-label="Bildmoment">
+    <img class="gb-bild" src="assets/img/g4-tafel.webp?v=202608201811" alt="" loading="lazy" decoding="async">
+    <span class="gb-schleier"></span>
+    <div class="gb-text">
+      <p class="gb-gross rv" data-rv="1" id="zitat-gross"></p>
+      <p class="gb-klein rv" data-rv="2" id="zitat-klein"></p>
+    </div>
+  </section>
+
   <!-- ---------- Countdown (Kontrastmoment, volle Breite) ---------- -->
   <section class="sek-breit countdown" id="sek-countdown" aria-label="Countdown">
+    <img class="cd-grund" src="assets/img/g5-lichter.webp?v=202608201811" alt="" loading="lazy" decoding="async">
+    <span class="cd-schleier"></span>
     <p class="ueberzeile hell" id="cd-ueber">Noch</p>
     <div class="cd-reihe" id="cd-reihe" role="timer" aria-live="off">
       <div class="cd-feld"><span class="cd-zahl" id="cd-t">–</span><span class="cd-label" id="cd-l-tage">Tage</span></div>
@@ -223,6 +235,7 @@
 
   <!-- ---------- Ort ---------- -->
   <section class="sek ort" id="sek-ort">
+    <img class="ort-grund" src="assets/img/g3-bogen.webp?v=202608201811" alt="" loading="lazy" decoding="async">
     <h2 class="sek-titel rv" data-rv="1" id="ort-titel">Wo</h2>
     <p class="ort-name rv" data-rv="2" id="o-name"></p>
     <address class="ort-adresse rv" data-rv="3" id="o-adresse"></address>
@@ -335,6 +348,16 @@
     <a class="knopf knopf-linie rv" data-rv="2" id="btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer"><span id="btn-whatsapp-text">Einladung weiterleiten</span></a>
   </section>
 
+  <!-- ---------- Abschied ---------- -->
+  <section class="grossbild abschied" id="sek-abschied" aria-label="Abschied">
+    <img class="gb-bild" src="assets/img/g1-strauss.webp?v=202608201811" alt="" loading="lazy" decoding="async">
+    <span class="gb-schleier"></span>
+    <div class="gb-text">
+      <p class="ab-gross rv" data-rv="1" id="abschied-gross"></p>
+      <p class="gb-klein rv" data-rv="2" id="abschied-text"></p>
+    </div>
+  </section>
+
   <footer class="fuss">
     <p class="fuss-namen" id="f-namen"></p>
     <p class="fuss-datum" id="f-datum"></p>
@@ -350,7 +373,7 @@
   <button class="lupe-blaettern lupe-zurueck" id="lupe-zurueck" type="button" aria-label="Vorheriges Bild">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
-  <img id="lupe-bild" alt="" decoding="async">
+  <img id="lupe-bild" alt="" decoding="async" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
   <button class="lupe-blaettern lupe-vor" id="lupe-vor" type="button" aria-label="Nächstes Bild">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
@@ -360,8 +383,8 @@
   <p class="lupe-text" id="lupe-text"></p>
 </div>
 
-<script src="js/config.js?v=202608201756"></script>
-<script src="js/hero.js?v=202608201756"></script>
-<script src="js/karte.js?v=202608201756"></script>
+<script src="js/config.js?v=202608201811"></script>
+<script src="js/hero.js?v=202608201811"></script>
+<script src="js/karte.js?v=202608201811"></script>
 </body>
 </html>

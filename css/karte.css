@@ -187,7 +187,7 @@ html{scrollbar-color:var(--linie) var(--leinen)}
 /* ---------- Zeitleiste: ungleiche Spuren, 1px-Trenner statt Cards ---------- */
 .zeitleiste{list-style:none;margin:0;padding:0}
 .zl-punkt{
-  display:grid;grid-template-columns:4.4rem 1fr;gap:0 clamp(14px,4vw,22px);
+  display:grid;grid-template-columns:4.4rem 1fr;gap:0 clamp(20px,5vw,28px);
   padding:20px 0;border-top:1px solid var(--linie);
 }
 .zl-punkt:last-child{border-bottom:1px solid var(--linie)}
@@ -589,15 +589,15 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 /* ---- Zeitleiste: die Linie waechst mit dem Lesen ---- */
 .zeitleiste{position:relative}
 .zeitleiste::before{
-  content:'';position:absolute;left:calc(4.4rem / 2);top:8px;bottom:8px;width:1px;
+  content:'';position:absolute;left:calc(4.4rem + 8px);top:8px;bottom:8px;width:1px;
   background:var(--salbei-tief);opacity:.28;
   transform:scaleY(var(--zl-fortschritt,0));transform-origin:top;
   transition:transform .18s linear;
 }
 .zl-punkt{position:relative}
-.zl-zeit{position:relative;background:var(--salbei);padding-right:6px;z-index:1}
+.zl-zeit{position:relative;z-index:1}
 .zl-punkt::before{
-  content:'';position:absolute;left:calc(4.4rem / 2 - 3.5px);top:1.55em;
+  content:'';position:absolute;left:calc(4.4rem + 4.5px);top:1.6em;
   width:7px;height:7px;border-radius:50%;
   background:var(--salbei);border:1px solid var(--salbei-tief);
   opacity:.4;transform:scale(.6);
@@ -674,4 +674,68 @@ body.hell-oben .sprachwahl,body.hell-oben .musikknopf{
 @keyframes regen-fall{
   from{transform:translate3d(0,-10vh,0) rotate(0)}
   to  {transform:translate3d(var(--drift,0),112vh,0) rotate(var(--dreh,180deg));opacity:.15}
+}
+
+/* =========================================================
+   Bildmomente: Stellen, an denen die Seite einmal aufreisst
+   ========================================================= */
+.grossbild{
+  position:relative;overflow:hidden;
+  min-height:clamp(360px,62svh,560px);
+  display:grid;place-items:center;
+  padding:clamp(48px,9vw,80px) clamp(26px,7vw,44px);
+  isolation:isolate;
+}
+.gb-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 46%;
+  transform:scale(1.16);              /* Reserve fuer die Parallaxe */
+  will-change:transform;z-index:-2;
+}
+.gb-schleier{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,
+    rgba(24,18,12,.52) 0%, rgba(24,18,12,.30) 38%,
+    rgba(24,18,12,.42) 72%, rgba(24,18,12,.66) 100%);
+}
+.gb-text{max-width:26rem;text-align:center;color:#fbf6ec}
+.gb-gross{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(30px,8.6vw,50px);line-height:1.22;
+  margin:0 0 16px;text-shadow:0 3px 26px rgba(16,11,6,.66);
+}
+.ab-gross{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(38px,12vw,66px);line-height:1.1;
+  margin:0 0 14px;text-shadow:0 3px 26px rgba(16,11,6,.66);
+}
+.gb-klein{
+  margin:0;font-size:clamp(14px,3.9vw,17px);line-height:1.65;
+  color:#e4d9c6;text-shadow:0 2px 16px rgba(16,11,6,.6);
+}
+
+/* ---- Countdown auf den Lichterketten ---- */
+.countdown{position:relative;overflow:hidden;isolation:isolate}
+.cd-grund{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.14);will-change:transform;z-index:-2;
+}
+.cd-schleier{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(20,15,10,.84),rgba(20,15,10,.76) 46%,rgba(20,15,10,.88));
+}
+.countdown .cd-zahl{text-shadow:0 2px 6px rgba(12,8,4,.9),0 4px 26px rgba(12,8,4,.75)}
+.countdown .cd-label,.countdown .cd-fuss{color:#c9b795;text-shadow:0 2px 12px rgba(12,8,4,.7)}
+
+/* ---- Blumenbogen hinter dem Ort, sehr zurueckgenommen ---- */
+.sek.ort{position:relative;overflow:hidden;isolation:isolate}
+.ort-grund{
+  position:absolute;top:-6%;right:-24%;width:78%;height:auto;
+  opacity:.14;z-index:-1;pointer-events:none;
+  -webkit-mask-image:radial-gradient(70% 60% at 60% 40%,#000 30%,transparent 78%);
+  mask-image:radial-gradient(70% 60% at 60% 40%,#000 30%,transparent 78%);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .gb-bild,.cd-grund{transform:scale(1.06)}
 }
