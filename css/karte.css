@@ -159,7 +159,7 @@ html{scrollbar-color:var(--linie) var(--leinen)}
   color:var(--tinte-weich);border:1px solid var(--linie);flex:none;
 }
 .knopf-klein:hover{border-color:var(--akzent);color:var(--akzent)}
-.knopf-breit{width:100%;padding-block:15px}
+.knopf-breit{width:100%;padding-block:15px;margin-top:18px}
 .knopf-paar{display:flex;flex-wrap:wrap;gap:11px;margin:26px 0 20px}
 .knopf-paar .knopf{flex:1 1 14rem}
 
@@ -248,11 +248,12 @@ html{scrollbar-color:var(--linie) var(--leinen)}
   --g1:#d9c7b0; --g2:#c2b295;
   width:100%;margin:0;overflow:hidden;position:relative;
 }
-.gal-bild:nth-child(1){grid-column:span 2;aspect-ratio:4/3}
-.gal-bild:nth-child(2){grid-column:span 1;aspect-ratio:3/4}
-.gal-bild:nth-child(3){grid-column:span 1;aspect-ratio:3/4}
-.gal-bild:nth-child(4){grid-column:span 2;aspect-ratio:16/10}
-.gal-bild:nth-child(5){grid-column:span 2;aspect-ratio:21/9}
+/* Vier Aufnahmen im Querformat - die Seitenverhaeltnisse bleiben nah
+   am Original, damit nichts Wichtiges weggeschnitten wird. */
+.gal-bild:nth-child(1){grid-column:span 2;aspect-ratio:3/2}
+.gal-bild:nth-child(2){grid-column:span 1;aspect-ratio:4/5}
+.gal-bild:nth-child(3){grid-column:span 1;aspect-ratio:4/5}
+.gal-bild:nth-child(4){grid-column:span 2;aspect-ratio:3/2}
 /* Absolut gesetzt, sonst sprengt der Text die Kachel und aspect-ratio faellt aus */
 .gal-platzhalter{
   position:absolute;inset:0;margin:0;
@@ -264,6 +265,7 @@ html{scrollbar-color:var(--linie) var(--leinen)}
 /* Platz fuer die echten Fotos, sobald sie da sind */
 .gal-bild img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 42%;   /* Gesichter liegen etwas ueber der Mitte */
   animation:wandern 26s ease-in-out infinite alternate;
 }
 .gal-bild:nth-child(2) img{animation-duration:31s;animation-delay:-7s}
@@ -389,11 +391,10 @@ html{scrollbar-color:var(--linie) var(--leinen)}
 
 @media (min-width:640px){
   .gal-band{grid-template-columns:repeat(6,1fr);gap:14px}
-  .gal-bild:nth-child(1){grid-column:span 4;aspect-ratio:4/3}
-  .gal-bild:nth-child(2){grid-column:span 2;aspect-ratio:2/3}
-  .gal-bild:nth-child(3){grid-column:span 2;aspect-ratio:4/5}
-  .gal-bild:nth-child(4){grid-column:span 4;aspect-ratio:16/10}
-  .gal-bild:nth-child(5){grid-column:span 6;aspect-ratio:21/9}
+  .gal-bild:nth-child(1){grid-column:span 4;aspect-ratio:3/2}
+  .gal-bild:nth-child(2){grid-column:span 2;aspect-ratio:4/5}
+  .gal-bild:nth-child(3){grid-column:span 3;aspect-ratio:4/3}
+  .gal-bild:nth-child(4){grid-column:span 3;aspect-ratio:4/3}
   .wahl-reihe{flex-direction:row;gap:26px}
   .knopf-paar .knopf{flex:none}
 }

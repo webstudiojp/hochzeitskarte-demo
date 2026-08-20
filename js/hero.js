@@ -1,5 +1,26 @@
 (() => {
   'use strict';
+
+  /* ---------------------------------------------------------
+     Viewporthoehe messen statt sie CSS zu ueberlassen.
+     dvh/svh liefern auf iOS beim ersten Laden gelegentlich einen
+     zu kleinen Wert - dann lugt die naechste Section unten herein.
+     Nur bei echter Breitenaenderung neu setzen, sonst springt das
+     Layout jedes Mal, wenn Safari seine Leiste ein- und ausklappt.
+     --------------------------------------------------------- */
+  (function sichthoehe() {
+    const setz = () => document.documentElement.style
+      .setProperty('--sicht', window.innerHeight + 'px');
+    setz();
+    let breite = window.innerWidth;
+    addEventListener('resize', () => {
+      if (Math.abs(window.innerWidth - breite) > 2) { breite = window.innerWidth; setz(); }
+    });
+    addEventListener('orientationchange', () => setTimeout(setz, 260));
+    // Nach dem vollstaendigen Laden noch einmal, falls Safari die Leiste
+    // erst danach einblendet
+    addEventListener('load', () => setTimeout(setz, 60));
+  })();
   const C = window.HOCHZEIT;
   const SVG = 'http://www.w3.org/2000/svg';
   const $ = id => document.getElementById(id);

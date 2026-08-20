@@ -86,7 +86,7 @@
   });
 
   const gal = $('gal-band');
-  C.galerie.slice(0, 5).forEach((b, i) => {
+  C.galerie.slice(0, 4).forEach((b, i) => {
     const fig = el('figure', 'gal-bild rv');
     fig.dataset.rv = String(i + 1);
     if (b.datei) {
@@ -253,24 +253,49 @@
   $('btn-google').href = 'https://www.google.com/maps/dir/?api=1&destination=' + adr;
   $('btn-apple').href  = 'https://maps.apple.com/?daddr=' + adr + '&dirflg=d';
 
-  // Stilisierte Karte: gezeichnet, kein Kartendienst, keine Lizenzfrage
+  // Stilisierte Karte: selbst gezeichnet. Kein Kartendienst heisst keine
+  // Einwilligung noetig und keine Lizenzfrage an fremdem Kartenmaterial.
   (function kartenbild() {
     const s = document.createElementNS(SVGNS, 'svg');
     s.setAttribute('viewBox', '0 0 320 200');
     s.setAttribute('role', 'img');
-    s.setAttribute('aria-label', 'Schematische Lage: ' + C.ort.name + ' im Park, '
-      + 'Zufahrt von Norden, Bahnhof im Osten');
+    s.setAttribute('aria-label', 'Schematische Lage: ' + C.ort.name
+      + ' im Schlosspark, Zufahrt von Norden, Bahnhof im Osten');
     s.innerHTML =
-      '<rect width="320" height="200" fill="#ece4d5"/>' +
-      '<path d="M0 118 C60 104 96 132 150 128 C214 123 250 150 320 140 L320 200 L0 200 Z" fill="#dfe0cf"/>' +
-      '<path d="M232 0 C244 44 224 78 236 118 C246 152 232 178 244 200" fill="none" stroke="#c3cdc4" stroke-width="9"/>' +
-      '<path d="M0 62 L320 46" stroke="#d9cfba" stroke-width="7" fill="none"/>' +
-      '<path d="M74 200 L96 108 L188 92" stroke="#d9cfba" stroke-width="5" fill="none"/>' +
-      '<path d="M96 108 L60 54" stroke="#e2d9c6" stroke-width="3" fill="none"/>' +
-      '<rect x="150" y="76" width="46" height="30" fill="#cbbda3"/>' +
-      '<circle cx="173" cy="91" r="4.5" fill="#a8894e"/>' +
-      '<path d="M173 60 a11 11 0 1 1 0.01 0 M173 60 L173 76" fill="none" stroke="#a8894e" stroke-width="2.4"/>' +
-      '<circle cx="173" cy="49" r="4" fill="#a8894e"/>';
+      '<defs>'
+      + '<linearGradient id="k-park" x1="0" y1="0" x2="0" y2="1">'
+      +   '<stop offset="0%" stop-color="#dfe7d6"/><stop offset="100%" stop-color="#cddbc6"/>'
+      + '</linearGradient>'
+      + '<linearGradient id="k-wasser" x1="0" y1="0" x2="1" y2="0">'
+      +   '<stop offset="0%" stop-color="#c3d6dd"/><stop offset="100%" stop-color="#a9c4ce"/>'
+      + '</linearGradient>'
+      + '</defs>'
+      // Grund und Park
+      + '<rect width="320" height="200" fill="#f2ece0"/>'
+      + '<path d="M0 104 C54 92 92 122 148 118 C210 113 248 142 320 132 L320 200 L0 200 Z" fill="url(#k-park)"/>'
+      + '<path d="M0 118 C52 108 96 134 150 130 C214 126 252 152 320 144" fill="none" stroke="#bccdb4" stroke-width="1.2"/>'
+      // Baumgruppen im Park
+      + '<g fill="#b9cdb0" opacity=".75">'
+      +   '<circle cx="42" cy="150" r="9"/><circle cx="56" cy="158" r="7"/><circle cx="30" cy="162" r="6.5"/>'
+      +   '<circle cx="268" cy="160" r="8.5"/><circle cx="283" cy="168" r="6.5"/>'
+      +   '<circle cx="118" cy="170" r="7"/>'
+      + '</g>'
+      // Wasserlauf
+      + '<path d="M234 0 C246 44 226 78 238 118 C248 152 234 178 246 200" fill="none" stroke="url(#k-wasser)" stroke-width="10" stroke-linecap="round"/>'
+      // Strassen
+      + '<path d="M0 58 L320 42" stroke="#e6dbc6" stroke-width="8" fill="none" stroke-linecap="round"/>'
+      + '<path d="M0 58 L320 42" stroke="#d5c7ac" stroke-width="1" fill="none" stroke-dasharray="7 7"/>'
+      + '<path d="M72 200 L96 104 L188 88" stroke="#e6dbc6" stroke-width="5.5" fill="none" stroke-linecap="round"/>'
+      + '<path d="M96 104 L58 50" stroke="#ece3d2" stroke-width="3" fill="none" stroke-linecap="round"/>'
+      // Das Schloss
+      + '<g>'
+      +   '<rect x="150" y="72" width="48" height="30" rx="1.5" fill="#e0d3ba" stroke="#c9b795" stroke-width="1"/>'
+      +   '<rect x="164" y="63" width="20" height="10" rx="1.5" fill="#e0d3ba" stroke="#c9b795" stroke-width="1"/>'
+      +   '<path d="M150 82 h48" stroke="#c9b795" stroke-width=".8"/>'
+      + '</g>'
+      // Markierung
+      + '<path d="M174 40 a12 12 0 1 1 .01 0 M174 40 L174 62" fill="none" stroke="#a8894e" stroke-width="2.4" stroke-linecap="round"/>'
+      + '<circle cx="174" cy="28" r="4.6" fill="#a8894e"/>';
     $('kartenbild').appendChild(s);
   })();
 

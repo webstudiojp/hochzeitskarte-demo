@@ -70,8 +70,9 @@ body.locked{overflow:hidden}
 /* ---------- Hero ---------- */
 .hero{
   position:relative;width:100%;overflow:hidden;background:#2a2118;
-  height:100svh;      /* Rueckfall fuer aeltere Browser */
-  height:100dvh;      /* folgt der echten Viewporthoehe, auch wenn Leisten verschwinden */
+  height:100svh;                 /* Rueckfall */
+  height:100dvh;                 /* besser, aber auf iOS beim ersten Laden unzuverlaessig */
+  height:var(--sicht,100dvh);    /* massgeblich: in JS gemessene Viewporthoehe */
 }
 .scene{position:absolute;inset:0;width:100%;height:100%;display:block}
 

@@ -95,19 +95,20 @@ window.HOCHZEIT = {
 
   /* ---------- Galerie ---------- */
   galerie: [
-    { datei: 'assets/img/g1-strauss.webp',  alt: 'Dilaras Brautstrauß aus weißen Rosen und Eukalyptus auf der Fensterbank' },
-    { datei: 'assets/img/g2-ringe.webp',    alt: 'Die beiden Trauringe auf hellem Stoff, umgeben von Rosenblättern' },
-    { datei: 'assets/img/g3-bogen.webp',    alt: 'Blumenbogen aus weißen Rosen vor der Orangerie, dahinter die Stuhlreihen' },
-    { datei: 'assets/img/g4-tafel.webp',    alt: 'Die gedeckte Festtafel mit Kerzen und Eukalyptusgirlande im Abendlicht' },
-    { datei: 'assets/img/g5-lichter.webp',  alt: 'Lichterketten und Lampions über der Tanzfläche zur blauen Stunde' },
+    { datei: 'assets/img/paar1.webp', alt: 'Dilara und Furkan zu Hause, sie hält seine Wange' },
+    { datei: 'assets/img/paar2.webp', alt: 'Die beiden abends unter Palmen und Lichterketten' },
+    { datei: 'assets/img/paar3.webp', alt: 'Furkan und Dilara am Strand bei Sonnenuntergang' },
+    { datei: 'assets/img/paar4.webp', alt: 'Dilara lehnt an Furkans Schulter auf dem Sofa' },
   ],
+
 
   /* ---------- Rechtliches (Pflicht in DE) ---------- */
   recht: {
     verantwortlich: 'Dilara Sarıca und Furkan Zarga',
     kontakt:        'hallo@dilara-und-furkan.de',
-    hosterHinweis:  'Diese Seite läuft auf einem Server in Deutschland. '
-                  + 'Es werden keine Cookies gesetzt und keine Dienste von Dritten geladen.',
+    hosterHinweis:  'Diese Seite setzt keine Cookies und lädt weder Schriften noch '
+                  + 'Karten von fremden Servern. Der Google-Kalender-Knopf öffnet erst '
+                  + 'nach eurem Klick eine Seite von Google.',
   },
 
   /* ---------- Texte der Oberflaeche ---------- */
