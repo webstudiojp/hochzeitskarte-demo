@@ -28,13 +28,29 @@
 
   /* =========================================================
      1. DER UMSCHLAG
-     Liegt ueber allem, bis jemand tippt. Nach neun Sekunden
-     geht er von selbst weg - der Vorspann darf niemanden
-     aussperren.
+
+     Er wird bei *jedem* Aufruf gezeigt. Frueher hat er sich in
+     sessionStorage gemerkt, dass er schon offen war - dann kam
+     er beim Neuladen nicht wieder, und wer die Karte jemandem
+     zeigen wollte, stand vor der offenen Szene. Ein Vorspann,
+     der manchmal da ist und manchmal nicht, ist schlimmer als
+     gar keiner.
+
+     Geoeffnet wird er von jeder Absicht weiterzukommen: das
+     Siegel druecken, Enter, oder der Versuch zu scrollen. Wer
+     nicht ahnt, dass hier gedrueckt werden will, wischt - und
+     genau das gilt hier als Antwort.
      ========================================================= */
   function umschlag() {
     const feld = $('[data-umschlag]');
     if (!feld) return;
+
+    /* Nur die Vorschau-Adresse laesst ihn aus. Wer Bewegung
+       reduziert hat, bekommt ihn ebenfalls - nur ohne den
+       Lichtschein. Ihn dort ganz wegzulassen war falsch: die
+       Einstellung heisst "weniger Bewegung", nicht "weniger
+       Karte". */
+    if (sofort) { feld.remove(); return; }
 
     let weg = false;
     const oeffnen = () => {
@@ -44,30 +60,40 @@
       document.documentElement.removeAttribute('data-zu');
       setTimeout(() => feld.remove(), 1300);
       ton.anbieten();
-      try { sessionStorage.setItem('umschlag-' + DATEN.kennung, '1'); } catch {}
     };
-
-    let schonDa = false;
-    try { schonDa = sessionStorage.getItem('umschlag-' + DATEN.kennung) === '1'; } catch {}
-    if (schonDa || sofort || sanft) { feld.remove(); return; }
 
     document.documentElement.setAttribute('data-zu', '');
 
     /* Gedrueckt wird auf pointerdown, aufgebrochen erst auf
        pointerup. Dazwischen liegt der Moment, in dem das Wachs
-       nachgibt - ohne ihn waere es ein Knopf. Wer den Finger
-       wegzieht, ohne loszulassen, bricht nichts auf. */
+       nachgibt - ohne ihn waere es ein Knopf. */
+    let gedrueckt = false;
     feld.addEventListener('pointerdown', e => {
+      gedrueckt = true;
       feld.setPointerCapture?.(e.pointerId);
       feld.setAttribute('data-druck', '');
     });
     feld.addEventListener('pointerup', () => {
-      if (!feld.hasAttribute('data-druck')) return;
+      if (!gedrueckt) return;
+      gedrueckt = false;
       feld.removeAttribute('data-druck');
       oeffnen();
     });
-    feld.addEventListener('pointercancel', () => feld.removeAttribute('data-druck'));
-    feld.addEventListener('pointerleave', () => feld.removeAttribute('data-druck'));
+    feld.addEventListener('pointercancel', () => {
+      gedrueckt = false;
+      feld.removeAttribute('data-druck');
+    });
+    /* Wegziehen bricht den Druck nur mit der Maus ab. Auf dem
+       Telefon wandert der Finger beim Tippen fast immer ein
+       paar Punkte - vorher hat das den Tipp verschluckt, und
+       das Siegel reagierte scheinbar zufaellig nicht. */
+    feld.addEventListener('pointerleave', e => {
+      if (e.pointerType !== 'mouse') return;
+      gedrueckt = false;
+      feld.removeAttribute('data-druck');
+    });
+    // Falls ein Browser die Zeigerereignisse verschluckt.
+    feld.addEventListener('click', () => oeffnen());
 
     feld.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -76,9 +102,18 @@
       setTimeout(() => { feld.removeAttribute('data-druck'); oeffnen(); }, 180);
     });
 
-    /* Nach neun Sekunden bricht es von selbst auf. Ein Vorspann
-       darf niemanden aussperren. */
-    setTimeout(oeffnen, 9000);
+    /* Der Versuch zu scrollen zaehlt als Antwort. Die Seite ist
+       gesperrt, solange der Umschlag liegt - wer trotzdem
+       wischt, will weiter. */
+    const wischen = () => oeffnen();
+    addEventListener('wheel', wischen, { passive: true, once: true });
+    feld.addEventListener('touchmove', wischen, { passive: true });
+
+    /* Ganz zuletzt eine lange Reissleine: sollte weder Tippen
+       noch Wischen ankommen, geht er nach fuenfundvierzig
+       Sekunden von allein auf. Frueher waren es neun - so kurz,
+       dass er sich beim Hinsehen von selbst geoeffnet hat. */
+    setTimeout(oeffnen, 45000);
   }
 
   /* =========================================================
