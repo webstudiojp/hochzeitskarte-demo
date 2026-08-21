@@ -32,7 +32,9 @@ for SEITE in vorlagen/*/index.html; do
   perl -0777 -i -pe 's!("\.\./gemeinsam/vorlage\.(?:css|js))(\?v=\d+)?"!$1?v='"$V"'"!g' "$SEITE"
   perl -0777 -i -pe 's!((?:src|href|poster)="medien/[a-z0-9-]+\.(?:webp|mp4|jpg))(\?v=\d+)?"!$1?v='"$V"'"!g' "$SEITE"
 done
-perl -0777 -i -pe 's!((?:src|href)="[a-z]+/vorschau\.jpg)(\?v=\d+)?"!$1?v='"$V"'"!g' vorlagen/index.html
+for U in vorlagen/index.html vorlagen/en/index.html; do
+  perl -0777 -i -pe 's!((?:src|href)="(?:\.\./)?[a-z]+/vorschau\.jpg)(\?v=\d+)?"!$1?v='"$V"'"!g' "$U"
+done
 
 echo "Version $V gesetzt."
 git add -A
