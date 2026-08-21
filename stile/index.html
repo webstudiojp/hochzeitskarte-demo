@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zwei Kartenstile</title>
+<title>Drei Kartenstile</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Zwei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife und Wachssiegel zum Freirubbeln.">
+<meta name="description" content="Drei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife, Wachssiegel zum Freirubbeln und ein Siegel, das man selbst aufbricht.">
 
 <!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
      og:image braucht eine vollstaendige Adresse - relative Pfade
      ignorieren die Messenger. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Furkan &amp; Dilara">
-<meta property="og:title" content="Zwei Kartenstile">
-<meta property="og:description" content="Zwei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife und Wachssiegel zum Freirubbeln.">
+<meta property="og:title" content="Drei Kartenstile">
+<meta property="og:description" content="Drei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife, Wachssiegel zum Freirubbeln und ein Siegel, das man selbst aufbricht.">
 <meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/">
 <meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/vorschau.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Zwei Kartenstile nebeneinander: Prägedruck und Wachssiegel">
+<meta property="og:image:alt" content="Drei Kartenstile nebeneinander: Prägedruck, Wachssiegel und Nacht mit Gold">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -40,7 +40,9 @@ h1{font-weight:300;font-size:clamp(28px,7vw,38px);margin:0;text-align:center}
   margin:0 0 8px;text-align:center;
 }
 .reihe{display:grid;gap:22px;width:100%;max-width:760px;grid-template-columns:1fr}
-@media (min-width:640px){.reihe{grid-template-columns:1fr 1fr}}
+@media (min-width:640px){.reihe{grid-template-columns:1fr 1fr;max-width:760px}}
+/* Bei drei Kacheln stuende sonst eine allein in der zweiten Zeile. */
+@media (min-width:980px){.reihe{grid-template-columns:repeat(3,1fr);max-width:1120px}}
 .kachel{
   display:block;text-decoration:none;color:inherit;
   border:1px solid #ded1b8;border-radius:3px;overflow:hidden;
@@ -64,6 +66,7 @@ h1{font-weight:300;font-size:clamp(28px,7vw,38px);margin:0;text-align:center}
 }
 .marke.a{color:#4c5878}
 .marke.b{color:#2b3aa8}
+.marke.c{color:#7d1a2c}
 .text{padding:20px 22px 24px}
 .text h2{margin:0 0 8px;font-weight:400;font-size:24px}
 .text p{margin:0;font-size:16px;line-height:1.6;color:#6d6355}
@@ -76,7 +79,7 @@ h1{font-weight:300;font-size:clamp(28px,7vw,38px);margin:0;text-align:center}
 <body>
   <div>
     <p class="unter">Digitale Hochzeitskarten</p>
-    <h1>Zwei Stile zur Auswahl</h1>
+    <h1>Drei Stile zur Auswahl</h1>
   </div>
 
   <div class="reihe">
@@ -97,6 +100,16 @@ h1{font-weight:300;font-size:clamp(28px,7vw,38px);margin:0;text-align:center}
         <p>Wachssiegel aufbrechen, das blaue Glitzerherz freirubbeln —
            darunter Countdown, Termin, Ort und alles, was jetzt schon
            feststeht.</p>
+      </div>
+    </a>
+
+    <a class="kachel" href="funke/">
+      <div class="probe"><img src="funke/vorschau.jpg" alt="Dunkelrotes Wachssiegel im Dunkeln" width="1200" height="630" loading="lazy" decoding="async"><span class="marke c">Nacht und Gold</span></div>
+      <div class="text">
+        <h2>Funke</h2>
+        <p>Das Siegel wird selbst aufgebrochen — der Sprung wächst dort, wo
+           der Finger liegt. Das Wachs fällt weg, aus dem Licht darin
+           entstehen die Namen.</p>
       </div>
     </a>
   </div>

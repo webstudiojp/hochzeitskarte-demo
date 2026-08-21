@@ -10,8 +10,10 @@ perl -0777 -i -pe "s|(src=\"js/[a-z-]+\\.js)(\\?v=\\d+)?\"|\$1?v=$V\"|g" index.h
 perl -0777 -i -pe "s|((?:src\|href)=\"assets/img/[a-z0-9-]+\\.webp)(\\?v=\\d+)?\"|\$1?v=$V\"|g" index.html
 perl -0777 -i -pe "s|(^  version:\\s*')[^']*(')|\${1}$V\${2}|m" js/config.js
 
-# Dieselbe Version fuer die beiden Stil-Demos unter stile/
-for SEITE in stile/eleganz/index.html stile/siegel/index.html; do
+# Dieselbe Version fuer jede Stil-Demo unter stile/. Die Schleife
+# nimmt sie sich selbst - sonst faellt beim naechsten Stil auf,
+# dass hier jemand eine Liste haette pflegen muessen.
+for SEITE in stile/*/index.html; do
   perl -0777 -i -pe "s|(href=\"css/[a-z-]+\\.css)(\\?v=\\d+)?\"|\$1?v=$V\"|g" "$SEITE"
   perl -0777 -i -pe "s|(src=\"js/[a-z-]+\\.js)(\\?v=\\d+)?\"|\$1?v=$V\"|g" "$SEITE"
 done

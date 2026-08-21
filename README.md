@@ -6,17 +6,18 @@ Statische Seite, kein Build-Schritt, kein Framework.
 **Demo-Datensatz Furkan & Dilara ist frei erfunden** — Paar, Termin,
 Location und Bankverbindung existieren nicht.
 
-## Zwei weitere Stile
+## Drei weitere Stile
 
-Neben der Hauptkarte liegen unter `stile/` zwei eigenstaendige Demos, jede
+Neben der Hauptkarte liegen unter `stile/` drei eigenstaendige Demos, jede
 mit eigenem HTML, CSS und Skript. Sie teilen sich mit der Hauptkarte nur die
 lokalen Schriften und laufen ueber denselben Server:
 
 | Adresse | Stil |
 |---|---|
-| `stile/` | Uebersicht mit beiden Kacheln |
+| `stile/` | Uebersicht mit allen Kacheln |
 | `stile/eleganz/` | Praegedruck: zwei geprägte Flügel mit Satinschleife, dahinter die vollstaendige Einladung |
 | `stile/siegel/` | Wachssiegel aufbrechen, Glitzerherz freirubbeln, dann Countdown, Termin, Ort |
+| `stile/funke/` | Nacht und Gold: das Siegel selbst aufbrechen, aus dem Licht darin entstehen die Namen |
 
 **Eleganz** baut das Ornament nicht als gekachelte Tapete, sondern als halbes
 Motiv mit der Achse am Falz — der rechte Fluegel spiegelt den linken, ueber der
@@ -82,6 +83,82 @@ Anfangs stand der Ortsname zweimal im Routenziel, weil Name und Adresse doppelt
 verkettet wurden — deshalb liegen sie jetzt getrennt (`ortName`, `adresse`) und
 die vollstaendige Angabe entsteht an genau einer Stelle.
 
+**Funke** ist die dunkle Schwester. Sie beginnt nicht mit einem Umschlag,
+sondern mit einer einzigen Sache im Dunkeln, die man anfassen kann: einem
+Siegel aus granatrotem Wachs. Der Rest der Karte bleibt in derselben Nacht
+stehen — der Auftakt ist kein Vorspann *vor* der Karte, er ist die Welt,
+in der sie steht. Deshalb gibt es hier auch keinen Schnitt zurueck ins
+Rosa, sondern nur eine Kamera, die weitergeht.
+
+Aufgebrochen wird von Hand, und zwar dort, wo der Finger liegt: der Sprung
+waechst vom Beruehrungspunkt nach aussen, wer zieht, zieht ihn mit, wer
+haelt, treibt ihn schneller. Ein blosses Antippen genuegt trotzdem — sonst
+haette der Kniff eine Huerde eingebaut. Die Aeste werden bei jedem Druck
+neu gewuerfelt, mit je einer Gabel ab der Mitte; ohne die sieht der Bruch
+aus wie ein Stern und nicht wie gesprungenes Wachs.
+
+Der Riss steht in drei Lagen auf demselben Pfad, und die Reihenfolge ist
+die ganze Wirkung: unten der weiche Schein, darauf die dunkle Bruchkante,
+oben der helle Kern. Anders herum liegt ein Strich *auf* dem Wachs statt
+Licht *darin*. Waehrenddessen geht die Kamera heran, damit man von der
+Struktur auf einem Telefon ueberhaupt etwas hat.
+
+Dann zerspringt es, und was folgt, ist ein Teilchensystem mit drei
+Zustaenden: Splitter, Flug, Namen. Das Wachs faellt weg, das Licht darin
+bleibt und zieht sich zu `Furkan & Dilara` zusammen. Die Schrift ist dabei
+nicht gezeichnet, sondern abgetastet — der Name wird einmal auf eine
+unsichtbare Leinwand gesetzt, danach sind nur noch seine Bildpunkte das
+Ziel der Teilchen. Fuer ein anderes Paar aendert sich nichts ausser
+`DATEN.namen`; genau das kann ein gerendertes Video nicht.
+
+Zwei Dinge, die dabei wichtig waren: Ausgangs- und Zielpunkte werden beide
+nach links sortiert, sonst kreuzen sich alle Wege und aus dem Flug wird ein
+Knaeuel. Und gezeichnet wird nach Farbton sortiert und mit `lighter` — so
+wechselt der Pinsel siebenmal je Bild statt zweitausendmal, und das Gold
+leuchtet, statt nur hell zu sein. Das Wachs verschwindet ueber die Groesse
+statt ueber die Deckung, aus demselben Grund.
+
+Unter dem Auftakt traegt nicht Typografie allein, sondern ein eigener
+Zierrat: osmanische Ornamentik, ausschliesslich aus Strichen, nichts
+eingesetzt. Ueber den Namen steht ein *sivri kemer*, der osmanische
+Spitzbogen, doppelt gezogen und mit Alem an der Spitze — die Namen stehen
+darin, nicht davor. Darin ein *semse*, das Medaillon der osmanischen
+Buchkunst. Jeder Abschnitt traegt als Marke den achtzackigen Stern aus zwei
+gegeneinander gedrehten Quadraten, unter dem Anfang stehen sich zwei *lale*
+zu, die Tulpe der Iznik-Kacheln, und unter dem Termin liegt ein Girih-Band
+aus zwei gegenlaeufigen Zickzacklinien. Am Ende der Karte steht als
+Horizont eine Moschee mit Kuppel, Halbkuppeln und zwei Minaretten samt
+Serefe — kein Ort, ein Gruss. Das Monogramm im Fuss sitzt in einem
+Medaillon *ohne* Stern darin: ein Muster unter Buchstaben, und beides
+verlaere.
+
+Jede Figur zeichnet sich selbst, sobald ihr Abschnitt ins Bild kommt.
+Moeglich ist das, weil `stroke-dasharray` und `stroke-dashoffset` vererbte
+Eigenschaften sind und deshalb auch in den Schattenbaum wirken, den ein
+`use` erzeugt — ein Selektor kaeme dort nicht hinein. `pathLength="1"`
+normiert dabei jede Laenge auf eins, sodass ein einziger Wert fuer alle
+Striche genuegt, egal wie lang sie wirklich sind.
+
+Zwei Fallen dabei: Der Bogen braucht sein Seitenverhaeltnis als eigene
+Angabe. Steht er mit `top` *und* `bottom` zugleich, haengt seine Groesse an
+der Hoehe des Satzes darin — und dann wird er schmaler als die Namen, die
+er tragen soll. Und das Girih-Band steht in einem eigenen Feld statt direkt
+im Satz: als direktes Kind bekaeme es den Auftritt der Textzeilen statt
+seinen Strichzug, zwei Ablaeufe auf demselben Element, von denen der
+spaetere gewinnt — der Strich bliebe leer.
+
+Der Countdown steht ohne Kacheln frei, nur durch duenne Goldstriche
+getrennt — ein Kasten waere ein zweites Motiv neben der Ornamentik. Und
+genau eine Taste auf der ganzen Seite ist gefuellt: die, um die es geht.
+
+Der Auftakt dauert dreieinhalb Sekunden, ist ab dem Bruch ueberspringbar
+(Knopf oder Esc) und laeuft beim zweiten Besuch in derselben Sitzung
+doppelt so schnell — wer nur das Datum nachsieht, will keinen Film noch
+einmal. Wer Bewegung reduziert hat, bekommt gar keinen. Und weil der
+Bildtakt in einem Hintergrundreiter stehen bleibt, steht die Karte nach
+neun Sekunden auch ohne Auftakt da: der Kniff ist huebsch, aber er darf
+niemanden aussperren.
+
 ### Bewegung
 
 Beide Stile stehen nie still. Wo etwas gezeichnet ist, bewegt es sich auch:
@@ -101,6 +178,10 @@ Beide Stile stehen nie still. Wo etwas gezeichnet ist, bewegt es sich auch:
 | Countdown | Kacheln kippen gestaffelt herein, Ziffern rollen beim Wechsel |
 | Kalligrafie | Wird geschrieben, nicht eingeblendet: der Anschnitt laeuft von links auf, ein Federpunkt zieht an der Kante mit. Bei verbundener Schreibschrift traegt schon der reine Vorschub die Illusion |
 | Wachssiegel | Atmet, und ein Glanzstreif laeuft durch — beschnitten auf die Wachsform, nicht auf ein Rechteck darum |
+| Riss (Funke) | Waechst vom Beruehrungspunkt, folgt dem Finger beim Ziehen, wird vom Halten getrieben |
+| Auftakt (Funke) | Splitter aus der Wachsform, das Wachs faellt, das Licht sammelt sich zu den Namen |
+| Goldstaub (Funke) | Vierundzwanzig Koerner treiben hinter der Schrift durch das Bild — vor ihr waeren es Flecken auf der Seite |
+| Zierrat (Funke) | Bogen, Medaillon, Stern, Tulpe, Girih und Moschee zeichnen sich Strich fuer Strich, sobald ihr Abschnitt ins Bild kommt |
 | Glitzerherz | Schlaegt und funkelt; die Funken sitzen nur dort, wo auch Glitzer liegt, geprueft gegen dieselbe Herzform |
 
 Zwei Dinge, die dabei wichtig waren:

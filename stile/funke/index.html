@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Furkan &amp; Dilara — Save the Date</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Save the Date in Nacht und Gold: das Wachssiegel aufbrechen, aus dem Licht darin entstehen die Namen. Mit Countdown, Termin, Ort und Anreise.">
+
+<!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
+     og:image braucht eine vollstaendige Adresse - relative Pfade
+     ignorieren die Messenger. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Furkan &amp; Dilara">
+<meta property="og:title" content="Furkan &amp; Dilara — Save the Date">
+<meta property="og:description" content="Save the Date in Nacht und Gold: das Wachssiegel aufbrechen, aus dem Licht darin entstehen die Namen.">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/funke/">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/funke/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dunkelrotes Wachssiegel im Dunkeln, aus dem goldenes Licht bricht">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#120a11">
+<script>
+/* Browser stellen beim Neuladen die alte Bildlaufposition wieder her.
+   Bei einer Seite mit Auftakt hiesse das: der Gast landet mitten
+   im Ablauf statt am Anfang. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash) {
+  window.scrollTo(0, 0);
+  addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
+}
+</script>
+<link rel="stylesheet" href="css/funke.css?v=20260821164527">
+</head>
+<body class="zu">
+
+<svg class="depot" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Das Wachs. Ein Granatton, kein Blau: diese Karte ist die
+         dunkle Schwester, nicht dieselbe in anderer Farbe. -->
+    <radialGradient id="wachs" cx=".36" cy=".28" r=".84">
+      <stop offset="0"   stop-color="#8b2033"/>
+      <stop offset=".42" stop-color="#621224"/>
+      <stop offset=".82" stop-color="#3d0a17"/>
+      <stop offset="1"   stop-color="#21040d"/>
+    </radialGradient>
+    <linearGradient id="wachsRand" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#b8394c"/>
+      <stop offset="1" stop-color="#22050e"/>
+    </linearGradient>
+    <path id="wachsform" d="M100 14c19-4 34 8 47 17 13 9 29 13 33 27 4 14-7 26-8 41-1 15 9 29 2 41-7 12-25 13-38 21-13 8-25 21-41 18-16-3-26-19-39-27-13-8-31-9-36-23-5-14 7-27 8-42 1-15-10-29-3-42 7-13 24-14 37-22 12-7 19-6 38-10z"/>
+    <clipPath id="wachsklipp"><use href="#wachsform"/></clipPath>
+
+    <!-- Weiches Licht fuer die Woelbung des Wachses. Ohne Unschaerfe
+         waeren es zwei Flecken, mit Unschaerfe ist es eine Form. -->
+    <filter id="weichlicht" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="13"/>
+    </filter>
+
+    <linearGradient id="glanzverlauf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"  stop-color="#ffdca8" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#ffdca8" stop-opacity=".2"/>
+      <stop offset="1"  stop-color="#ffdca8" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Die Glut unter dem Finger: kein harter Kreis, sondern ein
+         Schein, der nach aussen ausgeht. -->
+    <radialGradient id="glut">
+      <stop offset="0"   stop-color="#fff6e2" stop-opacity=".95"/>
+      <stop offset=".38" stop-color="#f8cd82" stop-opacity=".6"/>
+      <stop offset="1"   stop-color="#eda449" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- =====================================================
+         ZIERRAT
+         Osmanisch, gezeichnet, nicht eingesetzt: jede Figur
+         besteht nur aus Strichen und zeichnet sich selbst.
+         `pathLength="1"` normiert jede Laenge auf eins - damit
+         genuegt ein einziger Wert fuer alle Striche, egal wie
+         lang sie wirklich sind. `stroke-dasharray` wird
+         vererbt und wirkt auch durch `use` hindurch.
+         ===================================================== -->
+
+    <!-- Semse: das Medaillon der osmanischen Buchkunst. Zwei
+         Ringe, acht Lappen, darin der achtzackige Stern. -->
+    <g id="zier-semse">
+      <circle cx="24" cy="24" r="20" pathLength="1"/>
+      <circle cx="24" cy="24" r="15.5" pathLength="1"/>
+      <path d="M14 14h20v20H14z" pathLength="1"/>
+      <path d="M24 10 38 24 24 38 10 24z" pathLength="1"/>
+      <circle cx="24" cy="24" r="3.4" pathLength="1"/>
+      <circle cx="44" cy="24"   r="2.6" pathLength="1"/>
+      <circle cx="38.1" cy="38.1" r="2.6" pathLength="1"/>
+      <circle cx="24" cy="44"   r="2.6" pathLength="1"/>
+      <circle cx="9.9" cy="38.1" r="2.6" pathLength="1"/>
+      <circle cx="4"  cy="24"   r="2.6" pathLength="1"/>
+      <circle cx="9.9" cy="9.9"  r="2.6" pathLength="1"/>
+      <circle cx="24" cy="4"    r="2.6" pathLength="1"/>
+      <circle cx="38.1" cy="9.9" r="2.6" pathLength="1"/>
+    </g>
+
+    <!-- Dasselbe Medaillon ohne Fuellung. Im Fuss steht das
+         Monogramm darin - ein Stern dahinter waere ein Muster
+         unter Buchstaben, und beides verlaere. -->
+    <g id="zier-semse-leer">
+      <circle cx="24" cy="24" r="20" pathLength="1"/>
+      <circle cx="24" cy="24" r="15.5" pathLength="1"/>
+      <circle cx="44" cy="24"   r="2.6" pathLength="1"/>
+      <circle cx="38.1" cy="38.1" r="2.6" pathLength="1"/>
+      <circle cx="24" cy="44"   r="2.6" pathLength="1"/>
+      <circle cx="9.9" cy="38.1" r="2.6" pathLength="1"/>
+      <circle cx="4"  cy="24"   r="2.6" pathLength="1"/>
+      <circle cx="9.9" cy="9.9"  r="2.6" pathLength="1"/>
+      <circle cx="24" cy="4"    r="2.6" pathLength="1"/>
+      <circle cx="38.1" cy="9.9" r="2.6" pathLength="1"/>
+    </g>
+
+    <!-- Achtzackiger Stern: zwei gegeneinander gedrehte
+         Quadrate. Die Grundfigur der ganzen Ornamentik. -->
+    <g id="zier-stern">
+      <path d="M7 7h26v26H7z" pathLength="1"/>
+      <path d="M20 3 37 20 20 37 3 20z" pathLength="1"/>
+      <circle cx="20" cy="20" r="3.2" pathLength="1"/>
+    </g>
+
+    <!-- Lale, die osmanische Tulpe. Drei Blattspitzen, ein
+         Blatt am Stiel - die Form von den Iznik-Kacheln. -->
+    <g id="zier-lale">
+      <path d="M20 36V62" pathLength="1"/>
+      <path d="M20 52c-7 0-12-5-14-13 7 0 12 5 14 13" pathLength="1"/>
+      <path d="M20 36c-10 0-14-8-14-17 0-7 2-13 4-15 1 5 1 11 3 13 1-5 2-11 7-14 5 3 6 9 7 14 2-2 2-8 3-13 2 2 4 8 4 15 0 9-4 17-14 17z" pathLength="1"/>
+    </g>
+
+    <!-- Girih: zwei gegenlaeufige Zickzacklinien kreuzen sich
+         zu einer Kette von Rauten. Ein Band, kein Bild. -->
+    <g id="zier-girih">
+      <path d="M2 13 20 3 38 13 56 3 74 13 92 3 110 13 128 3 146 13 164 3 182 13 200 3 218 13" pathLength="1"/>
+      <path d="M2 13 20 23 38 13 56 23 74 13 92 23 110 13 128 23 146 13 164 23 182 13 200 23 218 13" pathLength="1"/>
+      <circle cx="20"  cy="13" r="1.6" pathLength="1"/>
+      <circle cx="56"  cy="13" r="1.6" pathLength="1"/>
+      <circle cx="92"  cy="13" r="1.6" pathLength="1"/>
+      <circle cx="128" cy="13" r="1.6" pathLength="1"/>
+      <circle cx="164" cy="13" r="1.6" pathLength="1"/>
+      <circle cx="200" cy="13" r="1.6" pathLength="1"/>
+    </g>
+
+    <!-- Sivri kemer, der osmanische Spitzbogen. Er steht hinter
+         den Namen, nicht neben ihnen. -->
+    <g id="zier-kemer">
+      <path d="M30 228V128C30 74 76 32 170 16" pathLength="1"/>
+      <path d="M310 228V128C310 74 264 32 170 16" pathLength="1"/>
+      <path d="M48 228V133C48 85 90 48 170 33" pathLength="1"/>
+      <path d="M292 228V133C292 85 250 48 170 33" pathLength="1"/>
+      <path d="M170 16V7" pathLength="1"/>
+      <circle cx="170" cy="4" r="3" pathLength="1"/>
+      <path d="M16 228h48M276 228h48" pathLength="1"/>
+    </g>
+
+    <!-- Die Moschee. Kuppel, zwei Halbkuppeln, zwei Minarette
+         mit Serefe - der Umriss, den man von weitem erkennt. -->
+    <g id="zier-moschee">
+      <path d="M14 172H386" pathLength="1"/>
+      <path d="M124 172V118h152v54" pathLength="1"/>
+      <path d="M132 118c0-40 30-62 68-62s68 22 68 62" pathLength="1"/>
+      <path d="M172 118v-10c0-6 8-6 8 0v10M196 118v-12c0-6 8-6 8 0v12M220 118v-10c0-6 8-6 8 0v10" pathLength="1"/>
+      <path d="M200 56V42" pathLength="1"/>
+      <circle cx="200" cy="38" r="3.2" pathLength="1"/>
+      <path d="M100 172v-30c0-14 11-24 24-24" pathLength="1"/>
+      <path d="M300 172v-30c0-14-11-24-24-24" pathLength="1"/>
+      <path d="M186 172v-30c0-8 6-14 14-14s14 6 14 14v30" pathLength="1"/>
+      <path d="M64 172V78h12v94" pathLength="1"/>
+      <path d="M60 78h20" pathLength="1"/>
+      <path d="M62 70h16v8H62z" pathLength="1"/>
+      <path d="M66 70V50h8v20" pathLength="1"/>
+      <path d="M64 50l6-16 6 16" pathLength="1"/>
+      <path d="M70 34V26" pathLength="1"/>
+      <circle cx="70" cy="23" r="2.4" pathLength="1"/>
+      <path d="M324 172V78h12v94" pathLength="1"/>
+      <path d="M320 78h20" pathLength="1"/>
+      <path d="M322 70h16v8h-16z" pathLength="1"/>
+      <path d="M326 70V50h8v20" pathLength="1"/>
+      <path d="M324 50l6-16 6 16" pathLength="1"/>
+      <path d="M330 34V26" pathLength="1"/>
+      <circle cx="330" cy="23" r="2.4" pathLength="1"/>
+    </g>
+  </defs>
+</svg>
+
+
+<!-- =========================================================
+     1. DAS SIEGEL
+     Kein Umschlag, kein Papier. Die Karte beginnt im Dunkeln
+     mit einer einzigen Sache, die man anfassen kann.
+     ========================================================= -->
+<div class="buehne" id="buehne">
+  <div class="halo" aria-hidden="true"></div>
+
+  <button class="siegel" id="siegel" type="button" aria-label="Save the Date öffnen">
+    <svg class="siegel-svg" viewBox="0 0 200 200" aria-hidden="true">
+      <use href="#wachsform" fill="url(#wachsRand)" transform="translate(100,103) scale(1.055) translate(-100,-100)"/>
+      <use href="#wachsform" fill="url(#wachs)"/>
+      <circle cx="100" cy="100" r="57" fill="none" stroke="#2a0610" stroke-width="2.6" opacity=".55"/>
+      <circle cx="100" cy="100" r="57" fill="none" stroke="#e8b478" stroke-width="1.1" opacity=".34"
+              transform="translate(0,-1.8)"/>
+      <text class="siegel-schrift" x="100" y="117" text-anchor="middle">F&amp;D</text>
+
+      <g clip-path="url(#wachsklipp)">
+        <!-- Licht von oben links, Schatten unten rechts. Erst dadurch
+             ist es ein Tropfen Wachs und kein roter Aufkleber. -->
+        <ellipse cx="70" cy="60" rx="58" ry="42" fill="#ff9aa6" opacity=".17"
+                 filter="url(#weichlicht)" transform="rotate(-20 70 60)"/>
+        <ellipse cx="132" cy="146" rx="66" ry="48" fill="#180307" opacity=".5"
+                 filter="url(#weichlicht)" transform="rotate(-20 132 146)"/>
+        <rect class="wachsglanz" x="-70" y="-20" width="62" height="240" fill="url(#glanzverlauf)"
+              transform="rotate(14 100 100)"/>
+
+        <!-- Der Riss. Vom Skript gefuellt, sobald jemand drueckt -
+             beschnitten auf das Wachs, damit nichts darueber hinauslaeuft. -->
+        <circle class="rissglut-punkt" id="rissglut-punkt" r="0" opacity="0" fill="url(#glut)"/>
+        <path class="rissglut"  id="rissglut"  d=""/>
+        <path class="risslinie" id="risslinie" d=""/>
+        <path class="risskern"  id="risskern"  d=""/>
+      </g>
+    </svg>
+  </button>
+
+  <p class="buehne-hinweis">Siegel drücken und ziehen</p>
+</div>
+
+
+<!-- =========================================================
+     2. AUFTAKT
+     Was aus dem Siegel kommt. Eine Leinwand ueber der ganzen
+     Flaeche: erst die Splitter, dann die Namen. Der Text steht
+     nirgends im Markup - er entsteht aus DATEN.namen.
+     ========================================================= -->
+<div class="auftakt" id="auftakt" aria-hidden="true" hidden>
+  <canvas id="staub"></canvas>
+</div>
+<button class="ueberspringen" id="ueberspringen" type="button" hidden>Überspringen</button>
+
+
+<!-- Die Nacht liegt fest hinter allem: ein Himmel laeuft nicht mit,
+     wenn man am Blatt davor herunterliest. -->
+<div class="nacht" aria-hidden="true">
+  <div class="schimmer"></div>
+</div>
+<!-- Goldstaub ueber der ganzen Seite. Vom Skript gefuellt. -->
+<div class="staubfall" id="staubfall" aria-hidden="true"></div>
+
+<!-- Duenne Linie am oberen Rand: zeigt, wie weit die Seite gelesen ist.
+     Haengt am Bildlauf selbst, nicht an einem Zeitgeber. -->
+<div class="fortschritt" aria-hidden="true"></div>
+
+
+<main>
+<!-- =========================================================
+     3. KOPF
+     ========================================================= -->
+<section class="kopf" id="kopf">
+  <!-- Die Namen stehen in einem Spitzbogen, nicht davor. -->
+  <div class="kopfrahmen">
+    <svg class="zier kemer" viewBox="0 0 340 232" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+      <use href="#zier-kemer"/>
+    </svg>
+    <svg class="zier semse" viewBox="0 0 48 48" aria-hidden="true"><use href="#zier-semse"/></svg>
+    <p class="kicker">Wir heiraten</p>
+    <h1 class="namen">Furkan <em>&amp;</em> Dilara</h1>
+    <p class="datumzeile">01 · 01 · 2027</p>
+  </div>
+
+  <a class="scrollwink" id="scrollwink" href="#anfang" hidden>
+    <span>Mehr</span>
+    <svg viewBox="0 0 20 26" aria-hidden="true"><path d="M10 2v20m0 0-6-7m6 7 6-7"/></svg>
+  </a>
+</section>
+
+
+<!-- =========================================================
+     4. DER ANFANG
+     ========================================================= -->
+<section class="halt" id="anfang">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Der Anfang</p>
+    <h2 class="script"><span class="schreiben">Wir haben Ja gesagt</span></h2>
+    <p class="fliess">Nach acht Jahren, zwei Umzügen und einem Hund
+      wird es Zeit, das Ganze mit euch zu feiern. Der Tag steht fest —
+      alles Weitere schicken wir euch rechtzeitig.</p>
+
+    <div class="lalen" aria-hidden="true">
+      <svg class="zier lale" viewBox="0 0 40 64"><use href="#zier-lale"/></svg>
+      <svg class="zier lale gespiegelt" viewBox="0 0 40 64"><use href="#zier-lale"/></svg>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     5. COUNTDOWN
+     Keine Kacheln. Die Zahlen stehen frei auf dem Faden, wie
+     eingraviert.
+     ========================================================= -->
+<section class="halt" id="countdown">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Noch</p>
+    <div class="zaehler" id="zaehler">
+      <div class="einheit"><b id="cd-t">—</b><span>Tage</span></div>
+      <div class="einheit"><b id="cd-s">—</b><span>Stunden</span></div>
+      <div class="einheit"><b id="cd-m">—</b><span>Minuten</span></div>
+      <div class="einheit"><b id="cd-k">—</b><span>Sekunden</span></div>
+    </div>
+    <p class="zaehler-fuss" id="cd-fuss">bis zum 1. Januar 2027</p>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     6. DER TAG
+     ========================================================= -->
+<section class="halt" id="termin">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Der Tag</p>
+    <p class="anschlag">1. Januar 2027</p>
+    <p class="unterzeile">Freitag · ab 14:30 Uhr</p>
+
+    <div class="girihfeld">
+      <svg class="zier girih" viewBox="0 0 220 26" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <use href="#zier-girih"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     7. DER ORT — mit Weg dorthin
+     Verlinkt, nicht eingebettet: eine Karte im Rahmen laedt beim
+     Oeffnen Daten des Anbieters, ein Link erst beim Antippen.
+     ========================================================= -->
+<section class="halt" id="ort">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Wo wir feiern</p>
+
+    <svg class="haus" viewBox="0 0 240 130" aria-hidden="true">
+      <g fill="none" stroke="#c39a63" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M96 60h48v58H96z"/>
+        <path d="M92 60 120 34l28 26"/>
+        <path d="M120 34v-9m0-9v6"/>
+        <circle cx="120" cy="21" r="2.4"/>
+        <path d="M108 52a12 12 0 0 1 24 0"/>
+        <path d="M46 74h50v44H46zM144 74h50v44h-50z"/>
+        <path d="M42 74h58M140 74h58"/>
+        <path d="M110 92h20v26h-20z"/>
+        <path d="M120 92v26"/>
+        <g stroke-width="1">
+          <path d="M58 86h10v14H58zM76 86h10v14H76z"/>
+          <path d="M154 86h10v14h-10zM172 86h10v14h-10z"/>
+          <path d="M104 70h8v10h-8zM128 70h8v10h-8z"/>
+        </g>
+        <path d="M20 118h200" stroke-width="1.4"/>
+      </g>
+    </svg>
+
+    <p class="anschlag klein">Schloss Benrath</p>
+    <p class="unterzeile">Benrather Schloßallee 104 · 40597 Düsseldorf</p>
+
+    <div class="wegweiser">
+      <a class="knopf" id="weg-google" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 21s7-6.4 7-11.6A7 7 0 0 0 5 9.4C5 14.6 12 21 12 21z"/>
+          <circle cx="12" cy="9.4" r="2.6"/>
+        </svg>
+        Route mit Google Maps
+      </a>
+      <a class="knopf" id="weg-apple" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 7.5 9 5l6 2.5L21 5v11.5L15 19l-6-2.5L3 19z"/>
+          <path d="M9 5v11.5M15 7.5V19"/>
+        </svg>
+        Route mit Apple Karten
+      </a>
+      <button class="knopf leise" id="adresse-kopieren" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="9" y="9" width="12" height="12" rx="2"/>
+          <path d="M15 5H5a2 2 0 0 0-2 2v10"/>
+        </svg>
+        <span id="kopier-text">Adresse kopieren</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     8. ANREISE
+     ========================================================= -->
+<section class="halt" id="anreise">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Anreise</p>
+
+    <div class="posten">
+      <p class="postenname">Mit dem Auto</p>
+      <p class="postenzeile">A59 bis Abfahrt Düsseldorf-Benrath, danach der
+        Beschilderung zum Schloss folgen. Von der Autobahn sind es
+        knapp fünf Minuten.</p>
+    </div>
+    <div class="posten">
+      <p class="postenname">Mit der Bahn</p>
+      <p class="postenzeile">S6 bis Düsseldorf-Benrath. Von dort acht Minuten
+        zu Fuß durch den Schlosspark — der Weg ist ausgeschildert.</p>
+    </div>
+    <div class="posten">
+      <p class="postenname">Parken</p>
+      <p class="postenzeile">Kostenfreie Plätze am Besucherparkplatz Süd,
+        direkt neben dem Parkeingang. Platz ist genug.</p>
+    </div>
+    <div class="posten">
+      <p class="postenname">Mit dem Taxi</p>
+      <p class="postenzeile">Sagt einfach „Schloss Benrath, Haupteingang".
+        Aus der Innenstadt sind es rund 20 Minuten.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     9. GUT ZU WISSEN
+     Auf einer Save-the-Date steht, was man jetzt schon
+     braucht - nicht der ganze Ablauf. Der kommt spaeter.
+     ========================================================= -->
+<section class="halt" id="wissen">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Gut zu wissen</p>
+
+    <div class="posten">
+      <p class="postenname">Haltet das Wochenende frei</p>
+      <p class="postenzeile">Wir feiern von Freitagnachmittag bis tief in die Nacht.
+        Wer mag, bleibt auch am Samstag noch zum Frühstück.</p>
+    </div>
+    <div class="posten">
+      <p class="postenname">Die Einladung folgt</p>
+      <p class="postenzeile">Im Frühjahr 2026 bekommt ihr alle Einzelheiten:
+        Ablauf, Dresscode, Anreise und die Bitte um Rückmeldung.</p>
+    </div>
+    <div class="posten">
+      <p class="postenname">Übernachtung</p>
+      <p class="postenzeile">Rund um den Schlosspark gibt es genug Zimmer.
+        Wir nennen euch mit der Einladung ein paar Häuser, die wir kennen.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     10. DER KALENDER
+     ========================================================= -->
+<section class="halt" id="merken">
+  <svg class="zier zeichen" viewBox="0 0 40 40" aria-hidden="true"><use href="#zier-stern"/></svg>
+  <div class="satz">
+    <p class="kicker">Damit es nicht untergeht</p>
+    <h2 class="script"><span class="schreiben">Tragt euch den Tag ein</span></h2>
+
+    <button class="knopf voll" id="kalender" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2.5"/>
+        <path d="M3 10h18M8 3v4M16 3v4"/>
+      </svg>
+      Zum Kalender hinzufügen
+    </button>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     11. ABSCHIED
+     ========================================================= -->
+<footer class="fuss" id="fuss">
+  <!-- Der Horizont am Ende der Karte. Kein Ort, ein Gruss. -->
+  <svg class="zier moschee" viewBox="0 0 400 186" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+    <use href="#zier-moschee"/>
+  </svg>
+
+  <div class="satz">
+    <div class="monogrammfeld">
+      <svg class="zier semse gross" viewBox="0 0 48 48" aria-hidden="true"><use href="#zier-semse-leer"/></svg>
+      <p class="fuss-monogramm">F&amp;D</p>
+    </div>
+    <p class="script klein"><span class="schreiben">Bis bald</span></p>
+    <p class="fuss-namen">Furkan &amp; Dilara</p>
+    <p class="fuss-datum">1. Januar · 2027</p>
+    <p class="kicker">Bei Fragen</p>
+    <p class="fuss-mail"><a href="mailto:hallo@furkan-und-dilara.de">hallo@furkan-und-dilara.de</a></p>
+  </div>
+</footer>
+</main>
+
+<script src="js/funke.js?v=20260821164527"></script>
+</body>
+</html>

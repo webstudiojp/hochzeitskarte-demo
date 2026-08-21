@@ -1,0 +1,544 @@
+/* =========================================================
+   STIL "FUNKE" — Nacht und Gold
+   Eigenstaendige Demo. Teilt sich mit den anderen Karten nur
+   die lokalen Schriften.
+
+   Die Karte beginnt im Dunkeln mit einem Wachssiegel und
+   bleibt dort: der Auftakt ist kein Vorspann vor der Karte,
+   er ist die Welt, in der sie steht.
+   ========================================================= */
+
+@font-face{font-family:'Great Vibes';src:url('../../../assets/fonts/GreatVibes-latin.woff2') format('woff2');
+  font-weight:400;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Great Vibes';src:url('../../../assets/fonts/GreatVibes-latinext.woff2') format('woff2');
+  font-weight:400;font-display:swap;
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Cormorant';src:url('../../../assets/fonts/Cormorant-latin.woff2') format('woff2');
+  font-style:normal;font-weight:300 500;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Cormorant';src:url('../../../assets/fonts/Cormorant-latinext.woff2') format('woff2');
+  font-style:normal;font-weight:300 500;font-display:swap;
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Cormorant';src:url('../../../assets/fonts/Cormorant-italic-latin.woff2') format('woff2');
+  font-style:italic;font-weight:300 500;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';src:url('../../../assets/fonts/Manrope-latin.woff2') format('woff2');
+  font-weight:200 800;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';src:url('../../../assets/fonts/Manrope-latinext.woff2') format('woff2');
+  font-weight:200 800;font-display:swap;
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+
+:root{
+  --nacht:#120a11;
+  --nacht-hoch:#221426;
+  --gold:#d8b177;
+  --gold-hell:#f4e0b8;
+  --gold-tief:#a97f45;
+  --wein:#75162a;
+  --schrift:#e9dfd2;
+  --leise:#a2937f;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--nacht);color:var(--schrift);
+  font-family:'Cormorant',Georgia,serif;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
+}
+/* Solange das Siegel steht, gibt es nichts zu scrollen. */
+body.zu{overflow:hidden}
+
+.depot{position:absolute;width:0;height:0;overflow:hidden}
+
+/* =========================================================
+   1. DAS SIEGEL
+   ========================================================= */
+.buehne{
+  position:fixed;inset:0;z-index:30;overflow:hidden;
+  display:grid;place-items:center;
+  background:radial-gradient(120% 84% at 50% 46%,#2a1622 0%,#180d17 48%,#0c060b 100%);
+  transition:opacity .7s ease .35s,visibility .7s .35s;
+}
+.buehne.weg{opacity:0;visibility:hidden;pointer-events:none}
+
+/* Ein Lichtkreis hinter dem Wachs. Ohne ihn steht das Siegel im
+   Nichts und der Blick weiss nicht, wo die Karte anfaengt. */
+.halo{
+  position:absolute;width:min(88vw,460px);aspect-ratio:1;
+  background:radial-gradient(circle,rgba(216,177,119,.2) 0%,rgba(216,177,119,.07) 38%,rgba(216,177,119,0) 68%);
+  animation:halonAtmen 6s ease-in-out infinite;
+}
+
+.siegel{
+  position:relative;z-index:2;
+  width:min(48vw,215px);background:none;border:0;padding:0;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .5s cubic-bezier(.4,-.4,.4,1.4),opacity .45s ease;
+}
+.siegel-svg{width:100%;height:auto;display:block;
+  filter:drop-shadow(0 16px 30px rgba(0,0,0,.66)) drop-shadow(0 0 26px rgba(150,30,52,.3))}
+.siegel:active{transform:scale(.96)}
+.siegel:focus-visible{outline:1px solid var(--gold);outline-offset:18px;border-radius:50%}
+.siegel-schrift{
+  font-family:'Cormorant',serif;font-size:48px;
+  fill:#f0c58a;opacity:.5;letter-spacing:.02em;
+}
+
+.buehne-hinweis{
+  position:absolute;z-index:2;left:0;right:0;bottom:11%;margin:0;text-align:center;
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.36em;text-transform:uppercase;color:#8d7659;
+  animation:atmen 2.8s ease-in-out infinite;transition:opacity .3s ease;
+}
+@keyframes atmen{0%,100%{opacity:1}50%{opacity:.32}}
+
+/* ---------- Der Riss ---------- */
+/* Drei Lagen auf demselben Pfad, und die Reihenfolge ist die ganze
+   Wirkung: unten der weiche Schein, darauf die dunkle Bruchkante,
+   ganz oben der helle Kern. Anders herum sieht es aus wie ein Strich
+   auf dem Wachs statt wie Licht, das daraus tritt. */
+.rissglut{
+  fill:none;stroke:#ffcf87;stroke-width:9;
+  stroke-linecap:round;stroke-linejoin:round;
+  filter:blur(5px);
+}
+.risslinie{
+  fill:none;stroke:#1c0409;stroke-width:4.2;
+  stroke-linecap:round;stroke-linejoin:round;opacity:.94;
+}
+.risskern{
+  fill:none;stroke:#fff4da;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 2.5px rgba(255,206,124,1));
+}
+
+/* Solange gerissen wird, steht das Wachs still: ein Ziel, das unter
+   dem Finger wegatmet, ist kein gutes Ziel. */
+.buehne.bricht .siegel-svg{animation:none}
+.buehne.bricht .wachsglanz{opacity:0}
+.buehne.bricht .buehne-hinweis{opacity:0}
+.buehne.bricht .halo{animation:none;opacity:.35;transition:opacity .9s ease}
+
+/* Die Kamera geht an das Wachs heran. Ohne diesen Schritt ist die
+   Rissstruktur auf einem Telefon zu klein, um etwas davon zu haben. */
+.buehne.bricht .siegel{
+  transform:scale(1.32);
+  transition:transform .9s cubic-bezier(.32,.72,.3,1);
+}
+/* Es fliegt nicht weg - es zerspringt. Diese Regel steht hinter der
+   von `.bricht`, damit sie deren Zoom uebernimmt und weitertreibt. */
+.buehne.zerbricht .siegel{
+  transform:scale(1.44);opacity:0;
+  transition:transform .34s ease-out,opacity .2s ease-out;
+}
+
+/* =========================================================
+   2. AUFTAKT
+   Die Leinwand liegt ueber allem. Der Grund darunter ist
+   dieselbe Nacht wie die der Karte - es gibt keinen Schnitt
+   zwischen Auftakt und Seite, nur eine Kamera, die weitergeht.
+   ========================================================= */
+.auftakt{
+  position:fixed;inset:0;z-index:40;pointer-events:none;
+  background:radial-gradient(126% 92% at 50% 44%,#241528 0%,#150c15 52%,#090509 100%);
+  opacity:0;transition:opacity .6s ease;
+}
+.auftakt[hidden]{display:none}
+/* Beim Bruch schnappt der Grund zu, am Ende verklingt er. Die zweite
+   Zeit gilt beim Kommen, die erste beim Gehen. */
+.auftakt.an{opacity:1;transition:opacity .18s ease}
+#staub{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.ueberspringen{
+  position:fixed;z-index:41;left:50%;transform:translateX(-50%);
+  bottom:calc(26px + env(safe-area-inset-bottom, 0px));
+  background:none;border:0;padding:10px 16px;cursor:pointer;
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(244,224,184,.45);
+  -webkit-tap-highlight-color:transparent;
+  animation:auftauchen .6s ease .5s both;
+  transition:color .25s ease;
+}
+.ueberspringen[hidden]{display:none}
+.ueberspringen:hover{color:rgba(244,224,184,.85)}
+.ueberspringen:focus-visible{outline:1px solid rgba(244,224,184,.6);outline-offset:4px}
+@keyframes auftauchen{from{opacity:0;transform:translateX(-50%) translateY(8px)}
+                      to  {opacity:1;transform:translateX(-50%)}}
+
+/* =========================================================
+   3. DIE NACHT HINTER DER SEITE
+   ========================================================= */
+.nacht{
+  /* Ohne Schnitt ragt der Schimmer ueber den Rand hinaus und schiebt
+     die ganze Seite seitlich - ein fest stehender Kasten mit
+     negativem Rand erzeugt trotzdem Ueberlauf. */
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:
+    radial-gradient(90% 46% at 50% 0%, #2a1728 0%, #170d16 46%, var(--nacht) 78%);
+}
+/* Ein sehr langsamer Schein, der wandert. Eine Nacht steht nie ganz
+   still, und eine Flaeche, die still steht, sieht gedruckt aus. */
+.schimmer{
+  position:absolute;inset:-30%;
+  background:radial-gradient(38% 30% at 30% 30%,rgba(216,177,119,.09),rgba(216,177,119,0) 70%);
+  animation:schimmerZug 26s ease-in-out infinite alternate;
+}
+@keyframes schimmerZug{
+  0%  {transform:translate3d(-6%,-4%,0) scale(1)}
+  100%{transform:translate3d(10%,8%,0) scale(1.16)}
+}
+
+/* Goldstaub liegt hinter der Schrift, nicht davor. Vor dem Text
+   waeren es Flecken auf der Seite statt Luft im Raum. */
+.staubfall{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.korn{
+  position:absolute;top:0;left:0;border-radius:50%;
+  background:var(--gold-hell);will-change:transform,opacity;
+  animation:treiben linear infinite;
+}
+@keyframes treiben{
+  0%  {transform:translate3d(0,-8vh,0);opacity:0}
+  12% {opacity:var(--deck,.6)}
+  84% {opacity:var(--deck,.6)}
+  100%{transform:translate3d(var(--weg,4vw),108vh,0);opacity:0}
+}
+
+/* =========================================================
+   4. DIE SEITE
+   ========================================================= */
+main{position:relative;z-index:1}
+
+.kopf{
+  position:relative;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:26px 22px calc(15svh + env(safe-area-inset-bottom, 0px));
+  text-align:center;
+  opacity:0;transform:translateY(18px);
+  transition:opacity .9s ease .25s,transform 1s cubic-bezier(.2,.8,.25,1) .25s;
+}
+body.offen .kopf{opacity:1;transform:none}
+
+.kicker{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  font-weight:500;color:var(--gold-tief);margin:0 0 18px;
+}
+.namen{
+  font-weight:300;font-size:clamp(30px,8.8vw,52px);line-height:1.06;
+  margin:0 0 18px;color:var(--gold-hell);letter-spacing:.01em;
+  text-shadow:0 0 34px rgba(216,177,119,.22);
+}
+.namen em{font-style:italic;color:var(--gold);font-size:.78em}
+.datumzeile{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:11px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--leise);margin:0;
+}
+
+.scrollwink{
+  position:absolute;left:0;right:0;bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  text-decoration:none;color:var(--gold-tief);
+  animation:winkAuf .9s ease both,winkTupfen 2.8s ease-in-out .9s infinite;
+}
+.scrollwink[hidden]{display:none}
+.scrollwink span{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:9px;letter-spacing:.34em;text-transform:uppercase;
+}
+.scrollwink svg{width:13px;height:17px;fill:none;stroke:currentColor;
+  stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+@keyframes winkAuf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes winkTupfen{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+
+/* =========================================================
+   ZIERRAT
+   Osmanische Ornamentik, nur aus Strichen. Jede Figur
+   zeichnet sich, wenn ihr Abschnitt ins Bild kommt.
+
+   `stroke-dasharray` und `stroke-dashoffset` werden vererbt
+   und wirken deshalb auch in den Schattenbaum hinein, den
+   ein `use` erzeugt - ein Selektor kaeme dort nicht hin.
+   ========================================================= */
+.zier{
+  display:block;fill:none;stroke:var(--gold);
+  stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:1;stroke-dashoffset:1;
+}
+.halt.da .zier,.fuss.da .zier,body.offen .kopf .zier{
+  animation:strichZiehen 1.7s cubic-bezier(.4,0,.2,1) both;
+}
+
+/* Der Stern steht als Marke ueber jedem Abschnitt - er hat den
+   Platz der Raute uebernommen, die frueher am Faden hing. */
+.zeichen{
+  width:21px;height:21px;margin:0 auto 30px;
+  opacity:.62;stroke-width:1.6;
+}
+
+/* Das Medaillon ueber den Namen. */
+.semse{width:40px;height:40px;margin:0 auto 20px;opacity:.72;stroke-width:1.1}
+
+/* Der Spitzbogen steht hinter dem Satz, nicht darin: er liegt
+   auf einer eigenen Ebene und nimmt keinen Platz weg. */
+.kopfrahmen{position:relative;width:min(94vw,400px);margin:0 auto;padding:58px 34px 34px}
+.kopfrahmen > :not(.kemer){position:relative;z-index:1}
+/* Der Bogen behaelt sein Seitenverhaeltnis selbst. Mit `top` und
+   `bottom` zugleich haengt seine Groesse an der Hoehe des Satzes -
+   dann wird er schmaler als die Namen, die er tragen soll. */
+.kemer{
+  position:absolute;left:0;right:0;bottom:0;
+  width:100%;height:auto;aspect-ratio:340/232;
+  opacity:.32;stroke-width:1;z-index:0;
+  animation-duration:2.4s;
+}
+
+/* Zwei Tulpen, eine gespiegelt: sie stehen sich zu, nicht
+   nebeneinander in dieselbe Richtung. */
+.lalen{display:flex;justify-content:center;gap:26px;margin-top:30px}
+.lale{width:30px;height:48px;opacity:.6;stroke-width:1.4}
+.lale.gespiegelt{transform:scaleX(-1)}
+
+.girihfeld{margin-top:26px}
+.girih{width:min(78%,240px);height:auto;margin:0 auto;opacity:.42;stroke-width:1.1}
+
+/* Die Moschee ist der Horizont am Ende, kein Bild in der Mitte:
+   sie steht breit und blass hinter dem Abschied. */
+.moschee{
+  width:min(94%,430px);height:auto;margin:0 auto 6px;
+  opacity:.34;stroke-width:1;
+  animation-duration:2.8s;
+}
+
+/* Das Monogramm sitzt im Medaillon, nicht darunter. */
+.monogrammfeld{position:relative;display:grid;place-items:center;margin-bottom:6px}
+.monogrammfeld .semse{
+  grid-area:1/1;width:96px;height:96px;margin:0;opacity:.5;stroke-width:.8;
+}
+.monogrammfeld .fuss-monogramm{grid-area:1/1;margin:0}
+
+/* ---------- Die Halte am Faden ---------- */
+.halt{position:relative;padding:76px 0}
+.satz{padding:0 30px;max-width:31rem;margin:0 auto;text-align:center}
+
+.script{
+  font-family:'Great Vibes',cursive;font-weight:400;
+  font-size:clamp(30px,8.4vw,42px);line-height:1.24;
+  margin:0 0 22px;color:var(--gold-hell);
+}
+.script.klein{font-size:clamp(24px,6.6vw,30px);margin:12px 0 4px}
+.fliess{font-size:17.5px;line-height:1.8;color:#c3b6a6;margin:0 auto;max-width:30em}
+.anschlag{
+  font-weight:300;font-size:clamp(30px,8.4vw,42px);line-height:1.16;
+  margin:0 0 10px;color:var(--gold-hell);letter-spacing:.01em;
+}
+.anschlag.klein{font-size:clamp(24px,6.6vw,32px)}
+.unterzeile{font-size:16px;letter-spacing:.06em;color:var(--leise);margin:0}
+
+/* ---------- Countdown ---------- */
+/* Keine Kacheln: die Zahlen stehen frei, getrennt durch duenne
+   Goldstriche. Ein Kasten waere ein zweites Motiv neben dem Faden. */
+.zaehler{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  max-width:400px;margin:0 auto 24px;
+}
+.einheit{
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  padding:6px 2px;border-left:1px solid rgba(216,177,119,.18);
+}
+.einheit:first-child{border-left:0}
+.einheit b{
+  display:block;font-weight:300;font-variant-numeric:oldstyle-nums;
+  font-size:clamp(27px,7.8vw,36px);line-height:1;color:var(--gold-hell);
+}
+.einheit b.rollt{animation:ziffernrolle .5s cubic-bezier(.3,.8,.3,1)}
+@keyframes ziffernrolle{
+  0%  {transform:translateY(-55%) rotateX(70deg);opacity:0}
+  55% {opacity:1}
+  100%{transform:none;opacity:1}
+}
+.einheit span{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#8d7f6e;
+}
+.zaehler-fuss{margin:0;font-style:italic;font-size:16px;color:var(--leise)}
+
+/* ---------- Posten ---------- */
+.posten{padding:22px 0;border-bottom:1px solid rgba(216,177,119,.13);text-align:left}
+.posten:last-child{border-bottom:0}
+.postenname{font-weight:400;font-size:clamp(21px,5.6vw,25px);line-height:1.25;
+  margin:0 0 8px;color:var(--gold-hell)}
+.postenzeile{font-size:16.5px;line-height:1.7;color:#b8ab9c;margin:0}
+
+/* ---------- Knoepfe ---------- */
+/* Gold auf Nacht traegt keine Flaeche, sondern eine Linie: eine
+   gefuellte Goldtaste wuerde auf diesem Grund billig wirken. */
+.wegweiser{display:flex;flex-direction:column;gap:10px;max-width:330px;margin:26px auto 0}
+.knopf{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:none;color:var(--gold-hell);cursor:pointer;text-decoration:none;
+  border:1px solid rgba(216,177,119,.4);border-radius:999px;
+  font-family:'Manrope',system-ui,sans-serif;font-weight:500;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  padding:15px 22px;
+  transition:border-color .3s ease,background .3s ease,transform .2s ease;
+}
+.knopf:hover{border-color:rgba(216,177,119,.85);background:rgba(216,177,119,.07);transform:translateY(-2px)}
+.knopf:active{transform:translateY(1px)}
+.knopf svg{width:15px;height:15px;fill:none;stroke:currentColor;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.knopf.leise{border-color:rgba(216,177,119,.2);color:var(--leise)}
+.knopf.leise:hover{color:var(--gold-hell)}
+/* Nur eine Taste auf der ganzen Seite ist gefuellt - die, um die es geht. */
+.knopf.voll{
+  margin-top:8px;padding:17px 28px;font-size:11px;
+  border-color:transparent;color:#1b1016;
+  background:linear-gradient(180deg,var(--gold-hell) 0%,var(--gold) 55%,var(--gold-tief) 100%);
+  box-shadow:0 10px 26px rgba(216,177,119,.2);
+}
+.knopf.voll:hover{background:linear-gradient(180deg,#fff0d6 0%,#e4c085 55%,#b98d4e 100%)}
+
+.haus{display:block;width:min(60vw,230px);height:auto;margin:4px auto 20px;opacity:.9}
+
+/* ---------- Abschied ---------- */
+.fuss{position:relative;padding:80px 0 calc(84px + env(safe-area-inset-bottom, 0px))}
+.fuss-monogramm{font-size:21px;letter-spacing:.1em;color:var(--gold);margin:0 0 6px}
+.fuss-namen{font-weight:300;font-size:clamp(26px,7.2vw,32px);margin:0 0 12px;color:var(--gold-hell)}
+.fuss-datum{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:#8d7f6e;margin:0 0 34px;
+}
+.fuss-mail{margin:0;font-size:17px}
+.fuss-mail a{color:var(--gold);text-decoration:none;
+  border-bottom:1px solid rgba(216,177,119,.3);padding-bottom:2px}
+
+/* =========================================================
+   5. AUFTRITT DER ABSCHNITTE
+   Der Anschnitt steht im Ablauf, nicht in der Grundregel:
+   laeuft nichts, steht der Text trotzdem da.
+   ========================================================= */
+.halt.da .satz > *,.fuss.da .satz > *{
+  animation:satzAuf .85s cubic-bezier(.2,.8,.25,1) both;
+}
+.halt.da .satz > :nth-child(2){animation-delay:.08s}
+.halt.da .satz > :nth-child(3){animation-delay:.16s}
+.halt.da .satz > :nth-child(4){animation-delay:.24s}
+.halt.da .satz > :nth-child(n+5){animation-delay:.3s}
+@keyframes satzAuf{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+
+/* Die Schreibschrift wird gezogen, nicht eingeblendet. */
+.schreiben{display:inline-block;position:relative}
+@keyframes federzug{
+  from{clip-path:inset(-10% 100% -20% -6%)}
+  to  {clip-path:inset(-10% -6% -20% -6%)}
+}
+.schreiben::after{
+  content:'';position:absolute;top:6%;bottom:16%;left:0;width:3px;
+  background:linear-gradient(180deg,transparent,rgba(244,224,184,.7),transparent);
+  filter:blur(1.6px);opacity:0;pointer-events:none;
+}
+@keyframes federpunkt{
+  0%  {left:-2%;opacity:0}
+  10% {opacity:.9}
+  88% {opacity:.9}
+  100%{left:102%;opacity:0}
+}
+.halt.da .schreiben,.fuss.da .schreiben{
+  animation:federzug 1.5s cubic-bezier(.32,.12,.28,1) .3s both;
+}
+.halt.da .schreiben::after,.fuss.da .schreiben::after{
+  animation:federpunkt 1.5s cubic-bezier(.32,.12,.28,1) .3s;
+}
+
+/* Das Schloss zeichnet sich, wenn der Abschnitt ins Bild kommt. */
+.haus path,.haus circle{stroke-dasharray:1;stroke-dashoffset:1}
+.halt.da .haus path,.halt.da .haus circle{
+  animation:strichZiehen 1.6s cubic-bezier(.4,0,.2,1) both;
+}
+.halt.da .haus g > :nth-child(n+8){animation-delay:.35s}
+.halt.da .haus g > :nth-child(n+14){animation-delay:.7s}
+@keyframes strichZiehen{to{stroke-dashoffset:0}}
+
+/* =========================================================
+   6. BEWEGUNG DES SIEGELS
+   ========================================================= */
+.siegel-svg{animation:siegelAtmen 3.6s ease-in-out infinite}
+@keyframes siegelAtmen{
+  0%,100%{transform:scale(1)}
+  50%    {transform:scale(1.035)}
+}
+/* Der Streif laeuft in der Wachsform, nicht in einem Rechteck darum. */
+.wachsglanz{animation:siegelGlanz 5.6s ease-in-out infinite}
+@keyframes siegelGlanz{
+  0%,64%,100%{transform:rotate(14deg) translateX(0)}
+  32%        {transform:rotate(14deg) translateX(330px)}
+}
+@keyframes halonAtmen{
+  0%,100%{transform:scale(1);opacity:.85}
+  50%    {transform:scale(1.09);opacity:1}
+}
+
+/* =========================================================
+   7. AM BILDLAUF STATT AN DER UHR
+   Wo der Browser es kann, haengen Fortschrittslinie, Faden und
+   Federzug direkt am Scrollen: die Schrift entsteht genau so
+   schnell, wie der Gast weiterliest.
+   ========================================================= */
+.fortschritt{display:none}
+
+@supports (animation-timeline: scroll()){
+  .fortschritt{
+    display:block;position:fixed;top:0;left:0;right:0;height:1px;z-index:50;
+    transform-origin:left center;transform:scaleX(0);
+    background:linear-gradient(90deg,rgba(216,177,119,.25),var(--gold));
+    animation:zug linear both;
+    animation-timeline:scroll(root block);
+  }
+  @keyframes zug{to{transform:scaleX(1)}}
+
+  .halt.da .schreiben,.fuss.da .schreiben{
+    animation:federzug linear both;
+    animation-timeline:view();
+    animation-range:entry 24% cover 42%;
+  }
+  .halt.da .schreiben::after,.fuss.da .schreiben::after{
+    animation:federpunkt linear;
+    animation-timeline:view();
+    animation-range:entry 24% cover 42%;
+  }
+}
+
+/* =========================================================
+   8. RUHIG
+   Wer Bewegung reduziert hat, bekommt die Karte vollstaendig,
+   aber ohne Auftakt und ohne Zierrat.
+   ========================================================= */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .auftakt,.ueberspringen,.staubfall{display:none !important}
+  .siegel-svg,.wachsglanz,.halo,.schimmer,.buehne-hinweis,
+  .scrollwink,.einheit b.rollt{animation:none !important}
+  .kopf{transition:opacity .3s ease}
+  .halt.da .satz > *,.fuss.da .satz > *{animation:none}
+  .schreiben{animation:none !important;clip-path:none !important}
+  .schreiben::after{display:none}
+  .haus path,.haus circle{stroke-dashoffset:0;animation:none !important}
+  .zier{stroke-dashoffset:0;animation:none !important}
+  .fortschritt{display:none}
+}
+
+/* =========================================================
+   9. BREITE SCHIRME
+   ========================================================= */
+@media (min-width:760px){
+  .satz{padding-inline:44px}
+  .halt{padding:96px 0}
+}
