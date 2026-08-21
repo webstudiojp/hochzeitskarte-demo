@@ -43,12 +43,15 @@
 
 *{box-sizing:border-box}
 html,body{height:100%}
+html{scroll-behavior:smooth}
 body{
   margin:0;background:var(--rose);color:var(--tinte);
   font-family:'Cormorant',Georgia,serif;
   -webkit-font-smoothing:antialiased;
-  overflow:hidden;overscroll-behavior:none;
+  overscroll-behavior-y:none;
 }
+/* Solange der Umschlag liegt, gibt es nichts zu scrollen. */
+body.zu{overflow:hidden}
 
 .depot{position:absolute;width:0;height:0;overflow:hidden}
 
@@ -121,11 +124,16 @@ body{
    Der Putz liegt randlos, es gibt kein Kaertchen darauf.
    ========================================================= */
 .seite{
-  position:fixed;inset:0;z-index:10;overflow:hidden;
-  background:
-    radial-gradient(130% 78% at 50% 16%, var(--rose-licht) 0%, var(--rose) 54%, var(--rose-tief) 100%);
+  position:relative;z-index:1;
+  min-height:100svh;overflow:hidden;
 }
-/* Zwei Ebenen Struktur: die grobe Kelle, darueber feines Korn. */
+/* Zwei Ebenen Struktur: die grobe Kelle, darueber feines Korn.
+   Beide stehen fest im Bild - eine Wand laeuft nicht mit. */
+.wand{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(130% 60% at 50% 8%, var(--rose-licht) 0%, var(--rose) 52%, var(--rose-tief) 100%);
+}
 .putz{
   position:absolute;inset:-4%;pointer-events:none;
   background:#fff;                       /* ohne Anstrich malt der Browser nichts */
@@ -138,7 +146,7 @@ body{
 .feinkorn::after{content:'';position:absolute;inset:0;background:#fff}
 
 .satz{
-  position:absolute;inset:0;z-index:2;
+  position:relative;z-index:2;min-height:100svh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:26px 22px calc(13svh + env(safe-area-inset-bottom, 0px));
   text-align:center;
@@ -330,4 +338,165 @@ body.offen .satz{opacity:1;transform:none}
   .brief,.siegel-svg,.wachsglanz,.blatt,.blatt i,.funke,
   .titel,.herzfeld,.namen,.fussfeld,.herzfeld .glitzer,.kalender::after{animation:none !important}
   .blattfall,.funkeln{display:none}
+}
+
+/* =========================================================
+   DIE AUSGEBAUTE SEITE
+   Unter der Save-the-Date folgen die Angaben, die man jetzt
+   schon braucht. Der ganze Ablauf gehoert nicht hierher -
+   der kommt mit der Einladung.
+   ========================================================= */
+.scrollwink{
+  position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom, 0px));z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  text-decoration:none;color:#a9807b;
+  animation:winkAuf .9s ease both,winkTupfen 2.6s ease-in-out .9s infinite;
+}
+.scrollwink[hidden]{display:none}
+.scrollwink span{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+}
+.scrollwink svg{width:13px;height:17px;fill:none;stroke:currentColor;
+  stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+@keyframes winkAuf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes winkTupfen{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+.bogen{position:relative;z-index:1;padding:62px 0}
+.bogen-satz{padding:0 30px;max-width:32rem;margin:0 auto}
+.mitte{text-align:center}
+.mitte-t{text-align:center}
+.mitte .fliess{margin-inline:auto}
+
+.kicker{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  font-weight:500;color:var(--gold);margin:0 0 14px;
+}
+.script{
+  font-family:'Great Vibes',cursive;font-weight:400;
+  font-size:clamp(31px,8.6vw,42px);line-height:1.22;
+  margin:0 0 22px;color:#3f3644;
+}
+.script.klein{font-size:clamp(25px,6.8vw,31px);margin:12px 0 4px}
+.fliess{font-size:17.5px;line-height:1.74;color:#6f6270;margin:0 0 8px;max-width:31em}
+.anschlag{
+  font-weight:400;font-size:clamp(29px,8vw,38px);line-height:1.18;
+  margin:0 0 8px;color:#3a3140;letter-spacing:.005em;
+}
+.anschlag.klein{font-size:clamp(24px,6.4vw,30px)}
+.unterzeile{font-size:16px;letter-spacing:.06em;color:#8a7b8a;margin:0 0 6px}
+
+/* Kleine blaue Raute als Trenner - dieselbe Farbe wie Siegel und Knopf.
+   Die Drehung sitzt auf dem inneren Element: der Auftritt des Abschnitts
+   animiert `transform` und wuerde sie sonst platt buegeln. */
+.raute{display:block;position:relative;width:7px;height:7px;margin:30px auto}
+.raute::before{
+  content:'';position:absolute;inset:0;
+  border:1px solid var(--blau);opacity:.5;transform:rotate(45deg);
+}
+
+/* ---------- Countdown ---------- */
+.zaehler{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:390px;margin:0 auto}
+.einheit{display:flex;flex-direction:column;align-items:center;gap:11px}
+.kachel{
+  width:100%;background:rgba(255,252,251,.72);
+  border:1px solid rgba(200,150,148,.3);border-radius:3px;
+  padding:19px 2px 17px;
+  box-shadow:0 3px 14px rgba(150,95,95,.08);
+  backdrop-filter:blur(3px);
+}
+.kachel b{
+  display:block;font-weight:400;font-variant-numeric:oldstyle-nums;
+  font-size:clamp(25px,7.2vw,32px);line-height:1;color:#3a3140;
+  transform-origin:50% 50%;
+}
+.kachel b.rollt{animation:ziffernrolle .5s cubic-bezier(.3,.8,.3,1)}
+@keyframes ziffernrolle{
+  0%  {transform:translateY(-58%) rotateX(72deg);opacity:0}
+  55% {opacity:1}
+  100%{transform:none;opacity:1}
+}
+.einheit span{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#9c8b9a;
+}
+.zaehler-fuss{margin:26px 0 0;font-style:italic;font-size:16px;color:#8a7b8a}
+
+/* ---------- Posten ---------- */
+.posten{padding:24px 0;border-bottom:1px solid rgba(200,150,148,.28)}
+.posten:last-child{border-bottom:0}
+.postenname{font-weight:400;font-size:clamp(22px,5.8vw,26px);line-height:1.25;margin:0 0 8px;color:#3a3140}
+.postenzeile{font-size:16.5px;line-height:1.66;color:#6f6270;margin:0}
+
+.linkpfeil{
+  display:inline-block;margin-top:6px;text-decoration:none;color:var(--blau);
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  border-bottom:1px solid rgba(32,51,196,.3);padding-bottom:4px;
+  transition:letter-spacing .3s ease;
+}
+.linkpfeil:hover{letter-spacing:.3em}
+
+.kalender.gross{padding:17px 30px;font-size:11px}
+
+/* ---------- Abschied ---------- */
+.fuss{position:relative;z-index:1;padding:70px 0 calc(80px + env(safe-area-inset-bottom, 0px))}
+.fuss-monogramm{font-size:25px;letter-spacing:.14em;color:#3a3140;margin:0 0 4px}
+.fuss-namen{font-weight:400;font-size:clamp(27px,7.4vw,33px);margin:0 0 12px;color:#3a3140}
+.fuss-datum{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:#9c8b9a;margin:0;
+}
+.fuss-mail{margin:0;font-size:17px}
+.fuss-mail a{color:var(--blau);text-decoration:none;
+  border-bottom:1px solid rgba(32,51,196,.3);padding-bottom:2px}
+
+/* ---------- Einblenden beim Erreichen ---------- */
+/* Der Anschnitt steht im Ablauf, nicht in der Grundregel: laeuft
+   nichts, steht der Text trotzdem da. */
+.bogen.da .bogen-satz > *,.fuss.da .bogen-satz > *{
+  animation:satzAuf .8s cubic-bezier(.2,.8,.25,1) both;
+}
+.bogen.da .bogen-satz > :nth-child(2){animation-delay:.08s}
+.bogen.da .bogen-satz > :nth-child(3){animation-delay:.16s}
+.bogen.da .bogen-satz > :nth-child(4){animation-delay:.24s}
+.bogen.da .bogen-satz > :nth-child(n+5){animation-delay:.3s}
+
+/* Die Schreibschrift wird gezogen, nicht eingeblendet. */
+.schreiben{display:inline-block;position:relative}
+@keyframes federzug{
+  from{clip-path:inset(-8% 100% -18% -6%)}
+  to  {clip-path:inset(-8% -6% -18% -6%)}
+}
+.schreiben::after{
+  content:'';position:absolute;top:6%;bottom:16%;left:0;width:3px;
+  background:linear-gradient(180deg,transparent,rgba(70,58,72,.45),transparent);
+  filter:blur(1.6px);opacity:0;pointer-events:none;
+}
+@keyframes federpunkt{
+  0%  {left:-2%;opacity:0}
+  10% {opacity:.85}
+  88% {opacity:.85}
+  100%{left:102%;opacity:0}
+}
+.bogen.da .schreiben,.fuss.da .schreiben{
+  animation:federzug 1.5s cubic-bezier(.32,.12,.28,1) .3s both;
+}
+.bogen.da .schreiben::after,.fuss.da .schreiben::after{
+  animation:federpunkt 1.5s cubic-bezier(.32,.12,.28,1) .3s;
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .scrollwink{animation:none}
+  .bogen.da .bogen-satz > *,.fuss.da .bogen-satz > *{animation:none}
+  .schreiben{animation:none !important;clip-path:none !important}
+  .schreiben::after{display:none}
+  .kachel b.rollt{animation:none}
+}
+
+/* ---------- Breite Schirme ---------- */
+@media (min-width:760px){
+  .bogen-satz{padding-inline:44px}
 }

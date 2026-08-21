@@ -10,6 +10,7 @@
     beginnISO:  '2027-01-01T14:30:00',
     endeISO:    '2027-01-02T02:00:00',
     ort:        'Schloss Benrath, Benrather Schloßallee 104, 40597 Düsseldorf',
+    ortName:    'Schloss Benrath',
     anlass:     'Save the Date · Furkan & Dilara',
   };
 
@@ -41,6 +42,10 @@
       umschlag.setAttribute('aria-hidden', 'true');
     }, 900);
     setTimeout(glitzerStarten, sanft ? 250 : 1200);
+    // Der Wink nach unten kommt erst, wenn oben nichts mehr zu tun ist.
+    setTimeout(() => { $('scrollwink').hidden = false; }, sanft ? 400 : 2600);
+    einblenden();
+    if (countdown()) setInterval(countdown, 1000);
   }
   $('siegel').addEventListener('click', oeffnen);
   umschlag.addEventListener('click', oeffnen);
@@ -333,10 +338,80 @@
   blaetterStreuen();
 
   /* =========================================================
-     4. Kalenderdatei — komplett im Browser erzeugt
+     4. Countdown
+     ========================================================= */
+  const ziel = new Date(DATEN.beginnISO).getTime();
+  const zwei = n => String(n).padStart(2, '0');
+
+  /* Rollt nur, wenn sich der Wert geaendert hat - sonst zappelt die
+     Sekundenanzeige und alles andere ruckelt sinnlos mit. */
+  function ziffer(id, wert, rollen) {
+    const n = $(id);
+    if (!n || n.textContent === String(wert)) return;
+    n.textContent = wert;
+    if (rollen === false || sanft) return;
+    n.classList.remove('rollt');
+    void n.offsetWidth;
+    n.classList.add('rollt');
+  }
+  function countdown() {
+    const rest = ziel - Date.now();
+    if (rest <= 0) {
+      $('zaehler').hidden = true;
+      $('cd-fuss').textContent = 'Heute ist es so weit.';
+      return false;
+    }
+    const t = Math.floor(rest / 1000);
+    ziffer('cd-t', Math.floor(t / 86400));
+    ziffer('cd-s', zwei(Math.floor(t / 3600) % 24));
+    ziffer('cd-m', zwei(Math.floor(t / 60) % 60));
+    ziffer('cd-k', zwei(t % 60), false);   // Sekunden ruhig lassen
+    return true;
+  }
+
+  /* =========================================================
+     5. Kartenlink
+     Ein Suchlink statt fester Koordinaten - so oeffnet jedes
+     Geraet die App, die es ohnehin benutzt.
+     ========================================================= */
+  $('karte-link').href = 'https://www.google.com/maps/search/?api=1&query=' +
+    encodeURIComponent(DATEN.ortName + ', ' + DATEN.ort);
+
+  /* =========================================================
+     6. Einblenden der Abschnitte
+     ========================================================= */
+  const boegen = document.querySelectorAll('.bogen, .fuss');
+  const alleZeigen = () => boegen.forEach(b => b.classList.add('da'));
+
+  function einblenden() {
+    if (!('IntersectionObserver' in window)) { alleZeigen(); return; }
+    let gemeldet = false;
+    const beobachter = new IntersectionObserver((eintraege, selbst) => {
+      gemeldet = true;
+      for (const e of eintraege) {
+        if (!e.isIntersecting) continue;
+        e.target.classList.add('da');
+        selbst.unobserve(e.target);
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+    boegen.forEach(b => beobachter.observe(b));
+
+    // Sicherung. Der Auftritt ist Zierrat, der Inhalt nicht: meldet sich
+    // der Beobachter nicht - etwa weil die Seite in einem Hintergrund-
+    // reiter geoeffnet wurde -, steht trotzdem alles da.
+    setTimeout(() => { if (!gemeldet) alleZeigen(); }, 1800);
+    addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && !gemeldet) {
+        setTimeout(() => { if (!gemeldet) alleZeigen(); }, 600);
+      }
+    });
+  }
+
+  /* =========================================================
+     7. Kalenderdatei — komplett im Browser erzeugt
      ========================================================= */
   const icsZeit = iso => iso.replace(/[-:]/g, '').replace(/\.\d+/, '');
-  $('kalender').addEventListener('click', () => {
+  function kalenderDatei() {
     const ics = [
       'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//JP Webstudio//Save the Date//DE',
       'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
@@ -355,5 +430,10 @@
     a.download = 'Furkan-Dilara-Save-the-Date.ics';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-  });
+  }
+  // Oben nach dem Aufrubbeln, unten am Ende der Seite - derselbe Knopf.
+  for (const id of ['kalender', 'kalender-unten']) {
+    const k = $(id);
+    if (k) k.addEventListener('click', kalenderDatei);
+  }
 })();

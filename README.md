@@ -16,7 +16,7 @@ lokalen Schriften und laufen ueber denselben Server:
 |---|---|
 | `stile/` | Uebersicht mit beiden Kacheln |
 | `stile/eleganz/` | Praegedruck: zwei geprägte Flügel mit Satinschleife, dahinter die vollstaendige Einladung |
-| `stile/siegel/` | Wachssiegel aufbrechen, Glitzerherz freirubbeln, Save the Date |
+| `stile/siegel/` | Wachssiegel aufbrechen, Glitzerherz freirubbeln, dann Countdown, Termin, Ort |
 
 **Eleganz** baut das Ornament nicht als gekachelte Tapete, sondern als halbes
 Motiv mit der Achse am Falz — der rechte Fluegel spiegelt den linken, ueber der
@@ -56,6 +56,12 @@ Ab 52 % abgetragener Flaeche loest der Rest sich auf,
 und aus dem Hinweis wird der Kalenderknopf. Wer gar nicht rubbelt, sieht den
 Termin nach neun Sekunden trotzdem — der Kniff ist huebsch, aber er darf
 niemanden aussperren.
+
+Unter der Save-the-Date folgen nur die Angaben, die man *jetzt schon*
+braucht: Countdown, Termin, Ort und drei Hinweise. Der ganze Ablauf gehoert
+nicht auf eine Save-the-Date — der kommt mit der Einladung. Der Kalenderknopf
+steht zweimal auf der Seite, oben nach dem Aufrubbeln und unten am Ende: wer
+bis dorthin gelesen hat, soll nicht zurueckblaettern muessen.
 
 Der Rauputz im Hintergrund kommt aus `feTurbulence` plus `feDiffuseLighting`.
 Das Rauschen muss vorher ueber `feComponentTransfer` gespreizt werden, sonst

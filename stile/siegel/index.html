@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Furkan &amp; Dilara — Save the Date</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Save the Date zum Freirubbeln: Wachssiegel aufbrechen, blaues Glitzerherz freirubbeln, Termin in den Kalender legen.">
+<meta name="description" content="Save the Date zum Freirubbeln: Wachssiegel aufbrechen, Glitzerherz freirubbeln, Termin in den Kalender legen. Mit Countdown, Ort und allem, was jetzt schon feststeht.">
 
 <!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
      og:image braucht eine vollstaendige Adresse - relative Pfade
@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Furkan &amp; Dilara">
 <meta property="og:title" content="Furkan &amp; Dilara — Save the Date">
-<meta property="og:description" content="Save the Date zum Freirubbeln: Wachssiegel aufbrechen, blaues Glitzerherz freirubbeln, Termin in den Kalender legen.">
+<meta property="og:description" content="Save the Date zum Freirubbeln: Wachssiegel aufbrechen, Glitzerherz freirubbeln, Termin in den Kalender legen. Mit Countdown, Ort und allem, was jetzt schon feststeht.">
 <meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/siegel/">
 <meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/siegel/vorschau.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,17 @@
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f0d7d3">
-<link rel="stylesheet" href="css/siegel.css?v=202608211453">
+<script>
+/* Browser stellen beim Neuladen die alte Bildlaufposition wieder her.
+   Bei einer Seite mit Umschlag-Intro hiesse das: der Gast landet mitten
+   im Ablauf statt am Anfang. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash) {
+  window.scrollTo(0, 0);
+  addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
+}
+</script>
+<link rel="stylesheet" href="css/siegel.css?v=202608211506">
 </head>
 <body class="zu">
 
@@ -75,9 +85,6 @@
      1. UMSCHLAG — Wachssiegel antippen
      ========================================================= -->
 <div class="umschlag" id="umschlag">
-  <div class="putz" aria-hidden="true"></div>
-  <div class="feinkorn" aria-hidden="true"></div>
-
   <div class="brief">
     <div class="brief-flaeche" aria-hidden="true"><i class="putzlage"></i></div>
     <div class="klappe" id="klappe" aria-hidden="true"><i class="putzlage"></i></div>
@@ -106,13 +113,18 @@
      2. SAVE THE DATE
      Der Putz traegt die ganze Seite, kein Kaertchen darauf.
      ========================================================= -->
+<!-- Der Putz liegt fest hinter allem: eine Wand laeuft nicht mit,
+     wenn man am Blatt davor herunterliest. -->
+<div class="wand" aria-hidden="true">
+  <div class="putz"></div>
+  <div class="feinkorn"></div>
+</div>
+
 <!-- Rosenblaetter treiben ueber Umschlag und Karte. Vom Skript gefuellt. -->
 <div class="blattfall" id="blattfall" aria-hidden="true"></div>
 
-<main class="seite" id="seite">
-  <div class="putz" aria-hidden="true"></div>
-  <div class="feinkorn" aria-hidden="true"></div>
-
+<main>
+<section class="seite" id="seite">
   <div class="satz">
     <h1 class="titel">Save <em>the</em> Date</h1>
 
@@ -155,8 +167,134 @@
       </button>
     </div>
   </div>
+
+  <a class="scrollwink" id="scrollwink" href="#gruss" hidden>
+    <span>Mehr</span>
+    <svg viewBox="0 0 20 26" aria-hidden="true"><path d="M10 2v20m0 0-6-7m6 7 6-7"/></svg>
+  </a>
+</section>
+
+
+<!-- =========================================================
+     3. DER ANFANG
+     ========================================================= -->
+<section class="bogen" id="gruss">
+  <div class="bogen-satz mitte">
+    <p class="kicker">Der Anfang</p>
+    <h2 class="script"><span class="schreiben">Wir haben Ja gesagt</span></h2>
+    <p class="fliess">Nach acht Jahren, zwei Umzügen und einem Hund
+      wird es Zeit, das Ganze mit euch zu feiern. Der Tag steht fest —
+      alles Weitere schicken wir euch rechtzeitig.</p>
+    <span class="raute" aria-hidden="true"></span>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     4. COUNTDOWN
+     ========================================================= -->
+<section class="bogen" id="countdown">
+  <div class="bogen-satz mitte">
+    <p class="kicker">Noch</p>
+    <div class="zaehler" id="zaehler">
+      <div class="einheit"><div class="kachel"><b id="cd-t">—</b></div><span>Tage</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-s">—</b></div><span>Stunden</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-m">—</b></div><span>Minuten</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-k">—</b></div><span>Sekunden</span></div>
+    </div>
+    <p class="zaehler-fuss" id="cd-fuss">bis zum 1. Januar 2027</p>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     5. TERMIN UND ORT
+     ========================================================= -->
+<section class="bogen" id="termin">
+  <div class="bogen-satz mitte">
+    <p class="kicker">Der Tag</p>
+    <p class="anschlag">1. Januar 2027</p>
+    <p class="unterzeile">Freitag · ab 14:30 Uhr</p>
+
+    <span class="raute" aria-hidden="true"></span>
+
+    <p class="kicker">Wo wir feiern</p>
+    <p class="anschlag klein">Schloss Benrath</p>
+    <p class="unterzeile">Benrather Schloßallee 104 · Düsseldorf</p>
+    <a class="linkpfeil" id="karte-link" href="#" target="_blank" rel="noopener">In Karten öffnen →</a>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     6. GUT ZU WISSEN
+     Auf einer Save-the-Date steht, was man jetzt schon
+     braucht - nicht der ganze Ablauf. Der kommt spaeter.
+     ========================================================= -->
+<section class="bogen" id="wissen">
+  <div class="bogen-satz">
+    <p class="kicker mitte-t">Gut zu wissen</p>
+
+    <div class="posten">
+      <p class="postenname">Haltet das Wochenende frei</p>
+      <p class="postenzeile">Wir feiern von Freitagnachmittag bis tief in die Nacht.
+        Wer mag, bleibt auch am Samstag noch zum Frühstück.</p>
+    </div>
+
+    <div class="posten">
+      <p class="postenname">Die Einladung folgt</p>
+      <p class="postenzeile">Im Frühjahr 2026 bekommt ihr alle Einzelheiten:
+        Ablauf, Dresscode, Anreise und die Bitte um Rückmeldung.</p>
+    </div>
+
+    <div class="posten">
+      <p class="postenname">Übernachtung</p>
+      <p class="postenzeile">Rund um den Schlosspark gibt es genug Zimmer.
+        Wir nennen euch mit der Einladung ein paar Häuser, die wir kennen.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     7. NOCH EINMAL DER KALENDER
+     Am Ende der Seite steht dieselbe Handlung noch einmal -
+     wer bis hierher gelesen hat, soll nicht zurueckblaettern.
+     ========================================================= -->
+<section class="bogen schluss" id="merken">
+  <div class="bogen-satz mitte">
+    <p class="kicker">Damit es nicht untergeht</p>
+    <h2 class="script"><span class="schreiben">Tragt euch den Tag ein</span></h2>
+
+    <button class="kalender gross" id="kalender-unten" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2.5"/>
+        <path d="M3 10h18M8 3v4M16 3v4"/>
+      </svg>
+      Zum Kalender hinzufügen
+    </button>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     8. ABSCHIED
+     ========================================================= -->
+<footer class="fuss">
+  <div class="bogen-satz mitte">
+    <p class="fuss-monogramm">F&amp;D</p>
+    <p class="script klein"><span class="schreiben">Bis bald</span></p>
+    <p class="fuss-namen">Furkan &amp; Dilara</p>
+    <p class="fuss-datum">1. Januar · 2027</p>
+
+    <span class="raute" aria-hidden="true"></span>
+
+    <p class="kicker">Bei Fragen</p>
+    <p class="fuss-mail"><a href="mailto:hallo@furkan-und-dilara.de">hallo@furkan-und-dilara.de</a></p>
+  </div>
+</footer>
 </main>
 
-<script src="js/siegel.js?v=202608211453"></script>
+<script src="js/siegel.js?v=202608211506"></script>
 </body>
 </html>
