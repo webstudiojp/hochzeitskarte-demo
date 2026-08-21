@@ -22,6 +22,167 @@
   const $ = id => document.getElementById(id);
 
   /* =========================================================
+     0. Sprache
+     Deutsch steht im HTML und wird von dort einmal eingesammelt -
+     so ist es nur an einer Stelle gepflegt. In dieser Tabelle
+     steht ausschliesslich, was uebersetzt wird.
+     ========================================================= */
+  const SPRACHEN = {
+    de: { htmlLang: 'de', name: 'Deutsch', t: null },   // wird aus dem HTML gefuellt
+    tr: {
+      htmlLang: 'tr', name: 'Türkçe',
+      t: {
+        'cover.hinweis': 'Açmak için dokunun',
+
+        'menue.start': 'Başlangıç', 'menue.ort': 'Konum ve ulaşım', 'menue.tag': 'Günün akışı',
+        'menue.familien': 'Aileler', 'menue.dresscode': 'Kıyafet', 'menue.geschenke': 'Hediyeler',
+        'menue.rsvp': 'Geri bildirim',
+
+        'hero.kicker': 'Tüm sevgimizle<br>sizi davet ediyoruz',
+        'hero.ort': 'Benrath Sarayı ·<br>Düsseldorf',
+        'hero.scroll': 'Kaydırın',
+
+        'anrede.kicker': 'Sizin için',
+        'anrede.titel': 'Sevgili ailemiz, sevgili dostlarımız',
+        'anrede.text': 'Yeni yılın ilk gününde hayatımızı birleştiriyoruz. Bu özel günümüzde '
+                     + 'sizi de aramızda görmek bizi çok mutlu eder — nikâhta, yemekte ve '
+                     + 'sonrasında dilediğiniz kadar.',
+        'anrede.gruss': 'Dilara ve Furkan',
+
+        'cd.kicker': 'Geri sayım', 'cd.titel': 'Sonsuzluğa kalan',
+        'cd.tage': 'Gün', 'cd.stunden': 'Saat', 'cd.minuten': 'Dakika', 'cd.sekunden': 'Saniye',
+        'cd.fuss': '1 Ocak 2027 tarihine', 'cd.heute': 'Bugün o gün!',
+
+        'ort.datumKicker': 'Tarih',
+        'datum.lang': '1 Ocak 2027', 'datum.tag': 'Cuma',
+        'ort.titel': 'Konum',
+        'ort.trauung': 'Nikâh', 'ort.trauungName': 'Benrath Sarayı',
+        'ort.trauungZeit': '<b>Saat 14:30</b> · Benrather Schloßallee 104, Düsseldorf',
+        'ort.empfang': 'Karşılama', 'ort.empfangName': 'Saray parkındaki Orangerie',
+        'ort.empfangZeit': '<b>Saat 19:30</b> · Benrather Schloßallee 104, Düsseldorf',
+        'weg.google': 'Google Haritalar →', 'weg.apple': 'Apple Haritalar →',
+
+        'anreise.titel': 'Ulaşım',
+        'anreise.auto': 'Arabayla',
+        'anreise.autoText': 'A59 otoyolundan Düsseldorf-Benrath çıkışı, ardından saraya giden '
+                          + 'tabelaları izleyin.',
+        'anreise.bahn': 'Trenle',
+        'anreise.bahnText': 'S6 ile Düsseldorf-Benrath durağına, oradan saray parkı içinden '
+                          + 'sekiz dakika yürüyüş.',
+        'anreise.parken': 'Otopark',
+        'anreise.parkenText': 'Park girişinin hemen yanındaki güney ziyaretçi otoparkı ücretsizdir.',
+
+        'ablauf.titel': 'Günün akışı',
+        'ablauf.empfang': 'Karşılama', 'ablauf.empfangText': 'Avluda kadeh kaldırıp hoş geldiniz diyoruz.',
+        'ablauf.trauung': 'Nikâh töreni', 'ablauf.trauungText': 'Tören Aynalı Salon\'da gerçekleşecek.',
+        'ablauf.kaffee': 'Kahve ve pasta', 'ablauf.kaffeeText': 'Saray parkında, hava güzelse açık havada.',
+        'ablauf.dinner': 'Yemek ve kutlama', 'ablauf.dinnerText': 'Orangerie\'de akşam yemeği, ardından müzik.',
+        'ablauf.tanz': 'İlk dans', 'ablauf.tanzText': 'Sonrasında pist herkesin.',
+        'ablauf.ausklang': 'Kapanış', 'ablauf.ausklangText': 'Son dans ve kapıda vedalaşma.',
+
+        'familien.kicker': 'Bizimle birlikte sevinenler',
+        'familien.brautseite': 'Gelinin ailesi',
+        'familien.braeutigamseite': 'Damadın ailesi',
+        'familien.trauzeugen': 'Şahitler',
+
+        'dress.titel': 'Kıyafet', 'dress.gross': 'Şık ve resmî',
+        'dress.text': 'Takım elbise ve abiye, tercihen sakin tonlarda. Biz krem ve altın '
+                    + 'giyeceğiz — beyaz lütfen geline kalsın.',
+
+        'geschenk.titel': 'Hediyeler', 'geschenk.gross': 'Bize bir hediye',
+        'geschenk.text': 'Gelmeniz yeterli. Yine de bir şey vermek isteyenler, balayımıza '
+                       + 'katkıda bulunarak bizi çok sevindirir.',
+        'geschenk.zeigen': 'IBAN\'ı göster', 'geschenk.verbergen': 'IBAN\'ı gizle',
+        'geschenk.inhaber': 'Hesap sahibi',
+        'geschenk.kopieren': 'Kopyala', 'geschenk.kopiert': 'Kopyalandı', 'geschenk.hand': 'Elle kopyalayın',
+
+        'rsvp.titel': 'Geri bildirim', 'rsvp.kicker': 'Bize haber verin',
+        'rsvp.anrede': 'Sevgili misafirler',
+        'rsvp.frist': 'Lütfen <b>1 Kasım 2026</b> tarihine kadar gelip gelemeyeceğinizi bildirin.',
+        'rsvp.name': 'İsim', 'rsvp.namePlatz': 'Yıldız ailesi',
+        'rsvp.kommt': 'Geliyor musunuz?', 'rsvp.ja': 'Evet, geliyoruz', 'rsvp.nein': 'Maalesef gelemiyoruz',
+        'rsvp.anzahl': 'Kişi sayısı',
+        'rsvp.essen': 'Yemek tercihleri', 'rsvp.essenPlatz': 'Vejetaryen, glutensiz, alerjiler …',
+        'rsvp.nachricht': 'Çifte mesajınız', 'rsvp.nachrichtPlatz': 'Bize birkaç satır …',
+        'rsvp.senden': 'Yanıtı gönder',
+        'rsvp.fehltName': 'Lütfen isminizi yazın.',
+        'rsvp.fehltZusage': 'Lütfen gelip gelemeyeceğinizi belirtin.',
+        'rsvp.dankeJa': n => 'Teşekkürler, ' + n + '. Sizi aramızda görmek için sabırsızlanıyoruz.',
+        'rsvp.dankeNein': n => 'Haber verdiğiniz için teşekkürler, ' + n + '. Sizi özleyeceğiz.',
+
+        'reiter.start': 'Başlangıç', 'reiter.ort': 'Konum',
+        'reiter.geschenke': 'Hediyeler', 'reiter.rsvp': 'Yanıt',
+
+        'fuss.gruss': 'Sevgiyle', 'fuss.datum': '1 OCAK · 2027', 'fuss.fragen': 'Sorularınız için',
+
+        'kopf.menueAuf': 'Menüyü aç', 'kopf.menueZu': 'Menüyü kapat',
+      },
+    },
+  };
+  const SPRACHFOLGE = ['de', 'tr'];
+
+  /* Reihenfolge: ausdrueckliche Wahl > Adresszeile > Browser > Standard */
+  function spracheErmitteln() {
+    const ausUrl = new URLSearchParams(location.search).get('lang');
+    if (SPRACHFOLGE.includes(ausUrl)) return ausUrl;
+    try {
+      const gemerkt = localStorage.getItem('stil-sprache');
+      if (SPRACHFOLGE.includes(gemerkt)) return gemerkt;
+    } catch { /* privater Modus */ }
+    const browser = (navigator.language || '').slice(0, 2).toLowerCase();
+    if (SPRACHFOLGE.includes(browser)) return browser;
+    return 'de';
+  }
+
+  // Deutsch einmal aus dem HTML einsammeln.
+  SPRACHEN.de.t = {};
+  for (const n of document.querySelectorAll('[data-t]')) SPRACHEN.de.t[n.dataset.t] = n.innerHTML;
+  for (const n of document.querySelectorAll('[data-t-platz]')) SPRACHEN.de.t[n.dataset.tPlatz] = n.placeholder;
+  Object.assign(SPRACHEN.de.t, {
+    'cd.heute': 'Heute ist es so weit.',
+    'geschenk.verbergen': 'IBAN verbergen',
+    'geschenk.kopiert': 'Kopiert', 'geschenk.hand': 'Bitte von Hand',
+    'rsvp.fehltName': 'Bitte tragt euren Namen ein.',
+    'rsvp.fehltZusage': 'Bitte sagt uns, ob ihr kommt.',
+    'rsvp.dankeJa': n => 'Danke, ' + n + '. Wir freuen uns auf euch.',
+    'rsvp.dankeNein': n => 'Danke für die Nachricht, ' + n + '. Wir werden euch vermissen.',
+    'kopf.menueAuf': 'Menü öffnen', 'kopf.menueZu': 'Menü schließen',
+  });
+
+  let sprache = spracheErmitteln();
+  const T = schluessel => (SPRACHEN[sprache].t[schluessel] ?? SPRACHEN.de.t[schluessel] ?? '');
+
+  function spracheAnwenden() {
+    document.documentElement.lang = SPRACHEN[sprache].htmlLang;
+    for (const n of document.querySelectorAll('[data-t]')) {
+      const wert = T(n.dataset.t);
+      if (typeof wert === 'string') n.innerHTML = wert;
+    }
+    for (const n of document.querySelectorAll('[data-t-platz]')) {
+      const wert = T(n.dataset.tPlatz);
+      if (typeof wert === 'string') n.placeholder = wert;
+    }
+    for (const f of document.querySelectorAll('.flagge')) {
+      f.classList.toggle('aktiv', f.dataset.lang === sprache);
+      f.title = SPRACHEN[f.dataset.lang].name;
+    }
+    const b = $('burger');
+    if (b) b.setAttribute('aria-label',
+      T(b.getAttribute('aria-expanded') === 'true' ? 'kopf.menueZu' : 'kopf.menueAuf'));
+    // Zustandstexte, die gerade nicht im Grundzustand stehen, neu setzen.
+    const schalter = $('iban-schalter');
+    if (schalter) schalter.textContent =
+      T(schalter.getAttribute('aria-expanded') === 'true' ? 'geschenk.verbergen' : 'geschenk.zeigen');
+  }
+
+  $('sprachwahl').addEventListener('click', () => {
+    sprache = SPRACHFOLGE.find(x => x !== sprache) || 'de';
+    try { localStorage.setItem('stil-sprache', sprache); } catch { /* egal */ }
+    spracheAnwenden();
+  });
+  spracheAnwenden();
+
+  /* =========================================================
      1. Cover
      Erst loest sich die Schleife, dann klappen die Fluegel auf.
      Beides haengt an derselben Klasse - die Verzoegerung steckt
@@ -57,14 +218,14 @@
   burger.addEventListener('click', () => {
     const offen = burger.getAttribute('aria-expanded') === 'true';
     burger.setAttribute('aria-expanded', String(!offen));
-    burger.setAttribute('aria-label', offen ? 'Menü öffnen' : 'Menü schließen');
+    burger.setAttribute('aria-label', T(offen ? 'kopf.menueAuf' : 'kopf.menueZu'));
     menue.hidden = offen;
   });
   menue.addEventListener('click', e => {
     if (e.target.tagName !== 'A') return;
     menue.hidden = true;
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Menü öffnen');
+    burger.setAttribute('aria-label', T('kopf.menueAuf'));
   });
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || menue.hidden) return;
@@ -94,7 +255,7 @@
     const rest = ziel - Date.now();
     if (rest <= 0) {
       $('zaehler').hidden = true;
-      $('cd-fuss').textContent = 'Heute ist es so weit.';
+      $('cd-fuss').textContent = T('cd.heute');
       return false;
     }
     const s = Math.floor(rest / 1000);
@@ -132,7 +293,7 @@
     const offen = schalter.getAttribute('aria-expanded') === 'true';
     schalter.setAttribute('aria-expanded', String(!offen));
     feld.hidden = offen;
-    schalter.textContent = offen ? 'IBAN anzeigen' : 'IBAN verbergen';
+    schalter.textContent = T(offen ? 'geschenk.zeigen' : 'geschenk.verbergen');
   });
 
   const kopieren = $('iban-kopieren');
@@ -153,8 +314,8 @@
       try { gut = document.execCommand('copy'); } catch { gut = false; }
       t.remove();
     }
-    kopieren.textContent = gut ? 'Kopiert' : 'Bitte von Hand';
-    setTimeout(() => { kopieren.textContent = 'Kopieren'; }, 2400);
+    kopieren.textContent = T(gut ? 'geschenk.kopiert' : 'geschenk.hand');
+    setTimeout(() => { kopieren.textContent = T('geschenk.kopieren'); }, 2400);
   });
 
   /* =========================================================
@@ -169,18 +330,16 @@
     const daten = new FormData(formular);
     const name  = String(daten.get('name') || '').trim();
     if (!name) {
-      echo.textContent = 'Bitte tragt euren Namen ein.';
+      echo.textContent = T('rsvp.fehltName');
       formular.elements.name.focus();
       return;
     }
     if (!daten.get('zusage')) {
-      echo.textContent = 'Bitte sagt uns, ob ihr kommt.';
+      echo.textContent = T('rsvp.fehltZusage');
       formular.querySelector('.wahlpaar input').focus();
       return;
     }
-    echo.textContent = daten.get('zusage') === 'ja'
-      ? 'Danke, ' + name + '. Wir freuen uns auf euch.'
-      : 'Danke für die Nachricht, ' + name + '. Wir werden euch vermissen.';
+    echo.textContent = T(daten.get('zusage') === 'ja' ? 'rsvp.dankeJa' : 'rsvp.dankeNein')(name);
     formular.querySelector('button[type=submit]').disabled = true;
   });
 

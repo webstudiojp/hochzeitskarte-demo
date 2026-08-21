@@ -1,0 +1,436 @@
+/* =========================================================
+   FERNWEH — Reisetagebuch
+
+   Die Karte ist ein Heft, in das jemand unterwegs geschrieben
+   hat: Eintraege statt Abschnitten, gestempelte Marken statt
+   Ueberschriften, und eine gestrichelte Route, die neben dem
+   Text mitlaeuft.
+
+   Drei Schriften mit klaren Aufgaben: Playfair fuer das, was
+   auf der Karte gedruckt waere, Space Grotesk fuer alles
+   Technische (Zeiten, Adressen, Formular), Special Elite nur
+   fuer das, was gestempelt ist. Die dritte darf nirgendwo
+   sonst auftauchen, sonst verliert der Stempel seine Wirkung.
+   ========================================================= */
+
+@font-face{font-family:'Playfair Display';src:url('../../../assets/fonts/PlayfairDisplay-latin.woff2') format('woff2');
+  font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:'Playfair Display';src:url('../../../assets/fonts/PlayfairDisplay-italic-latin.woff2') format('woff2');
+  font-weight:400 600;font-style:italic;font-display:swap}
+@font-face{font-family:'Space Grotesk';src:url('../../../assets/fonts/SpaceGrotesk-latin.woff2') format('woff2');
+  font-weight:300 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Special Elite';src:url('../../../assets/fonts/SpecialElite-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --papier:#f4ecd9;
+  --papier-2:#eae0c8;
+  --karte:#faf5e8;
+  --navy:#22354f;
+  --navy-2:#16243a;
+  --messing:#b0873f;
+  --oxblood:#7c2b2b;
+  --tinte:#2c2a26;
+  --tinte-2:#6e675a;
+
+  --display:'Playfair Display',Georgia,serif;
+  --sans:'Space Grotesk',system-ui,-apple-system,sans-serif;
+  --stempel:'Special Elite','Courier New',monospace;
+
+  --rand:clamp(22px,6vw,60px);
+  --spalte:min(600px,100%);
+}
+
+body{
+  background:var(--papier);
+  color:var(--tinte);
+  font-family:var(--display);
+  font-size:clamp(16px,1rem + .3vw,18.5px);
+  line-height:1.72;
+}
+
+.filterablage{position:absolute;width:0;height:0;overflow:hidden}
+
+.fortschritt{position:fixed;inset:0 0 auto;height:2px;z-index:60;background:rgba(34,53,79,.14)}
+.fortschritt i{display:block;height:100%;background:var(--oxblood)}
+
+.musik{
+  position:fixed;right:calc(var(--rand) * .6);bottom:calc(var(--rand) * .6);z-index:60;
+  width:44px;height:44px;
+  border:1.5px solid var(--navy);background:var(--karte);
+  color:var(--navy);display:grid;place-items:center;
+  transition:background .3s,color .3s,transform .3s;
+}
+.musik svg{width:20px;height:20px}
+.musik:hover{transform:rotate(-4deg)}
+.musik[data-an]{background:var(--navy);color:var(--papier)}
+
+/* =========================================================
+   AUFTAKT
+   Die Karte liegt als eigenes Blatt auf dem Foto. Der Stempel
+   trifft dieses Blatt, nicht das Bild - sonst muesste die
+   Trefferlage bei jedem Seitenverhaeltnis nachgerechnet
+   werden, und ein Stempel, der danebengeht, ist keiner.
+   ========================================================= */
+.auftakt{position:relative;height:100svh;overflow:hidden;background:#3c2f22;--druck:0}
+.auftakt-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.08);
+  filter:brightness(.86) saturate(.94);
+}
+
+.karte{
+  position:absolute;left:50%;top:50%;z-index:2;
+  transform:translate(-50%,-50%) rotate(-1.4deg);
+  width:min(84vw,400px);
+  filter:drop-shadow(0 18px 34px rgba(30,20,10,.5));
+}
+.karte-flaeche{
+  position:relative;
+  background:linear-gradient(168deg,#fdfaf0,var(--karte) 55%,#f1e8d4);
+  padding:clamp(26px,6.5vw,40px) clamp(20px,5vw,30px) clamp(20px,5vw,30px);
+  text-align:center;
+  /* Der Buettenrand: unregelmaessige Kanten statt eines
+     geschnittenen Rechtecks. */
+  clip-path:polygon(
+    0.6% 1.2%, 12% 0.3%, 27% 1.4%, 41% 0.2%, 58% 1.3%, 73% 0.4%, 88% 1.5%, 99.4% 0.6%,
+    98.8% 14%, 99.6% 30%, 98.7% 47%, 99.5% 63%, 98.9% 80%, 99.4% 99.2%,
+    86% 98.6%, 71% 99.5%, 55% 98.5%, 39% 99.6%, 24% 98.7%, 9% 99.5%, 0.5% 98.8%,
+    1.2% 82%, 0.4% 66%, 1.3% 49%, 0.3% 33%, 1.4% 17%);
+}
+.karte-ueber{
+  font-family:var(--sans);font-weight:500;
+  font-size:9.5px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--tinte-2);margin-left:.42em;margin-bottom:clamp(16px,4vw,24px);
+}
+.karte-unten{
+  font-family:var(--sans);font-weight:400;
+  font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--tinte-2);margin-top:clamp(14px,3.4vw,20px);
+}
+
+/* Der Abdruck. Er sitzt schief, wie ein Stempel eben sitzt,
+   und die Tinte ist ueber den Filter aufgebrochen. */
+.abdruck{
+  position:relative;
+  transform:rotate(-3.2deg) scale(calc(.94 + var(--druck) * .06));
+  color:var(--oxblood);
+  opacity:var(--druck);
+  filter:url(#tinte);
+}
+@supports not (filter:url(#tinte)){.abdruck{filter:none}}
+.abdruck svg{width:100%;height:auto;overflow:visible}
+.abdruck-namen{
+  font-family:var(--stempel);font-size:31px;letter-spacing:.02em;
+  fill:currentColor;
+}
+.abdruck-datum{font-family:var(--stempel);font-size:19px;letter-spacing:.16em;fill:currentColor}
+.abdruck-ort{font-family:var(--stempel);font-size:11px;letter-spacing:.44em;fill:currentColor;opacity:.82}
+
+/* Der Stempelkopf faehrt herunter. Er wird nicht kleiner,
+   sondern *grosser*, waehrend er faellt - so sieht es von
+   oben aus, wenn etwas auf einen zukommt. Beim Aufschlag ist
+   er weg, und der Abdruck steht. */
+.stempelkopf{
+  position:absolute;left:50%;top:44%;z-index:3;
+  width:74%;aspect-ratio:300/172;
+  transform:translate(-50%,-50%) rotate(-3.2deg) scale(var(--kopf,1.5));
+  background:
+    linear-gradient(150deg,#4a3a2a,#2c2016 55%,#1b120c);
+  border-radius:8px;
+  box-shadow:0 calc(28px * var(--kopf,1.5)) calc(30px * var(--kopf,1.5)) rgba(20,12,6,.42);
+  opacity:var(--kopfsicht,0);
+  pointer-events:none;
+}
+
+.stempelgriff{position:absolute;inset:0;z-index:4;background:none;border:0;padding:0;cursor:pointer}
+.stempelgriff:disabled{cursor:default;pointer-events:none}
+
+.auftakt-hinweis{
+  position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);z-index:5;
+  transform:translateX(-50%);
+  font-family:var(--stempel);font-size:12px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--papier);border:1.5px solid rgba(244,236,217,.6);padding:10px 20px;
+  opacity:calc(1 - var(--druck) * 2.4);transition:opacity .5s;pointer-events:none;
+}
+
+/* Der Ruettler beim Aufschlag. Kurz, hart, einmal. */
+.auftakt.schlag{animation:schlagen .28s cubic-bezier(.3,0,.2,1)}
+@keyframes schlagen{
+  0%{transform:translateY(0)}
+  22%{transform:translateY(4px)}
+  50%{transform:translateY(-2px)}
+  100%{transform:translateY(0)}
+}
+
+html[data-zu],html[data-zu] body{overflow:hidden}
+
+/* =========================================================
+   DAS TAGEBUCH
+   ========================================================= */
+.tagebuch{position:relative;z-index:1;padding-top:clamp(30px,7vw,56px)}
+
+.route{
+  position:absolute;left:calc(var(--rand) * .34);top:0;bottom:0;
+  width:clamp(22px,5vw,40px);height:100%;
+  color:rgba(124,43,43,.34);pointer-events:none;
+}
+.route-plan{opacity:.5}
+#routenweg{color:var(--oxblood);opacity:.95}
+/* Ohne Skript steht die Strecke vollstaendig da. Eine Linie,
+   die nur mit Javascript sichtbar wird, ist eine Linie, die
+   manchmal fehlt. */
+html:not([data-bereit]) #routenweg{stroke-dasharray:1 0}
+@media (min-width:900px){.route{left:calc(50% - 480px)}}
+
+.seite{
+  position:relative;
+  margin:0 auto;padding:clamp(46px,11vw,86px) var(--rand);
+  max-width:min(760px,100%);
+}
+.seite--weit{max-width:min(940px,100%)}
+/* Die Trennung zwischen zwei Eintraegen ist eine gestrichelte
+   Linie - dieselbe Sprache wie die Route daneben. */
+.seite + .seite{border-top:1px dashed rgba(44,42,38,.22)}
+
+@media (prefers-reduced-motion:no-preference){
+  html[data-js] [data-folge]{
+    opacity:0;transform:translateY(16px);
+    transition:opacity .7s ease,transform .8s cubic-bezier(.16,.7,.24,1);
+    transition-delay:calc(var(--folge,0) * 80ms);
+  }
+  html[data-js] .da [data-folge]{opacity:1;transform:none}
+}
+
+/* Die Eintragsmarke ist gestempelt, nicht gesetzt. */
+.marke{
+  display:inline-block;
+  font-family:var(--stempel);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--oxblood);border:1.4px solid currentColor;padding:5px 11px;
+  transform:rotate(-1.6deg);margin-bottom:clamp(16px,3.6vw,24px);
+}
+.titel{
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(28px,7.4vw,46px);line-height:1.13;letter-spacing:-.012em;
+  margin-bottom:clamp(18px,4vw,28px);
+}
+.satz{max-width:44ch;color:var(--tinte)}
+.satz--eng{max-width:34ch}
+.satz b{font-weight:600;color:var(--oxblood)}
+.notiz{
+  font-family:var(--stempel);font-size:13.5px;line-height:1.6;letter-spacing:.03em;
+  color:var(--navy);margin-top:clamp(16px,3.6vw,24px);
+  padding-left:14px;border-left:2px solid var(--messing);
+}
+.klein{font-family:var(--sans);font-size:11.5px;line-height:1.65;color:var(--tinte-2);margin-top:13px}
+
+/* =========================================================
+   Countdown — als Fahrplananzeige
+   ========================================================= */
+.uhr{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  margin-top:clamp(32px,7vw,50px);
+  background:var(--navy);color:var(--papier);
+}
+.uhr-teil{padding:clamp(16px,3.8vw,24px) 4px;text-align:center;
+  border-left:1px solid rgba(244,236,217,.14)}
+.uhr-teil:first-child{border-left:0}
+.uhr-teil b{
+  display:block;font-family:var(--sans);font-weight:500;
+  font-size:clamp(24px,7vw,38px);line-height:1;font-variant-numeric:tabular-nums;
+  letter-spacing:-.01em;
+}
+.uhr-teil i{
+  display:block;margin-top:9px;font-style:normal;font-family:var(--sans);font-weight:400;
+  font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--messing);
+}
+.uhr-teil b.rollt{animation:umblaettern .38s cubic-bezier(.3,0,.2,1)}
+@keyframes umblaettern{from{opacity:.2;transform:translateY(-.2em)}to{opacity:1;transform:none}}
+.uhr-vorbei{margin-top:20px;font-style:italic;color:var(--oxblood)}
+
+/* =========================================================
+   Etappen und Ablauf
+   ========================================================= */
+.etappen{display:flex;flex-direction:column;gap:clamp(26px,6vw,40px)}
+.etappen li{padding-left:clamp(16px,4vw,24px);border-left:2px solid rgba(176,135,63,.5)}
+.etappen b{
+  display:block;font-family:var(--stempel);font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--messing);margin-bottom:.7em;
+}
+.etappen h3{font-family:var(--display);font-weight:600;font-size:clamp(19px,4.8vw,24px);margin-bottom:.35em}
+.etappen p{font-size:.94em;color:var(--tinte-2);max-width:42ch}
+
+.ablauf{display:flex;flex-direction:column}
+.ablauf li{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,4.5vw,30px);align-items:baseline;
+  padding:clamp(14px,3.4vw,20px) 0;border-bottom:1px dashed rgba(44,42,38,.2);
+}
+.ablauf li:first-child{border-top:1px dashed rgba(44,42,38,.2)}
+.ablauf b{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.04em;
+  color:var(--navy);font-variant-numeric:tabular-nums}
+.ablauf h3{font-family:var(--display);font-weight:600;font-size:clamp(17px,4.4vw,21px)}
+.ablauf p{font-family:var(--sans);font-weight:300;font-size:13px;color:var(--tinte-2);
+  line-height:1.55;margin-top:.2em}
+
+/* =========================================================
+   Album — aufgeklebte Bilder mit Klebestreifen
+   ========================================================= */
+.album{display:grid;gap:clamp(24px,6vw,38px);grid-template-columns:1fr}
+@media (min-width:640px){
+  .album{grid-template-columns:1fr 1fr}
+  .album--breit{grid-column:1/-1}
+}
+.album figure{position:relative;background:#fff;padding:clamp(8px,2vw,12px) clamp(8px,2vw,12px) 0;
+  box-shadow:0 2px 4px rgba(44,42,38,.12),0 16px 30px -20px rgba(44,42,38,.5);
+  transform:rotate(var(--dreh,0deg))}
+.album figure:nth-child(1){--dreh:-1deg}
+.album figure:nth-child(2){--dreh:1.2deg}
+.album figure:nth-child(3){--dreh:-.5deg}
+/* Der Klebestreifen. Halbdurchsichtiges Papier ueber der
+   oberen Kante, leicht schief - so klebt niemand gerade. */
+.album figure::before{
+  content:'';position:absolute;left:50%;top:-11px;
+  width:clamp(56px,14vw,84px);height:22px;transform:translateX(-50%) rotate(-2.4deg);
+  background:rgba(226,212,178,.72);
+  box-shadow:0 1px 2px rgba(44,42,38,.14);
+}
+.album .px-rahmen{width:100%;aspect-ratio:3/4}
+.album--breit .px-rahmen{aspect-ratio:3/2}
+.album figcaption{
+  font-family:var(--stempel);font-size:12.5px;color:var(--tinte-2);
+  padding:11px 2px 13px;text-align:center;
+}
+
+.ort-bild{aspect-ratio:3/2;margin:0 0 clamp(22px,5vw,32px);
+  box-shadow:0 2px 4px rgba(44,42,38,.12),0 18px 34px -22px rgba(44,42,38,.55)}
+.ortname{font-family:var(--display);font-weight:600;font-size:clamp(22px,5.4vw,28px)}
+.adresse{font-family:var(--sans);font-weight:400;font-size:12.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--tinte-2);margin-top:6px}
+
+.tasten{display:flex;flex-wrap:wrap;gap:11px;margin-top:clamp(24px,5vw,36px)}
+.taste{
+  display:inline-block;text-decoration:none;background:transparent;
+  font-family:var(--sans);font-weight:500;
+  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  padding:14px 21px;border:1.5px solid var(--navy);color:var(--navy);
+  transition:background .28s,color .28s;
+}
+.taste:hover{background:rgba(34,53,79,.09)}
+.taste--voll{background:var(--oxblood);border-color:var(--oxblood);color:var(--papier)}
+.taste--voll:hover{background:#601f1f;border-color:#601f1f}
+.taste--klein{font-size:9.5px;padding:11px 16px}
+.taste:disabled{opacity:.4;cursor:not-allowed}
+
+/* =========================================================
+   Listen
+   ========================================================= */
+.liste{display:flex;flex-direction:column;gap:clamp(24px,5vw,34px)}
+.liste h3{font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--navy);margin-bottom:.85em}
+.liste p{color:var(--tinte-2);max-width:42ch}
+.haeuser{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.haeuser li{padding-left:15px;border-left:2px solid rgba(176,135,63,.55)}
+.haeuser b{display:block;font-family:var(--display);font-weight:600;font-size:1.04em}
+.haeuser i{display:block;font-style:normal;font-family:var(--sans);font-weight:300;
+  font-size:12px;color:var(--tinte-2);margin-top:2px}
+
+.farben{display:flex;gap:0;margin-top:clamp(24px,5vw,34px);max-width:300px}
+.farben i{display:block;flex:1;aspect-ratio:1;background:var(--f)}
+
+/* =========================================================
+   Formular
+   ========================================================= */
+.formular{display:flex;flex-direction:column;gap:clamp(18px,4vw,24px);margin-top:clamp(26px,5.5vw,38px)}
+.feld-block{display:block}
+.feld-block input,.feld-block select,.feld-block textarea{width:100%}
+.feld-name{
+  display:block;font-family:var(--sans);font-weight:600;
+  font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--navy);margin-bottom:9px;
+}
+.formular input[type=text],.formular input[type=email],.formular select,.formular textarea{
+  background:var(--karte);border:1.5px solid rgba(34,53,79,.28);
+  padding:12px 13px;font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.5;
+  color:var(--tinte);border-radius:0;appearance:none;transition:border-color .28s;
+}
+.formular select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--navy) 50%),
+                   linear-gradient(135deg,var(--navy) 50%,transparent 50%);
+  background-position:right 15px center,right 10px center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:32px;
+}
+.formular input:focus,.formular select:focus,.formular textarea:focus{outline:none;border-color:var(--oxblood)}
+.wahl{border:0;padding:0;margin:0}
+.wahl label{display:flex;align-items:center;gap:11px;padding:9px 0;cursor:pointer}
+.wahl input{
+  appearance:none;width:16px;height:16px;flex:none;
+  border:1.5px solid var(--navy);background:var(--karte);transition:background .25s,box-shadow .25s;
+}
+.wahl input:checked{background:var(--oxblood);border-color:var(--oxblood);box-shadow:inset 0 0 0 3px var(--karte)}
+.begleitung-zahl{font-family:var(--display);font-style:italic;font-size:15px;letter-spacing:0;
+  text-transform:none;color:var(--tinte-2);margin-left:.5em}
+.begleitung-zeile{padding:15px 0;border-top:1px dashed rgba(44,42,38,.24)}
+@media (min-width:560px){.begleitung-zeile{grid-template-columns:1fr auto auto;align-items:end}}
+.begleitung-weg{background:none;border:0;padding:8px 0;justify-self:start;
+  font-family:var(--sans);font-weight:600;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--oxblood)}
+.begleitung-weg:hover{text-decoration:underline}
+.begleitung [data-begleitung]{margin-bottom:12px}
+
+.danke{padding:clamp(24px,5vw,36px) 0}
+.danke h3{font-family:var(--display);font-weight:600;font-size:clamp(24px,6vw,32px);margin-bottom:.5em}
+.danke a{color:var(--oxblood)}
+
+.iban{margin-top:20px;padding:18px 20px;background:var(--karte);border:1.5px dashed rgba(34,53,79,.35)}
+.iban p{margin-bottom:14px;line-height:1.85}
+.iban b{font-family:var(--display);font-weight:600}
+.iban-nr{font-family:var(--sans);font-weight:400;font-size:13.5px;letter-spacing:.1em;color:var(--navy)}
+[data-iban-zeigen]{margin-top:clamp(22px,5vw,32px)}
+
+/* =========================================================
+   Fragen
+   ========================================================= */
+.fragen{margin-top:clamp(8px,2vw,14px)}
+.fragen details{border-bottom:1px dashed rgba(44,42,38,.22)}
+.fragen details:first-child{border-top:1px dashed rgba(44,42,38,.22)}
+.fragen summary{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:clamp(15px,3.4vw,20px) 0;font-size:1.01em;transition:color .3s;
+}
+.fragen summary:hover{color:var(--oxblood)}
+.fragen summary::after{
+  content:'';flex:none;width:8px;height:8px;
+  border-right:1.5px solid var(--oxblood);border-bottom:1.5px solid var(--oxblood);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .35s cubic-bezier(.2,.7,.3,1);
+}
+.fragen details[open] summary::after{transform:rotate(-135deg) translate(-3px,-3px)}
+.frage-antwort{transition:grid-template-rows .4s cubic-bezier(.2,.7,.3,1)}
+.fragen details:not([open]) .frage-antwort{grid-template-rows:0fr}
+.fragen p{padding-bottom:clamp(15px,3.4vw,20px);color:var(--tinte-2);font-size:.94em;max-width:52ch}
+
+/* =========================================================
+   Fuss
+   ========================================================= */
+.fuss{
+  text-align:center;background:var(--navy);color:var(--papier);
+  padding:clamp(54px,12vw,96px) var(--rand) calc(env(safe-area-inset-bottom,0px) + clamp(42px,10vw,76px));
+}
+.fuss-marke{font-size:16px;color:var(--messing);margin-bottom:clamp(20px,4.5vw,30px)}
+.fuss-namen{font-family:var(--display);font-weight:500;font-size:clamp(24px,6.4vw,34px)}
+.fuss-datum{font-family:var(--stempel);font-size:12px;letter-spacing:.26em;
+  color:var(--messing);margin-top:16px}
+.fuss-klein{font-family:var(--sans);font-weight:300;font-size:11px;line-height:1.9;
+  color:rgba(244,236,217,.38);margin:clamp(30px,7vw,48px) auto 0;max-width:38ch}
+
+/* =========================================================
+   OHNE SKRIPT
+   Der Auftakt ist ein Handgriff, kein Schloss. Laedt das
+   Skript nicht, liegt die Karte einfach offen da - mit allem,
+   was darauf steht.
+   ========================================================= */
+html:not([data-js]) .auftakt{--druck:1}
+html:not([data-js]) .auftakt-hinweis,
+html:not([data-js]) .wand,
+html:not([data-js]) .vorhang,
+html:not([data-js]) .schabracke,
+html:not([data-js]) .stempelkopf{display:none}

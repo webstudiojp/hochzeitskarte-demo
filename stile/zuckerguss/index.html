@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Emma &amp; Ben — 17. Juli 2027</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fdf6f2">
+<meta name="description" content="Einladung zur Hochzeit von Emma und Ben am 17. Juli 2027 in der Orangerie Gut Kaltenbach.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Emma &amp; Ben — 17. Juli 2027">
+<meta property="og:description" content="Wir heiraten! Orangerie Gut Kaltenbach, Wachtberg.">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/zuckerguss/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/zuckerguss/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../gemeinsam/kern.css?v=202608212157">
+<link rel="stylesheet" href="css/zuckerguss.css?v=202608212157">
+<link rel="preload" as="image" href="bilder/auftakt.webp?v=202608212157" fetchpriority="high">
+</head>
+
+<body>
+
+<div class="fortschritt"><i data-fortschritt></i></div>
+
+<button class="musik" type="button" data-musik aria-pressed="false">
+  <span class="nur-fuer-schirmleser">Musik an oder aus</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M9 9v7.2a2.4 2.4 0 1 1-1.6-2.26"/><path d="M9 9l7-2v7.2a2.4 2.4 0 1 1-1.6-2.26"/>
+  </svg>
+</button>
+
+<!-- Konfetti. Liegt ueber der ganzen Seite, nicht nur ueber dem
+     Auftakt: das Motiv gehoert zur Karte. -->
+<canvas class="konfetti" id="konfetti" aria-hidden="true"></canvas>
+
+
+<!-- =========================================================
+     AUFTAKT
+     ========================================================= -->
+<section class="auftakt" id="auftakt" aria-label="Konfetti">
+  <img class="auftakt-bild" src="bilder/auftakt.webp?v=202608212157" alt="" width="1200" height="2150" fetchpriority="high" decoding="async">
+  <div class="auftakt-grund" aria-hidden="true"></div>
+
+  <div class="auftakt-satz">
+    <p class="auftakt-ueber">Wir heiraten!</p>
+    <h1 class="auftakt-namen">Emma<i>&amp;</i>Ben</h1>
+    <p class="auftakt-datum">17. Juli 2027</p>
+  </div>
+
+  <button class="knall" id="knall" type="button">
+    <span class="nur-fuer-schirmleser">Konfetti werfen und die Einladung öffnen</span>
+  </button>
+
+  <p class="auftakt-hinweis" id="hinweis">Antippen</p>
+</section>
+
+
+<main class="torte">
+
+<!-- ---------- 01 ---------- -->
+<section class="stueck" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Es wird gefeiert</h2>
+  <p class="satz" data-folge>
+    Kein großes Geheimnis, keine lange Vorrede: Wir heiraten, es wird
+    laut, es wird süß, und wir hätten euch gern dabei. Bringt Tanzschuhe
+    und Appetit mit.
+  </p>
+
+  <div class="uhr" data-folge aria-label="Countdown">
+    <div class="uhr-teil"><b data-zaehler="tage">–</b><i>Tage</i></div>
+    <div class="uhr-teil"><b data-zaehler="stunden">–</b><i>Stunden</i></div>
+    <div class="uhr-teil"><b data-zaehler="minuten">–</b><i>Minuten</i></div>
+    <div class="uhr-teil"><b data-zaehler="sekunden">–</b><i>Sekunden</i></div>
+  </div>
+  <p class="uhr-vorbei" data-countdown-vorbei hidden>Heute ist der Tag!</p>
+</section>
+
+<!-- ---------- 02 ---------- -->
+<section class="stueck stueck--rosa" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Kurz vorher</h2>
+  <ol class="karten">
+    <li data-folge><b>2020</b><h3>Zwei Meter Abstand</h3>
+      <p>Kennengelernt im Treppenhaus, weil sonst nichts offen war.
+         Ben hat Emma zwei Wochen lang Brot vor die Tür gestellt.</p></li>
+    <li data-folge><b>2022</b><h3>Der erste Kuchen</h3>
+      <p>Emma backte, Ben aß. An dieser Aufgabenteilung hat sich
+         seither nichts geändert.</p></li>
+    <li data-folge><b>2024</b><h3>Ein Hund namens Keks</h3>
+      <p>Sollte eine Woche bleiben. Ist noch da. Kommt mit.</p></li>
+    <li data-folge><b>2026</b><h3>Im Supermarkt</h3>
+      <p>Zwischen Mehl und Backpulver, ohne Ring, ohne Plan.
+         Die Kassiererin hat mitgeklatscht.</p></li>
+  </ol>
+</section>
+
+<!-- ---------- 03 ---------- -->
+<section class="stueck stueck--weit" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Ein paar Bilder</h2>
+  <div class="reihe">
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m1.webp?v=202608212157" alt="Buttercremetorte mit frischen Kirschen und Schleife" width="900" height="1205" loading="lazy" decoding="async"></div></figure>
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m2.webp?v=202608212157" alt="Satinbänder, Konfetti und Zuckermandeln von oben" width="900" height="1205" loading="lazy" decoding="async"></div></figure>
+    <figure class="reihe--breit" data-folge><div class="px-rahmen" data-px="4">
+      <img src="bilder/tafel.webp?v=202608212157" alt="Dessertbuffet mit dreistöckiger Torte" width="1400" height="939" loading="lazy" decoding="async"></div></figure>
+  </div>
+</section>
+
+<!-- ---------- 04 ---------- -->
+<section class="stueck" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Der Ablauf</h2>
+  <ol class="ablauf">
+    <li data-folge><b>13:00</b><span><h3>Ankommen</h3><p>Limonade, Schatten, Hallo sagen.</p></span></li>
+    <li data-folge><b>14:00</b><span><h3>Trauung</h3><p>Im Rosengarten. Taschentücher liegen bereit.</p></span></li>
+    <li data-folge><b>15:00</b><span><h3>Sekt und Kuchen</h3><p>Elf Sorten. Wir haben nachgezählt.</p></span></li>
+    <li data-folge><b>18:00</b><span><h3>Abendessen</h3><p>Draußen, wenn es das Wetter zulässt.</p></span></li>
+    <li data-folge><b>20:30</b><span><h3>Erster Tanz</h3><p>Danach alle. Wirklich alle.</p></span></li>
+    <li data-folge><b>00:00</b><span><h3>Mitternachtssnack</h3><p>Pommes. Nichts Feineres.</p></span></li>
+    <li data-folge><b>03:00</b><span><h3>Schluss</h3><p>Und Frühstück um zehn für alle, die bleiben.</p></span></li>
+  </ol>
+</section>
+
+<!-- ---------- 05 ---------- -->
+<section class="stueck stueck--rosa stueck--weit" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Wo</h2>
+  <figure class="ort-bild px-rahmen" data-px="8">
+    <img src="bilder/ort.webp?v=202608212157" alt="Weiße Orangerie mit Rosen und Papierlaternen" width="1400" height="939" loading="lazy" decoding="async">
+  </figure>
+  <p class="ortname" data-folge>Orangerie Gut Kaltenbach</p>
+  <p class="adresse" data-folge>Kaltenbacher Allee 5 · 53343 Wachtberg</p>
+  <p class="hand" data-folge>Einfahrt neben der großen Kastanie</p>
+  <div class="tasten" data-folge>
+    <a class="taste" data-route="google" href="#">Route bei Google</a>
+    <a class="taste" data-route="apple" href="#">Route bei Apple</a>
+    <button class="taste taste--voll" type="button" data-kalender>In den Kalender</button>
+  </div>
+</section>
+
+<!-- ---------- 06 ---------- -->
+<section class="stueck" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Anreise &amp; Bleiben</h2>
+  <ul class="liste">
+    <li data-folge><h3>Auto</h3><p>A565 bis Wachtberg, dann ausgeschildert. Auf der Wiese
+      gegenüber ist Platz für alle, und über Nacht stehenbleiben ist kein Problem.</p></li>
+    <li data-folge><h3>Bahn</h3><p>Bis Bonn Hbf, von dort ab 12 Uhr Shuttles im Halbstundentakt.
+      Zurück fährt es ab 22 Uhr stündlich und um 3 Uhr ein letztes Mal.</p></li>
+    <li data-folge><h3>Übernachten</h3><p>Vorgemerkt bis zum 1. Mai:</p>
+      <ul class="haeuser">
+        <li><b>Gutshaus Kaltenbach</b><i>vor Ort · neun Zimmer</i></li>
+        <li><b>Hotel Rheinaue Bonn</b><i>14 km · Kontingent „Emma &amp; Ben“</i></li>
+        <li><b>Pension Am Berg</b><i>6 km · klein und herzlich</i></li>
+      </ul></li>
+  </ul>
+</section>
+
+<!-- ---------- 07 ---------- -->
+<section class="stueck stueck--rosa" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Anziehen</h2>
+  <p class="satz" data-folge>
+    Bunt, hell, sommerlich — was auch immer euch Freude macht. Wir
+    feiern draußen auf Rasen und Kies, es wird warm, und getanzt wird
+    bis in die Nacht. Denkt an etwas Leichtes für über die Schultern.
+  </p>
+  <p class="farben" data-folge aria-hidden="true">
+    <i style="--f:#f3c9c4"></i><i style="--f:#c0334a"></i><i style="--f:#e8d9b6"></i><i style="--f:#9ab08a"></i>
+  </p>
+  <p class="hand" data-folge>Weiß bleibt für einen Tag reserviert</p>
+</section>
+
+<!-- ---------- 08 ---------- -->
+<section class="stueck" id="rueckmeldung" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Kommt ihr?</h2>
+  <p class="satz satz--eng" data-folge>Sagt uns bitte bis zum <b>15. Mai 2027</b> Bescheid.</p>
+
+  <form class="formular" data-rueckmeldung novalidate>
+    <label class="feld-block"><span class="feld-name">Dein Name</span>
+      <input type="text" name="name" autocomplete="name" required></label>
+    <label class="feld-block"><span class="feld-name">E-Mail</span>
+      <input type="email" name="email" autocomplete="email" required></label>
+
+    <fieldset class="wahl">
+      <legend class="feld-name">Bist du dabei?</legend>
+      <label><input type="radio" name="antwort" value="zusage" checked><span>Ja, unbedingt</span></label>
+      <label><input type="radio" name="antwort" value="absage"><span>Leider nicht</span></label>
+    </fieldset>
+
+    <div data-nur-zusage>
+      <label class="feld-block"><span class="feld-name">Was isst du?</span>
+        <select name="essen0" required>
+          <option value="">Bitte wählen</option>
+          <option>Fleisch</option><option>Fisch</option>
+          <option>Vegetarisch</option><option>Vegan</option>
+        </select></label>
+      <div class="begleitung">
+        <p class="feld-name">Begleitung <span class="begleitung-zahl" data-begleitung-zahl></span></p>
+        <div data-begleitung></div>
+        <button class="taste taste--klein" type="button" data-begleitung-mehr>+ Begleitung</button>
+      </div>
+      <label class="feld-block"><span class="feld-name">Allergien</span>
+        <input type="text" name="allergien" placeholder="z. B. Nüsse, Laktose"></label>
+    </div>
+
+    <label class="feld-block"><span class="feld-name">Willst du uns was schreiben?</span>
+      <textarea name="gruss" rows="3"></textarea></label>
+
+    <button class="taste taste--voll" type="submit">Abschicken</button>
+    <p class="klein">Öffnet eine fertige E-Mail an uns — abschicken müsst ihr sie selbst.</p>
+  </form>
+
+  <div class="danke" data-danke hidden>
+    <h3>Danke, <span data-danke-name></span>!</h3>
+    <p>Die E-Mail sollte offen sein. Falls nicht: <a data-danke-post href="#">hier</a>.</p>
+  </div>
+</section>
+
+<!-- ---------- 09 ---------- -->
+<section class="stueck stueck--rosa" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Geschenke</h2>
+  <p class="satz" data-folge>
+    Unsere Küche ist voll und der Keller auch. Wenn ihr trotzdem etwas
+    schenken möchtet: Wir sparen auf eine Woche irgendwo, wo niemand
+    unsere Telefonnummer hat.
+  </p>
+  <button class="taste taste--klein" type="button" data-iban-zeigen>Bankverbindung zeigen</button>
+  <div class="iban" data-iban hidden>
+    <p><b>Emma Sander &amp; Ben Kraus</b><br>
+       <span class="iban-nr">DE00 0000 0000 0000 0000 00</span></p>
+    <button class="taste taste--klein" type="button" data-iban-kopieren>IBAN kopieren</button>
+  </div>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="stueck" data-auftritt>
+  <p class="schleife" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Fragen</h2>
+  <div class="fragen">
+    <details data-frage data-folge><summary>Darf ich jemanden mitbringen?</summary>
+      <div class="frage-antwort"><div><p>Wenn auf eurer Karte eine Begleitung steht: klar!
+        Bitte oben eintragen, damit wir mitzählen können.</p></div></div></details>
+    <details data-frage data-folge><summary>Kinder?</summary>
+      <div class="frage-antwort"><div><p>Ja bitte. Es gibt eine Hüpfburg, Eis und ab 16 Uhr
+        zwei Betreuerinnen im Gartenhaus.</p></div></div></details>
+    <details data-frage data-folge><summary>Darf mein Hund mit?</summary>
+      <div class="frage-antwort"><div><p>Keks kommt auch, also ja — solange er sich mit anderen
+        Hunden verträgt. Sagt uns kurz Bescheid.</p></div></div></details>
+    <details data-frage data-folge><summary>Und wenn es regnet?</summary>
+      <div class="frage-antwort"><div><p>Dann rücken wir in die Orangerie. Sie ist groß genug
+        und viel schöner, als der Name klingt.</p></div></div></details>
+    <details data-frage data-folge><summary>Ich kann nicht kommen.</summary>
+      <div class="frage-antwort"><div><p>Schade, aber sagt früh Bescheid. Wir heben euch
+        ein Stück Kuchen auf.</p></div></div></details>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="fuss">
+  <p class="schleife schleife--gross" aria-hidden="true"></p>
+  <p class="fuss-namen">Emma <i>&amp;</i> Ben</p>
+  <p class="fuss-datum">17. Juli 2027 · Gut Kaltenbach</p>
+  <p class="fuss-klein">Emma und Ben, Termin, Ort und Bankverbindung sind frei erfunden.</p>
+</footer>
+
+<script src="../gemeinsam/kern.js?v=202608212157"></script>
+<script src="js/zuckerguss.js?v=202608212157"></script>
+</body>
+</html>

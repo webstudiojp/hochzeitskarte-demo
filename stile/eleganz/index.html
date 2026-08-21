@@ -32,7 +32,7 @@ if (!location.hash) {
   addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
 }
 </script>
-<link rel="stylesheet" href="css/eleganz.css?v=202608211518">
+<link rel="stylesheet" href="css/eleganz.css?v=202608212157">
 </head>
 <body class="zu">
 
@@ -237,7 +237,7 @@ if (!location.hash) {
       </svg>
     </button>
 
-    <p class="cover-hinweis" id="cover-hinweis">Zum Öffnen tippen</p>
+    <p class="cover-hinweis" id="cover-hinweis" data-t="cover.hinweis">Zum Öffnen tippen</p>
   </div>
 </div>
 
@@ -246,19 +246,51 @@ if (!location.hash) {
      2. KOPFLEISTE
      ========================================================= -->
 <header class="kopf" id="kopf">
-  <a class="monogramm" href="#start" aria-label="Zum Anfang">F&amp;D</a>
-  <button class="burger" id="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue">
-    <span></span><span></span><span></span>
-  </button>
+  <a class="monogramm" href="#start" aria-label="Zum Anfang / Başa dön">F&amp;D</a>
+  <div class="kopf-rechts">
+    <button class="sprachwahl" id="sprachwahl" type="button"
+            aria-label="Sprache wechseln / Dili değiştir">
+      <!-- Als SVG gezeichnet, nicht als Emoji: Windows stellt Flaggen-Emoji
+           nur als Buchstabenpaar dar, dann staende dort "DE" statt einer Flagge. -->
+      <span class="flagge" data-lang="de">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <clipPath id="rund-de"><circle cx="12" cy="12" r="11"/></clipPath>
+          <g clip-path="url(#rund-de)">
+            <rect x="0" y="1"    width="24" height="7.34" fill="#1a1a19"/>
+            <rect x="0" y="8.34" width="24" height="7.33" fill="#c8102e"/>
+            <rect x="0" y="15.67" width="24" height="7.33" fill="#e8b71a"/>
+          </g>
+          <circle cx="12" cy="12" r="11" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+        </svg>
+      </span>
+      <span class="flagge" data-lang="tr">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <clipPath id="rund-tr"><circle cx="12" cy="12" r="11"/></clipPath>
+          <g clip-path="url(#rund-tr)">
+            <rect x="0" y="0" width="24" height="24" fill="#e30a17"/>
+            <circle cx="10" cy="12" r="5" fill="#fff"/>
+            <circle cx="11.6" cy="12" r="4" fill="#e30a17"/>
+            <path d="M15.4 12 18.4 11l-1.9 2.5V9.5L18.4 13z" fill="#fff"/>
+          </g>
+          <circle cx="12" cy="12" r="11" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+        </svg>
+      </span>
+    </button>
+
+    <button class="burger" id="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
 <nav class="menue" id="menue" hidden>
-  <a href="#start"><i>00</i>Start</a>
-  <a href="#ort"><i>01</i>Ort &amp; Anreise</a>
-  <a href="#ablauf"><i>02</i>Der Tag</a>
-  <a href="#dresscode"><i>03</i>Dresscode</a>
-  <a href="#geschenke"><i>04</i>Geschenke</a>
-  <a href="#rsvp"><i>05</i>Rückmeldung</a>
+  <a href="#start"><i>00</i><span data-t="menue.start">Start</span></a>
+  <a href="#ort"><i>01</i><span data-t="menue.ort">Ort &amp; Anreise</span></a>
+  <a href="#ablauf"><i>02</i><span data-t="menue.tag">Der Tag</span></a>
+  <a href="#familien"><i>·</i><span data-t="menue.familien">Familien</span></a>
+  <a href="#dresscode"><i>03</i><span data-t="menue.dresscode">Dresscode</span></a>
+  <a href="#geschenke"><i>04</i><span data-t="menue.geschenke">Geschenke</span></a>
+  <a href="#rsvp"><i>05</i><span data-t="menue.rsvp">Rückmeldung</span></a>
 </nav>
 
 
@@ -281,7 +313,7 @@ if (!location.hash) {
     </svg>
 
     <div class="himmel-satz">
-      <p class="kicker hell">Mit all unserer Liebe<br>laden wir euch ein</p>
+      <p class="kicker hell" data-t="hero.kicker">Mit all unserer Liebe<br>laden wir euch ein</p>
       <h1 class="namen">
         <span class="vorname schreiben">Furkan</span>
         <span class="und">&amp;</span>
@@ -289,7 +321,7 @@ if (!location.hash) {
       </h1>
       <span class="strich" aria-hidden="true"></span>
       <p class="himmel-datum">01 · 01 · 2027</p>
-      <p class="himmel-ort">Schloss Benrath ·<br>Düsseldorf</p>
+      <p class="himmel-ort" data-t="hero.ort">Schloss Benrath ·<br>Düsseldorf</p>
       <svg class="himmel-taube" viewBox="0 0 80 80" aria-hidden="true">
         <g class="taube" fill="#fffdf7">
           <use href="#taube-koerper"/>
@@ -299,7 +331,7 @@ if (!location.hash) {
     </div>
 
     <a class="scrollwink" href="#countdown" aria-label="Weiter zum Countdown">
-      <span>Scroll</span>
+      <span data-t="hero.scroll">Scroll</span>
       <svg viewBox="0 0 20 26" aria-hidden="true"><path d="M10 2v20m0 0-6-7m6 7 6-7"/></svg>
     </a>
 
@@ -310,20 +342,41 @@ if (!location.hash) {
 
 
   <!-- =========================================================
+       DIE ANREDE
+       Der erste Abschnitt hinter dem Umschlag spricht die Gaeste
+       an, nicht die Organisation. Alles Weitere kommt danach.
+       ========================================================= -->
+  <section class="bogen papier" id="einladung">
+    <div class="bogen-satz mitte">
+      <p class="kicker" data-t="anrede.kicker">Für euch</p>
+      <h2 class="script-zeile"><span class="schreiben" data-t="anrede.titel">Liebe Familie, liebe Freunde</span></h2>
+      <p class="fliess" data-t="anrede.text">Am ersten Tag des neuen Jahres geben wir uns
+        das Ja-Wort. Es wäre uns eine große Freude, wenn ihr dabei seid — zur Trauung,
+        zum Essen und danach so lange, wie ihr mögt.</p>
+      <p class="unterschrift"><span class="schreiben" data-t="anrede.gruss">Dilara und Furkan</span></p>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-c"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
        COUNTDOWN
        ========================================================= -->
   <section class="bogen creme" id="countdown">
     <div class="bogen-satz mitte">
-      <p class="kicker">Der Countdown</p>
-      <h2 class="kursiv"><span class="schreiben">Für immer beginnt in</span></h2>
+      <p class="kicker" data-t="cd.kicker">Der Countdown</p>
+      <h2 class="kursiv"><span class="schreiben" data-t="cd.titel">Für immer beginnt in</span></h2>
 
       <div class="zaehler" id="zaehler">
-        <div class="einheit"><div class="kachel"><b id="cd-t">—</b></div><span>Tage</span></div>
-        <div class="einheit"><div class="kachel"><b id="cd-s">—</b></div><span>Stunden</span></div>
-        <div class="einheit"><div class="kachel"><b id="cd-m">—</b></div><span>Minuten</span></div>
-        <div class="einheit"><div class="kachel"><b id="cd-k">—</b></div><span>Sekunden</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-t">—</b></div><span data-t="cd.tage">Tage</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-s">—</b></div><span data-t="cd.stunden">Stunden</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-m">—</b></div><span data-t="cd.minuten">Minuten</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-k">—</b></div><span data-t="cd.sekunden">Sekunden</span></div>
       </div>
-      <p class="zaehler-fuss" id="cd-fuss">bis zum 1. Januar 2027</p>
+      <p class="zaehler-fuss" id="cd-fuss" data-t="cd.fuss">bis zum 1. Januar 2027</p>
     </div>
 
     <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
@@ -363,31 +416,31 @@ if (!location.hash) {
       <span class="haarstrich" aria-hidden="true"></span>
 
       <div class="mitte">
-        <p class="kicker">Datum</p>
-        <p class="anschlag">1. Januar 2027</p>
-        <p class="unterzeile">Freitag</p>
+        <p class="kicker" data-t="ort.datumKicker">Datum</p>
+        <p class="anschlag" data-t="datum.lang">1. Januar 2027</p>
+        <p class="unterzeile" data-t="datum.tag">Freitag</p>
       </div>
 
       <p class="nummer">01</p>
-      <h2 class="abschnitt">Ort</h2>
+      <h2 class="abschnitt" data-t="ort.titel">Ort</h2>
 
       <div class="posten">
-        <p class="kicker">Trauung</p>
-        <p class="postenname">Schloss Benrath</p>
-        <p class="postenzeile"><b>14:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
+        <p class="kicker" data-t="ort.trauung">Trauung</p>
+        <p class="postenname" data-t="ort.trauungName">Schloss Benrath</p>
+        <p class="postenzeile" data-t="ort.trauungZeit"><b>14:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
         <div class="wegpaar">
-          <a class="linkpfeil" id="weg-google-trauung" href="#" target="_blank" rel="noopener">Google Maps →</a>
-          <a class="linkpfeil" id="weg-apple-trauung" href="#" target="_blank" rel="noopener">Apple Karten →</a>
+          <a class="linkpfeil" id="weg-google-trauung" href="#" target="_blank" rel="noopener" data-t="weg.google">Google Maps →</a>
+          <a class="linkpfeil" id="weg-apple-trauung" href="#" target="_blank" rel="noopener" data-t="weg.apple">Apple Karten →</a>
         </div>
       </div>
 
       <div class="posten">
-        <p class="kicker">Empfang</p>
-        <p class="postenname">Orangerie im Schlosspark</p>
-        <p class="postenzeile"><b>19:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
+        <p class="kicker" data-t="ort.empfang">Empfang</p>
+        <p class="postenname" data-t="ort.empfangName">Orangerie im Schlosspark</p>
+        <p class="postenzeile" data-t="ort.empfangZeit"><b>19:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
         <div class="wegpaar">
-          <a class="linkpfeil" id="weg-google-empfang" href="#" target="_blank" rel="noopener">Google Maps →</a>
-          <a class="linkpfeil" id="weg-apple-empfang" href="#" target="_blank" rel="noopener">Apple Karten →</a>
+          <a class="linkpfeil" id="weg-google-empfang" href="#" target="_blank" rel="noopener" data-t="weg.google">Google Maps →</a>
+          <a class="linkpfeil" id="weg-apple-empfang" href="#" target="_blank" rel="noopener" data-t="weg.apple">Apple Karten →</a>
         </div>
       </div>
 
@@ -395,21 +448,21 @@ if (!location.hash) {
         <use href="#schnoerkel" stroke="#c8b189"/>
       </svg>
 
-      <h3 class="unterabschnitt">Anreise</h3>
+      <h3 class="unterabschnitt" data-t="anreise.titel">Anreise</h3>
 
       <div class="posten schmal">
-        <p class="kicker">Mit dem Auto</p>
-        <p class="postenzeile">A59 bis Abfahrt Düsseldorf-Benrath, dann der Beschilderung
+        <p class="kicker" data-t="anreise.auto">Mit dem Auto</p>
+        <p class="postenzeile" data-t="anreise.autoText">A59 bis Abfahrt Düsseldorf-Benrath, dann der Beschilderung
           zum Schloss folgen.</p>
       </div>
       <div class="posten schmal">
-        <p class="kicker">Mit der Bahn</p>
-        <p class="postenzeile">S6 bis Düsseldorf-Benrath, von dort acht Minuten zu Fuß
+        <p class="kicker" data-t="anreise.bahn">Mit der Bahn</p>
+        <p class="postenzeile" data-t="anreise.bahnText">S6 bis Düsseldorf-Benrath, von dort acht Minuten zu Fuß
           durch den Schlosspark.</p>
       </div>
       <div class="posten schmal">
-        <p class="kicker">Parken</p>
-        <p class="postenzeile">Kostenfreie Plätze am Besucherparkplatz Süd, direkt
+        <p class="kicker" data-t="anreise.parken">Parken</p>
+        <p class="postenzeile" data-t="anreise.parkenText">Kostenfreie Plätze am Besucherparkplatz Süd, direkt
           neben dem Parkeingang.</p>
       </div>
 
@@ -430,20 +483,55 @@ if (!location.hash) {
   <section class="bogen blush" id="ablauf">
     <div class="bogen-satz">
       <p class="nummer">02</p>
-      <h2 class="abschnitt">Der Tag</h2>
+      <h2 class="abschnitt" data-t="ablauf.titel">Der Tag</h2>
 
       <ol class="zeitleiste"><span class="leiste-linie" aria-hidden="true"></span>
-        <li><b>14:30</b><div><p>Empfang</p><span>Sekt und ein erstes Wiedersehen im Hof.</span></div></li>
-        <li><b>15:30</b><div><p>Freie Trauung</p><span>Die Zeremonie findet im Spiegelsaal statt.</span></div></li>
-        <li><b>17:00</b><div><p>Kaffee &amp; Kuchen</p><span>Im Schlosspark, bei gutem Wetter draußen.</span></div></li>
-        <li><b>19:30</b><div><p>Dinner &amp; Feier</p><span>Abendessen in der Orangerie, danach Musik.</span></div></li>
-        <li><b>20:00</b><div><p>Eröffnungstanz</p><span>Und danach gehört die Fläche allen.</span></div></li>
-        <li><b>02:00</b><div><p>Ausklang</p><span>Letzter Tanz und Abschied am Tor.</span></div></li>
+        <li><b>14:30</b><div><p data-t="ablauf.empfang">Empfang</p><span data-t="ablauf.empfangText">Sekt und ein erstes Wiedersehen im Hof.</span></div></li>
+        <li><b>15:30</b><div><p data-t="ablauf.trauung">Freie Trauung</p><span data-t="ablauf.trauungText">Die Zeremonie findet im Spiegelsaal statt.</span></div></li>
+        <li><b>17:00</b><div><p data-t="ablauf.kaffee">Kaffee &amp; Kuchen</p><span data-t="ablauf.kaffeeText">Im Schlosspark, bei gutem Wetter draußen.</span></div></li>
+        <li><b>19:30</b><div><p data-t="ablauf.dinner">Dinner &amp; Feier</p><span data-t="ablauf.dinnerText">Abendessen in der Orangerie, danach Musik.</span></div></li>
+        <li><b>20:00</b><div><p data-t="ablauf.tanz">Eröffnungstanz</p><span data-t="ablauf.tanzText">Und danach gehört die Fläche allen.</span></div></li>
+        <li><b>02:00</b><div><p data-t="ablauf.ausklang">Ausklang</p><span data-t="ablauf.ausklangText">Letzter Tanz und Abschied am Tor.</span></div></li>
       </ol>
     </div>
 
     <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
       <use href="#riss-a"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       MIT UNS FREUEN SICH
+       Wer bei einer Hochzeit genannt wird, gehoert dazu. Diese
+       Seite kostet nichts und traegt mehr als jede Animation.
+       ========================================================= -->
+  <section class="bogen papier gesteppt" id="familien">
+    <div class="bogen-satz mitte">
+      <p class="kicker" data-t="familien.kicker">Mit uns freuen sich</p>
+
+      <div class="familie">
+        <p class="rolle" data-t="familien.brautseite">Eltern der Braut</p>
+        <p class="familienname">Nilüfer und Hamdi Sarıca</p>
+      </div>
+
+      <span class="raute" aria-hidden="true"></span>
+
+      <div class="familie">
+        <p class="rolle" data-t="familien.braeutigamseite">Eltern des Bräutigams</p>
+        <p class="familienname">Oya und Etem Zarga</p>
+      </div>
+
+      <span class="raute" aria-hidden="true"></span>
+
+      <div class="familie">
+        <p class="rolle" data-t="familien.trauzeugen">Trauzeugen</p>
+        <p class="familienname">Elif Sarıca · Mehmet Zarga</p>
+      </div>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-b"/>
     </svg>
   </section>
 
@@ -489,10 +577,10 @@ if (!location.hash) {
       </svg>
 
       <p class="nummer">03</p>
-      <h2 class="abschnitt">Dresscode</h2>
+      <h2 class="abschnitt" data-t="dress.titel">Dresscode</h2>
 
-      <p class="anschlag gross">Festlich elegant</p>
-      <p class="fliess">Anzug und Abendkleid, gern in gedeckten Tönen.
+      <p class="anschlag gross" data-t="dress.gross">Festlich elegant</p>
+      <p class="fliess" data-t="dress.text">Anzug und Abendkleid, gern in gedeckten Tönen.
         Wir tragen Creme und Gold — reines Weiß bleibt bitte der Braut.</p>
     </div>
 
@@ -508,20 +596,20 @@ if (!location.hash) {
   <section class="bogen papier gesteppt" id="geschenke">
     <div class="bogen-satz">
       <p class="nummer">04</p>
-      <h2 class="abschnitt">Geschenke</h2>
+      <h2 class="abschnitt" data-t="geschenk.titel">Geschenke</h2>
 
-      <p class="anschlag">Ein Geschenk für uns</p>
-      <p class="fliess">Ihr seid da — mehr braucht es nicht. Wer uns dennoch
+      <p class="anschlag" data-t="geschenk.gross">Ein Geschenk für uns</p>
+      <p class="fliess" data-t="geschenk.text">Ihr seid da — mehr braucht es nicht. Wer uns dennoch
         etwas schenken möchte, hilft uns mit einem Beitrag zur Hochzeitsreise.</p>
 
       <button class="umriss-knopf" id="iban-schalter" type="button"
-              aria-expanded="false" aria-controls="iban-feld">IBAN anzeigen</button>
+              aria-expanded="false" aria-controls="iban-feld" data-t="geschenk.zeigen">IBAN anzeigen</button>
 
       <div class="iban-feld" id="iban-feld" hidden>
-        <p class="kicker">Kontoinhaberin</p>
+        <p class="kicker" data-t="geschenk.inhaber">Kontoinhaberin</p>
         <p class="postenzeile">Dilara Sarıca</p>
         <p class="iban" id="iban">DE89 3704 0044 0532 0130 00</p>
-        <button class="knopf" id="iban-kopieren" type="button">Kopieren</button>
+        <button class="knopf" id="iban-kopieren" type="button" data-t="geschenk.kopieren">Kopieren</button>
       </div>
     </div>
 
@@ -537,43 +625,43 @@ if (!location.hash) {
   <section class="bogen blush" id="rsvp">
     <div class="bogen-satz">
       <p class="nummer">05</p>
-      <h2 class="abschnitt">Rückmeldung</h2>
+      <h2 class="abschnitt" data-t="rsvp.titel">Rückmeldung</h2>
 
-      <p class="kicker">Sagt uns Bescheid</p>
-      <p class="script-zeile"><span class="schreiben">Liebe Gäste</span></p>
-      <p class="fliess">Bitte gebt uns bis zum <b>1. November 2026</b> Bescheid,
+      <p class="kicker" data-t="rsvp.kicker">Sagt uns Bescheid</p>
+      <p class="script-zeile"><span class="schreiben" data-t="rsvp.anrede">Liebe Gäste</span></p>
+      <p class="fliess" data-t="rsvp.frist">Bitte gebt uns bis zum <b>1. November 2026</b> Bescheid,
         ob ihr dabei seid.</p>
 
       <form class="formular" id="formular" novalidate>
         <label class="feld">
-          <span>Name</span>
-          <input type="text" name="name" autocomplete="name" placeholder="Familie Yıldız" required>
+          <span data-t="rsvp.name">Name</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Familie Yıldız" data-t-platz="rsvp.namePlatz" required>
         </label>
 
         <fieldset class="wahl">
-          <legend>Kommt ihr?</legend>
+          <legend data-t="rsvp.kommt">Kommt ihr?</legend>
           <div class="wahlpaar">
-            <label><input type="radio" name="zusage" value="ja"><span>Ja, wir sind dabei</span></label>
-            <label><input type="radio" name="zusage" value="nein"><span>Leider nicht</span></label>
+            <label><input type="radio" name="zusage" value="ja"><span data-t="rsvp.ja">Ja, wir sind dabei</span></label>
+            <label><input type="radio" name="zusage" value="nein"><span data-t="rsvp.nein">Leider nicht</span></label>
           </div>
         </fieldset>
 
         <label class="feld">
-          <span>Anzahl Personen</span>
+          <span data-t="rsvp.anzahl">Anzahl Personen</span>
           <input type="number" name="anzahl" min="1" max="10" value="2">
         </label>
 
         <label class="feld">
-          <span>Essenswünsche</span>
-          <input type="text" name="essen" placeholder="Vegetarisch, glutenfrei, Allergien …">
+          <span data-t="rsvp.essen">Essenswünsche</span>
+          <input type="text" name="essen" placeholder="Vegetarisch, glutenfrei, Allergien …" data-t-platz="rsvp.essenPlatz">
         </label>
 
         <label class="feld">
-          <span>Nachricht an das Paar</span>
-          <textarea name="nachricht" rows="2" placeholder="Ein paar Zeilen an uns …"></textarea>
+          <span data-t="rsvp.nachricht">Nachricht an das Paar</span>
+          <textarea name="nachricht" rows="2" placeholder="Ein paar Zeilen an uns …" data-t-platz="rsvp.nachrichtPlatz"></textarea>
         </label>
 
-        <button class="knopf breit" type="submit">Rückmeldung senden</button>
+        <button class="knopf breit" type="submit" data-t="rsvp.senden">Rückmeldung senden</button>
         <p class="formular-echo" id="formular-echo" role="status"></p>
       </form>
     </div>
@@ -590,15 +678,15 @@ if (!location.hash) {
   <footer class="fuss">
     <div class="bogen-satz mitte">
       <p class="fuss-monogramm">F&amp;D</p>
-      <p class="script-zeile klein"><span class="schreiben">Mit Liebe</span></p>
+      <p class="script-zeile klein"><span class="schreiben" data-t="fuss.gruss">Mit Liebe</span></p>
       <p class="fuss-namen">Furkan &amp; Dilara</p>
-      <p class="fuss-datum">1. Januar · 2027</p>
+      <p class="fuss-datum" data-t="fuss.datum">1. Januar · 2027</p>
 
       <svg class="schnoerkel-trenner" viewBox="0 0 200 44" aria-hidden="true">
         <use href="#schnoerkel" stroke="#cbb59a"/>
       </svg>
 
-      <p class="kicker">Bei Fragen</p>
+      <p class="kicker" data-t="fuss.fragen">Bei Fragen</p>
       <p class="fuss-mail"><a href="mailto:hallo@furkan-und-dilara.de">hallo@furkan-und-dilara.de</a></p>
     </div>
   </footer>
@@ -609,12 +697,12 @@ if (!location.hash) {
      3. FUSSLEISTE
      ========================================================= -->
 <nav class="reiter" id="reiter" aria-label="Abschnitte">
-  <a href="#start" data-ziel="start">Start</a>
-  <a href="#ort" data-ziel="ort">Ort</a>
-  <a href="#geschenke" data-ziel="geschenke">Geschenke</a>
-  <a href="#rsvp" data-ziel="rsvp">RSVP</a>
+  <a href="#start" data-ziel="start" data-t="reiter.start">Start</a>
+  <a href="#ort" data-ziel="ort" data-t="reiter.ort">Ort</a>
+  <a href="#geschenke" data-ziel="geschenke" data-t="reiter.geschenke">Geschenke</a>
+  <a href="#rsvp" data-ziel="rsvp" data-t="reiter.rsvp">RSVP</a>
 </nav>
 
-<script src="js/eleganz.js?v=202608211518"></script>
+<script src="js/eleganz.js?v=202608212157"></script>
 </body>
 </html>

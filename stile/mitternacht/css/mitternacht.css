@@ -1,0 +1,421 @@
+/* =========================================================
+   MITTERNACHT — Dunkelheit
+
+   Die strengste der neun. Keine Schreibschrift, kein Zierrat,
+   keine Kachel: nur Versalien, sehr viel Schwarz und Text,
+   der klein genug ist, dass man naeher herangehen muss.
+
+   Die Abschnitte stehen nicht auf Flaechen, sondern in
+   Lichtinseln - jeder traegt einen schwachen Schein hinter
+   sich, wie eine Kerze auf einem langen Tisch. Deshalb ist
+   hier auch kein Wechsel der Hintergrundfarbe noetig: es
+   wechselt das Licht, nicht der Grund.
+   ========================================================= */
+
+@font-face{font-family:'Italiana';src:url('../../../assets/fonts/Italiana-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Archivo';src:url('../../../assets/fonts/Archivo-latin.woff2') format('woff2');
+  font-weight:200 700;font-style:normal;font-display:swap}
+
+:root{
+  --nacht:#0a0b09;
+  --nacht-2:#101210;
+  --oliv:#5c6640;
+  --oliv-hell:#8e9968;
+  --bein:#e6e0d0;
+  --bein-2:rgba(230,224,208,.58);
+  --bein-3:rgba(230,224,208,.34);
+  --kerze:#d9a34f;
+
+  --display:'Italiana',Didot,Georgia,serif;
+  --sans:'Archivo',system-ui,-apple-system,sans-serif;
+
+  --rand:clamp(24px,7vw,80px);
+  --spalte:min(560px,100%);
+}
+
+body{
+  background:var(--nacht);
+  color:var(--bein-2);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:clamp(14.5px,.9rem + .25vw,16px);
+  line-height:1.85;
+  letter-spacing:.01em;
+}
+
+.fortschritt{position:fixed;inset:0 0 auto;height:1px;z-index:60;background:rgba(230,224,208,.09)}
+.fortschritt i{display:block;height:100%;background:var(--kerze)}
+
+.musik{
+  position:fixed;right:calc(var(--rand) * .45);bottom:calc(var(--rand) * .45);z-index:60;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(230,224,208,.2);background:rgba(10,11,9,.72);
+  backdrop-filter:blur(8px);color:var(--bein-3);
+  display:grid;place-items:center;transition:color .3s,border-color .3s;
+}
+.musik svg{width:19px;height:19px}
+.musik:hover{color:var(--kerze);border-color:rgba(217,163,79,.5)}
+.musik[data-an]{color:var(--kerze);border-color:var(--kerze)}
+
+/* =========================================================
+   AUFTAKT
+   Das Bild liegt vollstaendig da, aber nur ein Kreis um den
+   Finger ist davon zu sehen. --r ist der Radius dieses
+   Kreises; er waechst beim Tippen ueber den Bildschirm
+   hinaus, und dann ist die Maske gegenstandslos.
+   ========================================================= */
+.auftakt{
+  position:relative;height:100svh;overflow:hidden;background:#050605;
+  --mx:50%;--my:52%;--r:34vmin;--auf:0;
+}
+.dunkel{
+  position:absolute;inset:0;
+  /* Zwei Masken, addiert: der wandernde Schein und ein kleiner
+     fester Hof um die Flamme selbst. Ohne den zweiten sucht
+     der Gast im Schwarzen nach etwas, von dem er nicht weiss,
+     dass es da ist - die Flamme muss immer zu sehen sein. */
+  -webkit-mask-image:
+    radial-gradient(circle var(--r) at var(--mx) var(--my),
+      #000 0%,#000 38%,rgba(0,0,0,.35) 72%,transparent 100%),
+    radial-gradient(circle 15vmin at 62% 33%,
+      #000 0%,rgba(0,0,0,.6) 45%,transparent 100%);
+  mask-image:
+    radial-gradient(circle var(--r) at var(--mx) var(--my),
+      #000 0%,#000 38%,rgba(0,0,0,.35) 72%,transparent 100%),
+    radial-gradient(circle 15vmin at 62% 33%,
+      #000 0%,rgba(0,0,0,.6) 45%,transparent 100%);
+  -webkit-mask-composite:source-over;
+  mask-composite:add;
+}
+.auftakt-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(calc(1.1 - var(--auf) * .08));
+  /* Das Flackern sitzt auf dem Bild, nicht auf der Maske -
+     eine flackernde Maske ruckelt, eine flackernde Helligkeit
+     atmet. */
+  filter:brightness(calc(.9 + var(--flack,0) * .12));
+}
+
+/* Der warme Hof um die Flamme. Er liegt ueber dem Bild und
+   traegt das Flackern mit, damit Licht und Schein nicht
+   auseinanderlaufen. */
+.schein{
+  position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle calc(var(--r) * .8) at var(--mx) var(--my),
+    rgba(217,163,79,.2) 0%,rgba(217,163,79,.07) 45%,transparent 78%);
+  opacity:calc(.7 + var(--flack,0) * .3);
+}
+
+.auftakt-grund{
+  position:absolute;left:0;right:0;bottom:0;height:46%;z-index:2;
+  background:linear-gradient(to top,#050605 6%,rgba(5,6,5,.82) 34%,transparent 100%);
+  pointer-events:none;opacity:var(--auf);transition:opacity 1.4s ease;
+}
+.tastflaeche{position:absolute;inset:0;z-index:4;background:none;border:0;padding:0;cursor:pointer}
+.tastflaeche:disabled{cursor:default;pointer-events:none}
+
+.auftakt-satz{
+  position:absolute;left:0;right:0;bottom:clamp(52px,10vh,92px);z-index:3;
+  padding:0 var(--rand);text-align:center;pointer-events:none;
+  opacity:var(--auf);
+  transform:translateY(calc((1 - var(--auf)) * 18px));
+  transition:opacity 1.4s ease,transform 1.6s cubic-bezier(.16,.7,.24,1);
+}
+.auftakt-ueber{
+  font-family:var(--sans);font-weight:400;
+  font-size:9px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--kerze);margin-left:.5em;
+}
+.auftakt-namen{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(30px,8.4vw,52px);line-height:1.18;letter-spacing:.06em;
+  color:#fbf7ec;margin:clamp(14px,3vw,20px) 0;
+  text-transform:uppercase;
+}
+.auftakt-namen span{
+  display:block;font-size:.5em;color:var(--kerze);
+  letter-spacing:0;margin:.1em 0;
+}
+.auftakt-datum{
+  font-family:var(--sans);font-weight:300;
+  font-size:10px;letter-spacing:.42em;color:var(--bein-3);margin-left:.42em;
+}
+
+.auftakt-hinweis{
+  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);z-index:5;
+  text-align:center;font-family:var(--sans);font-weight:400;
+  font-size:9px;letter-spacing:.36em;text-transform:uppercase;color:var(--bein-3);
+  opacity:calc(1 - var(--auf) * 2.4);transition:opacity .6s;pointer-events:none;
+  animation:atmen 3.4s ease-in-out infinite;
+}
+@keyframes atmen{0%,100%{opacity:.35}50%{opacity:.85}}
+
+html[data-zu],html[data-zu] body{overflow:hidden}
+
+/* =========================================================
+   DIE NACHT
+   Jeder Abschnitt steht in seiner eigenen Lichtinsel.
+   ========================================================= */
+.nacht{position:relative;z-index:1}
+
+.feld{
+  position:relative;
+  /* Die Lichtinsel darunter ist breiter als der Schirm - ohne
+     Beschnitt schiebt sie die ganze Seite seitlich auf, und
+     auf dem Telefon laesst sich dann quer scrollen. */
+  overflow:hidden;
+  padding:clamp(70px,17vw,150px) var(--rand);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.feld > *{width:var(--spalte)}
+.feld--weit > *{width:min(820px,100%)}
+.feld::before{
+  content:'';position:absolute;left:50%;top:0;
+  width:min(150vw,900px);aspect-ratio:1.35;transform:translateX(-50%);
+  background:radial-gradient(ellipse at center,rgba(217,163,79,.055),transparent 66%);
+  pointer-events:none;
+}
+
+@media (prefers-reduced-motion:no-preference){
+  html[data-js] [data-folge]{
+    opacity:0;transform:translateY(14px);
+    transition:opacity 1.1s ease,transform 1.2s cubic-bezier(.16,.7,.24,1);
+    transition-delay:calc(var(--folge,0) * 100ms);
+  }
+  html[data-js] .da [data-folge]{opacity:1;transform:none}
+}
+
+/* Die Abschnittsmarke ist eine Flamme, kein Zeichen: ein
+   Punkt Licht ueber einem Strich. Sie flackert leicht - alles
+   andere auf dieser Seite steht vollkommen still. */
+.flamme{
+  width:1px !important;height:clamp(26px,6vw,38px);
+  background:linear-gradient(to top,transparent,rgba(217,163,79,.55));
+  margin:0 auto clamp(22px,5vw,32px);position:relative;
+}
+.flamme::after{
+  content:'';position:absolute;left:50%;top:-5px;
+  width:5px;height:7px;transform:translateX(-50%);
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:var(--kerze);
+  box-shadow:0 0 10px 3px rgba(217,163,79,.5),0 0 22px 7px rgba(217,163,79,.2);
+  animation:zucken 2.4s ease-in-out infinite;
+}
+.flamme--gross{height:clamp(40px,9vw,58px)}
+@keyframes zucken{
+  0%,100%{transform:translateX(-50%) scaleY(1);opacity:.9}
+  38%{transform:translateX(-50%) scaleY(1.28) translateY(-1px);opacity:1}
+  64%{transform:translateX(-50%) scaleY(.86);opacity:.7}
+}
+
+.titel{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(26px,7vw,44px);line-height:1.2;letter-spacing:.09em;
+  text-transform:uppercase;color:#fbf7ec;
+  margin-bottom:clamp(24px,5vw,36px);
+}
+.satz{margin-inline:auto;max-width:40ch}
+.satz--eng{max-width:32ch;color:var(--bein-3);font-size:.95em;margin-top:1.2em}
+.satz b{color:var(--kerze);font-weight:500}
+.klein{font-size:11.5px;line-height:1.7;color:var(--bein-3);margin-top:14px}
+
+/* =========================================================
+   Countdown
+   ========================================================= */
+.uhr{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,2.5vw,20px);
+  margin-top:clamp(38px,8vw,58px)}
+.uhr-teil b{
+  display:block;font-family:var(--display);font-weight:400;
+  font-size:clamp(30px,9vw,50px);line-height:1;color:#fbf7ec;
+  font-variant-numeric:tabular-nums;
+}
+.uhr-teil i{
+  display:block;margin-top:12px;font-style:normal;font-weight:400;
+  font-size:8.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--kerze);
+}
+.uhr-teil b.rollt{animation:aufflammen .6s ease}
+@keyframes aufflammen{from{opacity:.15}to{opacity:1}}
+.uhr-vorbei{margin-top:22px;color:var(--kerze)}
+
+/* =========================================================
+   Folge und Ablauf
+   ========================================================= */
+.folge{display:flex;flex-direction:column;gap:clamp(30px,7vw,46px)}
+.folge b{
+  display:block;font-weight:400;font-size:9px;letter-spacing:.4em;
+  color:var(--oliv-hell);margin-bottom:1em;
+}
+.folge h3{
+  font-family:var(--display);font-weight:400;font-size:clamp(19px,5vw,25px);
+  letter-spacing:.05em;color:#fbf7ec;margin-bottom:.5em;
+}
+.folge p{max-width:36ch;margin-inline:auto}
+
+.ablauf{display:flex;flex-direction:column}
+.ablauf li{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,5vw,34px);
+  text-align:left;align-items:baseline;
+  padding:clamp(16px,3.6vw,22px) 0;border-bottom:1px solid rgba(230,224,208,.08);
+}
+.ablauf li:first-child{border-top:1px solid rgba(230,224,208,.08)}
+.ablauf b{font-weight:400;font-size:12px;letter-spacing:.16em;color:var(--kerze);
+  font-variant-numeric:tabular-nums}
+.ablauf h3{
+  font-family:var(--display);font-weight:400;font-size:clamp(17px,4.4vw,21px);
+  letter-spacing:.05em;color:#fbf7ec;
+}
+.ablauf p{font-size:.9em;margin-top:.25em;color:var(--bein-3)}
+
+/* =========================================================
+   Galerie
+   ========================================================= */
+.galerie{display:grid;gap:clamp(14px,3.5vw,22px);grid-template-columns:1fr}
+@media (min-width:620px){
+  .galerie{grid-template-columns:1fr 1fr}
+  .galerie--breit{grid-column:1/-1}
+}
+.galerie .px-rahmen{width:100%;aspect-ratio:3/4}
+.galerie--breit .px-rahmen{aspect-ratio:3/2}
+
+.ort-bild{aspect-ratio:3/2;margin:0 0 clamp(26px,5vw,36px)}
+.adresse{font-weight:400;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--bein-3)}
+
+.tasten{display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(28px,6vw,40px)}
+.taste{
+  display:inline-block;text-decoration:none;background:transparent;
+  font-family:var(--sans);font-weight:400;
+  font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;
+  padding:15px 22px;border:1px solid rgba(230,224,208,.24);color:var(--bein-2);
+  transition:border-color .35s,color .35s,background .35s;
+}
+.taste:hover{border-color:var(--kerze);color:var(--kerze)}
+.taste--voll{background:var(--kerze);border-color:var(--kerze);color:#12130f;font-weight:500}
+.taste--voll:hover{background:#f0bd6a;border-color:#f0bd6a;color:#12130f}
+.taste--klein{font-size:9px;padding:12px 16px}
+.taste:disabled{opacity:.3;cursor:not-allowed}
+
+/* =========================================================
+   Listen
+   ========================================================= */
+.liste{display:flex;flex-direction:column;gap:clamp(26px,6vw,38px);text-align:left}
+.liste h3{font-weight:500;font-size:9.5px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--oliv-hell);margin-bottom:1em}
+.liste p{max-width:40ch}
+.haeuser{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.haeuser li{padding-top:14px;border-top:1px solid rgba(230,224,208,.08)}
+.haeuser b{display:block;font-family:var(--display);font-weight:400;font-size:1.2em;
+  letter-spacing:.04em;color:#fbf7ec}
+.haeuser i{display:block;margin-top:3px;font-style:normal;font-size:11px;
+  letter-spacing:.06em;color:var(--bein-3)}
+
+.farben{display:flex;gap:12px;justify-content:center;margin-top:clamp(26px,6vw,36px)}
+.farben i{display:block;width:clamp(32px,8vw,44px);aspect-ratio:1;background:var(--f);
+  box-shadow:inset 0 0 0 1px rgba(230,224,208,.14)}
+
+/* =========================================================
+   Formular
+   ========================================================= */
+.formular{display:flex;flex-direction:column;gap:clamp(20px,4vw,26px);
+  margin-top:clamp(30px,6vw,42px);text-align:left}
+.feld-block{display:block}
+.feld-block input,.feld-block select,.feld-block textarea{width:100%}
+.feld-name{
+  display:block;font-weight:500;font-size:9px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--oliv-hell);margin-bottom:10px;
+}
+.formular input[type=text],.formular input[type=email],.formular select,.formular textarea{
+  background:transparent;border:0;border-bottom:1px solid rgba(230,224,208,.2);
+  padding:8px 2px;font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.5;
+  color:var(--bein);border-radius:0;appearance:none;transition:border-color .3s;
+}
+.formular select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--kerze) 50%),
+                   linear-gradient(135deg,var(--kerze) 50%,transparent 50%);
+  background-position:right 8px center,right 3px center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:22px;
+}
+.formular option{background:var(--nacht-2);color:var(--bein)}
+.formular input:focus,.formular select:focus,.formular textarea:focus{outline:none;border-bottom-color:var(--kerze)}
+.formular textarea{border:1px solid rgba(230,224,208,.2);padding:11px}
+.formular input::placeholder{color:rgba(230,224,208,.22)}
+
+.wahl{border:0;padding:0;margin:0}
+.wahl label{display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer}
+.wahl input{
+  appearance:none;width:14px;height:14px;flex:none;
+  border:1px solid rgba(230,224,208,.35);transition:background .25s,box-shadow .25s,border-color .25s;
+}
+.wahl input:checked{background:var(--kerze);border-color:var(--kerze);box-shadow:inset 0 0 0 3px var(--nacht)}
+.begleitung-zahl{font-size:12px;letter-spacing:.02em;text-transform:none;
+  color:var(--bein-3);margin-left:.6em}
+.begleitung-zeile{padding:16px 0;border-top:1px solid rgba(230,224,208,.08)}
+@media (min-width:560px){.begleitung-zeile{grid-template-columns:1fr auto auto;align-items:end}}
+.begleitung-weg{background:none;border:0;padding:8px 0;justify-self:start;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#c07a6a}
+.begleitung-weg:hover{text-decoration:underline}
+.begleitung [data-begleitung]{margin-bottom:14px}
+
+.danke{padding:clamp(26px,6vw,40px) 0;text-align:center}
+.danke h3{font-family:var(--display);font-weight:400;font-size:clamp(24px,6vw,32px);
+  letter-spacing:.06em;color:#fbf7ec;margin-bottom:.6em}
+.danke a{color:var(--kerze)}
+
+.iban{margin-top:22px;padding:22px 0;text-align:center;
+  border-top:1px solid rgba(230,224,208,.14);border-bottom:1px solid rgba(230,224,208,.14)}
+.iban p{margin-bottom:16px;line-height:2}
+.iban b{font-family:var(--display);font-weight:400;font-size:1.25em;letter-spacing:.04em;color:#fbf7ec}
+.iban-nr{font-size:13px;letter-spacing:.16em;color:var(--kerze)}
+[data-iban-zeigen]{margin-top:clamp(24px,5vw,34px)}
+
+/* =========================================================
+   Fragen
+   ========================================================= */
+.fragen{text-align:left}
+.fragen details{border-bottom:1px solid rgba(230,224,208,.08)}
+.fragen details:first-child{border-top:1px solid rgba(230,224,208,.08)}
+.fragen summary{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:clamp(16px,3.6vw,21px) 0;color:var(--bein);
+  font-size:15px;transition:color .3s;
+}
+.fragen summary:hover{color:var(--kerze)}
+.fragen summary::after{
+  content:'';flex:none;width:7px;height:7px;
+  border-right:1px solid var(--kerze);border-bottom:1px solid var(--kerze);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .35s cubic-bezier(.2,.7,.3,1);
+}
+.fragen details[open] summary::after{transform:rotate(-135deg) translate(-3px,-3px)}
+.frage-antwort{transition:grid-template-rows .4s cubic-bezier(.2,.7,.3,1)}
+.fragen details:not([open]) .frage-antwort{grid-template-rows:0fr}
+.fragen p{padding-bottom:clamp(16px,3.6vw,21px);max-width:52ch;color:var(--bein-3)}
+
+/* =========================================================
+   Fuss
+   ========================================================= */
+.fuss{
+  text-align:center;background:#050605;
+  padding:clamp(64px,15vw,120px) var(--rand) calc(env(safe-area-inset-bottom,0px) + clamp(44px,10vw,80px));
+}
+.fuss .flamme{margin-bottom:clamp(28px,6vw,40px)}
+.fuss-namen{
+  font-family:var(--display);font-weight:400;font-size:clamp(22px,6vw,32px);
+  letter-spacing:.1em;text-transform:uppercase;color:#fbf7ec;
+}
+.fuss-datum{font-weight:400;font-size:9px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--kerze);margin-top:18px}
+.fuss-klein{font-size:11px;line-height:1.9;color:rgba(230,224,208,.22);
+  margin:clamp(34px,7vw,52px) auto 0;max-width:38ch}
+
+/* =========================================================
+   OHNE SKRIPT
+   Der Auftakt ist ein Handgriff, kein Schloss. Laedt das
+   Skript nicht, liegt die Karte einfach offen da - mit allem,
+   was darauf steht.
+   ========================================================= */
+html:not([data-js]) .auftakt{--auf:1;--r:260vmax}
+html:not([data-js]) .auftakt-hinweis,
+html:not([data-js]) .wand,
+html:not([data-js]) .vorhang,
+html:not([data-js]) .schabracke,
+html:not([data-js]) .stempelkopf{display:none}

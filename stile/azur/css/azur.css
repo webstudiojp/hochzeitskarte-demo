@@ -1,0 +1,428 @@
+/* =========================================================
+   AZUR — Kachel
+
+   Das Raster ist hier kein Hilfsmittel, sondern das Motiv.
+   Eine Azulejo-Wand besteht aus gleich grossen Quadraten, und
+   genau daran haelt sich die ganze Karte: Abschnittsmarken
+   sind Fliesen, Bilder sitzen im Quadratraster, und selbst
+   die Farbfelder der Kleiderordnung sind Kacheln.
+
+   Zwei Farben tragen alles: das Blau der Glasur und das
+   Terracotta der Wand darunter. Alles Weitere ist Kalk.
+   ========================================================= */
+
+@font-face{font-family:'Marcellus';src:url('../../../assets/fonts/Marcellus-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Work Sans';src:url('../../../assets/fonts/WorkSans-latin.woff2') format('woff2');
+  font-weight:200 600;font-style:normal;font-display:swap}
+@font-face{font-family:'Allura';src:url('../../../assets/fonts/Allura-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --kalk:#f6f1e6;
+  --kalk-2:#ece4d4;
+  --azur:#1f6f9c;
+  --azur-tief:#154f74;
+  --azur-hell:#5ba3c9;
+  --terra:#c4693c;
+  --tinte:#22323b;
+  --tinte-2:#5d7079;
+
+  --display:'Marcellus',Georgia,serif;
+  --sans:'Work Sans',system-ui,-apple-system,sans-serif;
+  --hand:'Allura','Marcellus',cursive;
+
+  --rand:clamp(22px,6vw,60px);
+  --spalte:min(600px,100%);
+}
+
+body{
+  background:var(--kalk);
+  color:var(--tinte);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:clamp(15.5px,.95rem + .3vw,17.5px);
+  line-height:1.78;
+}
+
+.fortschritt{position:fixed;inset:0 0 auto;height:3px;z-index:60;background:rgba(31,111,156,.15)}
+.fortschritt i{display:block;height:100%;background:var(--azur)}
+
+.musik{
+  position:fixed;right:calc(var(--rand) * .6);bottom:calc(var(--rand) * .6);z-index:60;
+  width:44px;height:44px;
+  border:1px solid var(--azur);background:rgba(246,241,230,.92);
+  backdrop-filter:blur(8px);color:var(--azur);
+  display:grid;place-items:center;transition:background .3s,color .3s,transform .3s;
+}
+.musik svg{width:20px;height:20px}
+.musik:hover{transform:scale(1.06)}
+.musik[data-an]{background:var(--azur);color:var(--kalk)}
+
+/* =========================================================
+   AUFTAKT — die Wand
+   Die Fliesen werden vom Skript gesetzt, weil ihre Zahl von
+   der Groesse des Schirms abhaengt. Jede dreht sich um ihre
+   eigene Achse; der Einsatz haengt am Abstand zum Finger.
+   ========================================================= */
+.auftakt{position:relative;height:100svh;overflow:hidden;background:var(--azur-tief);--auf:0}
+.auftakt-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(calc(1.12 - var(--auf) * .1));
+}
+
+.wand{
+  position:absolute;inset:-1px;z-index:2;
+  display:grid;
+  perspective:900px;
+  pointer-events:none;
+}
+.fliese{
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateY(var(--dreh,0deg));
+  transition:transform .9s cubic-bezier(.5,0,.2,1);
+  transition-delay:var(--wart,0ms);
+  backface-visibility:hidden;
+}
+/* Die Glasur. Zwei Dinge machen den Unterschied zwischen
+   Azulejo und Badezimmer: der Grund ist weiss und das Motiv
+   blau, nicht umgekehrt - und das Motiv laeuft ueber die
+   Fuge weiter. Die halben Blueten an den Kanten treffen
+   sich mit denen der Nachbarfliese zu einer ganzen; erst
+   dadurch wird aus vielen Quadraten eine Wand.
+
+   --ton dreht die Glasur je Fliese ein paar Grad. Handbemalt
+   ist nie zweimal derselbe Blauton, und ohne diese Streuung
+   sieht die Wand gedruckt aus. */
+.fliese::before{
+  content:'';position:absolute;inset:0;
+  filter:hue-rotate(var(--ton,0deg)) saturate(var(--satt,1));
+  background:
+    radial-gradient(circle at 50% 0%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 50% 100%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 0% 50%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 100% 50%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 0% 0%,transparent 0 27%,var(--azur-hell) 28% 31%,transparent 32%),
+    radial-gradient(circle at 100% 0%,transparent 0 27%,var(--azur-hell) 28% 31%,transparent 32%),
+    radial-gradient(circle at 0% 100%,transparent 0 27%,var(--azur-hell) 28% 31%,transparent 32%),
+    radial-gradient(circle at 100% 100%,transparent 0 27%,var(--azur-hell) 28% 31%,transparent 32%),
+    radial-gradient(circle at 50% 50%,var(--azur) 0 7%,transparent 8% 17%,var(--azur) 18% 21%,transparent 22%),
+    linear-gradient(152deg,#fdfbf4,#f2eddf 60%,#e9e2d0);
+  box-shadow:
+    inset 0 0 0 1px rgba(31,111,156,.16),
+    inset 0 0 0 5px rgba(255,255,255,.5),
+    inset -2px -3px 8px rgba(34,50,59,.16),
+    inset 2px 3px 8px rgba(255,255,255,.75);
+}
+
+.auftakt-grund{
+  position:absolute;left:50%;top:50%;z-index:2;
+  width:min(160vw,900px);aspect-ratio:1.15;transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(12,42,62,.62),rgba(12,42,62,.28) 55%,transparent 78%);
+  pointer-events:none;opacity:var(--auf);transition:opacity 1s ease .35s;
+}
+.kachelgriff{position:absolute;inset:0;z-index:4;background:none;border:0;padding:0;cursor:pointer}
+.kachelgriff:disabled{cursor:default;pointer-events:none}
+
+.auftakt-satz{
+  position:absolute;left:0;right:0;top:50%;z-index:3;
+  transform:translateY(-50%) scale(calc(.94 + var(--auf) * .06));
+  padding:0 var(--rand);text-align:center;pointer-events:none;
+  opacity:var(--auf);
+  transition:opacity 1s ease .35s,transform 1.2s cubic-bezier(.16,.7,.24,1) .35s;
+}
+.auftakt-ueber{
+  font-family:var(--sans);font-weight:500;
+  font-size:9.5px;letter-spacing:.46em;text-transform:uppercase;
+  color:#fff;margin-left:.46em;text-shadow:0 2px 14px rgba(10,40,60,.7);
+}
+.auftakt-namen{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(38px,11vw,66px);line-height:1.06;color:#fff;
+  margin:clamp(12px,3vw,20px) 0;
+  text-shadow:0 3px 30px rgba(10,40,60,.6);
+}
+.auftakt-namen i{
+  display:block;font-family:var(--hand);font-style:normal;
+  font-size:.72em;line-height:1;color:#ffd9a8;margin:-.04em 0;
+}
+.auftakt-datum{
+  display:inline-block;
+  font-family:var(--sans);font-weight:400;
+  font-size:10px;letter-spacing:.36em;text-transform:uppercase;color:#fff;
+  padding:10px 17px;border:1px solid rgba(255,255,255,.5);margin-left:.36em;
+  background:rgba(12,42,62,.34);
+}
+
+.auftakt-hinweis{
+  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);z-index:5;
+  text-align:center;font-family:var(--sans);font-weight:500;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:#fff;
+  text-shadow:0 2px 12px rgba(10,40,60,.8);
+  opacity:calc(1 - var(--auf) * 2.4);transition:opacity .5s;pointer-events:none;
+  animation:pochen 2.4s ease-in-out infinite;
+}
+@keyframes pochen{0%,100%{opacity:.55}50%{opacity:1}}
+
+html[data-zu],html[data-zu] body{overflow:hidden}
+
+/* =========================================================
+   DAS HAUS
+   ========================================================= */
+.haus{position:relative;z-index:1}
+
+.raum{
+  padding:clamp(60px,14vw,116px) var(--rand);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.raum > *{width:var(--spalte)}
+.raum--weit > *{width:min(880px,100%)}
+.raum--blau{background:var(--azur-tief);color:#eaf3f8}
+.raum--blau .satz,.raum--blau .liste p,.raum--blau .ablauf p{color:rgba(234,243,248,.8)}
+.raum--blau .titel{color:#fff}
+
+@media (prefers-reduced-motion:no-preference){
+  html[data-js] [data-folge]{
+    opacity:0;transform:translateY(16px);
+    transition:opacity .75s ease,transform .85s cubic-bezier(.16,.7,.24,1);
+    transition-delay:calc(var(--folge,0) * 80ms);
+  }
+  html[data-js] .da [data-folge]{opacity:1;transform:none}
+}
+
+/* Die Abschnittsmarke ist eine einzelne Fliese - dasselbe
+   Muster wie in der Wand, nur klein. Das Motiv wiederholt
+   sich damit im ganzen Haus, statt nur im Auftakt zu stehen. */
+.fliesenmarke{
+  width:clamp(32px,8vw,44px) !important;aspect-ratio:1;margin:0 auto clamp(20px,4.5vw,30px);
+  background:
+    radial-gradient(circle at 50% 0%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 50% 100%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 0% 50%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 100% 50%,var(--azur) 0 11%,transparent 12%),
+    radial-gradient(circle at 0% 0%,transparent 0 27%,var(--azur-hell) 28% 32%,transparent 33%),
+    radial-gradient(circle at 100% 0%,transparent 0 27%,var(--azur-hell) 28% 32%,transparent 33%),
+    radial-gradient(circle at 0% 100%,transparent 0 27%,var(--azur-hell) 28% 32%,transparent 33%),
+    radial-gradient(circle at 100% 100%,transparent 0 27%,var(--azur-hell) 28% 32%,transparent 33%),
+    radial-gradient(circle at 50% 50%,var(--azur) 0 7%,transparent 8% 17%,var(--azur) 18% 22%,transparent 23%),
+    #fdfbf4;
+  box-shadow:inset 0 0 0 1px rgba(31,111,156,.22);
+}
+
+.titel{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(28px,7.6vw,46px);line-height:1.14;
+  margin-bottom:clamp(20px,4.5vw,32px);
+}
+.satz{margin-inline:auto;max-width:41ch;color:var(--tinte-2)}
+.satz--eng{max-width:32ch}
+.satz b{color:var(--terra);font-weight:500}
+.raum--blau .satz b{color:#ffb887}
+.notiz{
+  font-family:var(--hand);font-size:clamp(23px,5.6vw,30px);line-height:1.3;
+  color:var(--terra);margin-top:clamp(16px,3.6vw,24px);
+}
+.raum--blau .notiz{color:#ffb887}
+.klein{font-size:11.5px;line-height:1.7;color:var(--tinte-2);opacity:.75;margin-top:13px}
+
+/* =========================================================
+   Countdown — vier Fliesen
+   ========================================================= */
+.uhr{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,1.8vw,12px);
+  margin-top:clamp(32px,7vw,50px);
+}
+.uhr-teil{
+  padding:clamp(14px,3.4vw,22px) 4px;
+  background:#fff;border:1px solid rgba(31,111,156,.24);
+  box-shadow:inset 0 0 0 3px rgba(31,111,156,.06);
+}
+.raum--blau .uhr-teil{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.24)}
+.uhr-teil b{
+  display:block;font-family:var(--display);font-weight:400;
+  font-size:clamp(24px,7vw,40px);line-height:1;color:var(--azur);
+  font-variant-numeric:tabular-nums;
+}
+.uhr-teil i{
+  display:block;margin-top:8px;font-style:normal;font-weight:500;
+  font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--tinte-2);
+}
+.uhr-teil b.rollt{animation:kippen .5s cubic-bezier(.2,.7,.3,1)}
+@keyframes kippen{from{opacity:.2;transform:rotateX(-60deg)}to{opacity:1;transform:none}}
+.uhr-vorbei{margin-top:20px;color:var(--terra)}
+
+/* =========================================================
+   Stufen und Ablauf
+   ========================================================= */
+.stufen{display:flex;flex-direction:column;gap:clamp(26px,6vw,40px)}
+.stufen b{
+  display:inline-block;font-weight:500;font-size:9.5px;letter-spacing:.32em;
+  padding:5px 11px;background:rgba(255,255,255,.12);color:#ffd9a8;margin-bottom:1em;
+}
+.stufen h3{font-family:var(--display);font-weight:400;font-size:clamp(19px,5vw,25px);
+  margin-bottom:.4em;color:#fff}
+.stufen p{max-width:37ch;margin-inline:auto;color:rgba(234,243,248,.78)}
+
+.ablauf{display:flex;flex-direction:column;gap:2px}
+.ablauf li{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,4.5vw,30px);
+  text-align:left;align-items:baseline;padding:clamp(14px,3.2vw,20px) clamp(12px,3vw,18px);
+  background:#fff;border-left:3px solid var(--azur);
+}
+.ablauf li:nth-child(even){background:rgba(255,255,255,.55);border-left-color:var(--terra)}
+.ablauf b{font-weight:500;font-size:12.5px;letter-spacing:.1em;color:var(--azur);
+  font-variant-numeric:tabular-nums}
+.ablauf h3{font-family:var(--display);font-weight:400;font-size:clamp(17px,4.4vw,21px)}
+.ablauf p{font-size:.88em;margin-top:.15em;color:var(--tinte-2)}
+
+/* =========================================================
+   Mosaik
+   ========================================================= */
+.mosaik{display:grid;gap:clamp(6px,1.8vw,12px);grid-template-columns:1fr}
+@media (min-width:620px){
+  .mosaik{grid-template-columns:1fr 1fr}
+  .mosaik--breit{grid-column:1/-1}
+}
+.mosaik .px-rahmen{width:100%;aspect-ratio:3/4;border:5px solid #fff;
+  box-shadow:0 2px 14px rgba(34,50,59,.14)}
+.mosaik--breit .px-rahmen{aspect-ratio:3/2}
+
+.ort-bild{aspect-ratio:3/2;margin:0 0 clamp(24px,5vw,34px);border:6px solid #fff}
+.adresse{font-weight:400;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(234,243,248,.72)}
+
+.tasten{display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:clamp(26px,5vw,38px)}
+.taste{
+  display:inline-block;text-decoration:none;background:transparent;
+  font-family:var(--sans);font-weight:500;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  padding:15px 22px;border:1px solid var(--azur);color:var(--azur);
+  transition:background .3s,color .3s;
+}
+.taste:hover{background:rgba(31,111,156,.1)}
+.taste--voll{background:var(--terra);border-color:var(--terra);color:#fff}
+.taste--voll:hover{background:#a9542e;border-color:#a9542e}
+.taste--klein{font-size:9px;padding:12px 16px}
+.taste:disabled{opacity:.4;cursor:not-allowed}
+.raum--blau .taste{border-color:rgba(255,255,255,.55);color:#fff}
+.raum--blau .taste:hover{background:rgba(255,255,255,.12)}
+.raum--blau .taste--voll{background:var(--terra);border-color:var(--terra)}
+
+/* =========================================================
+   Listen
+   ========================================================= */
+.liste{display:flex;flex-direction:column;gap:clamp(24px,5vw,34px);text-align:left}
+.liste h3{font-weight:600;font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--azur);margin-bottom:.85em}
+.liste p{max-width:40ch;color:var(--tinte-2)}
+.haeuser{margin-top:16px;display:grid;gap:2px}
+.haeuser li{padding:12px 14px;background:#fff;border-left:3px solid var(--azur-hell)}
+.haeuser b{display:block;font-family:var(--display);font-weight:400;font-size:1.1em}
+.haeuser i{display:block;margin-top:2px;font-style:normal;font-size:11.5px;color:var(--tinte-2)}
+
+.farben{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+  margin-top:clamp(24px,5vw,34px);max-width:280px;margin-inline:auto}
+.farben i{display:block;aspect-ratio:1;background:var(--f);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+
+/* =========================================================
+   Formular
+   ========================================================= */
+.formular{display:flex;flex-direction:column;gap:clamp(18px,4vw,24px);
+  margin-top:clamp(28px,6vw,40px);text-align:left}
+.feld-block{display:block}
+.feld-block input,.feld-block select,.feld-block textarea{width:100%}
+.feld-name{
+  display:block;font-weight:600;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--azur);margin-bottom:9px;
+}
+.formular input[type=text],.formular input[type=email],.formular select,.formular textarea{
+  background:#fff;border:1px solid rgba(31,111,156,.3);
+  padding:12px 13px;font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.5;
+  color:var(--tinte);border-radius:0;appearance:none;transition:border-color .3s,box-shadow .3s;
+}
+.formular select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--azur) 50%),
+                   linear-gradient(135deg,var(--azur) 50%,transparent 50%);
+  background-position:right 15px center,right 10px center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:32px;
+}
+.formular input:focus,.formular select:focus,.formular textarea:focus{
+  outline:none;border-color:var(--azur);box-shadow:0 0 0 3px rgba(31,111,156,.14);
+}
+.wahl{border:0;padding:0;margin:0}
+.wahl label{display:flex;align-items:center;gap:11px;padding:9px 0;cursor:pointer}
+.wahl input{
+  appearance:none;width:16px;height:16px;flex:none;
+  border:1px solid var(--azur);background:#fff;transition:background .25s,box-shadow .25s;
+}
+.wahl input:checked{background:var(--azur);box-shadow:inset 0 0 0 3px #fff}
+.begleitung-zahl{font-size:12px;letter-spacing:.02em;text-transform:none;
+  color:var(--tinte-2);margin-left:.6em}
+.begleitung-zeile{padding:15px 0;border-top:1px solid rgba(31,111,156,.2)}
+@media (min-width:560px){.begleitung-zeile{grid-template-columns:1fr auto auto;align-items:end}}
+.begleitung-weg{background:none;border:0;padding:8px 0;justify-self:start;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);font-weight:600}
+.begleitung-weg:hover{text-decoration:underline}
+.begleitung [data-begleitung]{margin-bottom:12px}
+
+.danke{padding:clamp(24px,5vw,36px) 0;text-align:center}
+.danke h3{font-family:var(--display);font-weight:400;font-size:clamp(24px,6vw,32px);margin-bottom:.5em}
+.danke a{color:var(--terra)}
+
+.iban{margin-top:20px;padding:20px 22px;background:#fff;border-left:4px solid var(--terra);text-align:left}
+.iban p{margin-bottom:14px;line-height:1.9}
+.iban b{font-family:var(--display);font-weight:400;font-size:1.1em}
+.iban-nr{font-size:13.5px;letter-spacing:.12em;color:var(--azur)}
+.raum--blau .iban{background:rgba(255,255,255,.08)}
+[data-iban-zeigen]{margin-top:clamp(22px,5vw,32px)}
+
+/* =========================================================
+   Fragen
+   ========================================================= */
+.fragen{text-align:left;display:grid;gap:2px}
+.fragen details{background:#fff;border-left:3px solid var(--azur-hell)}
+.fragen summary{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:clamp(14px,3.2vw,19px) clamp(13px,3vw,18px);font-size:.98em;transition:color .3s;
+}
+.fragen summary:hover{color:var(--azur)}
+.fragen summary::after{
+  content:'';flex:none;width:8px;height:8px;
+  border-right:2px solid var(--azur);border-bottom:2px solid var(--azur);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .35s cubic-bezier(.2,.7,.3,1);
+}
+.fragen details[open] summary::after{transform:rotate(-135deg) translate(-3px,-3px)}
+.frage-antwort{transition:grid-template-rows .4s cubic-bezier(.2,.7,.3,1)}
+.fragen details:not([open]) .frage-antwort{grid-template-rows:0fr}
+.fragen p{padding:0 clamp(13px,3vw,18px) clamp(14px,3.2vw,19px);
+  color:var(--tinte-2);font-size:.94em;max-width:52ch}
+
+/* =========================================================
+   Fuss
+   ========================================================= */
+.fuss{
+  text-align:center;background:var(--azur-tief);color:#eaf3f8;
+  padding:clamp(56px,13vw,100px) var(--rand) calc(env(safe-area-inset-bottom,0px) + clamp(42px,10vw,76px));
+}
+.fuss .fliesenmarke{margin-bottom:clamp(24px,5vw,34px)}
+.fuss-namen{font-family:var(--display);font-weight:400;font-size:clamp(24px,6.4vw,34px);color:#fff}
+.fuss-namen i{font-family:var(--hand);font-style:normal;color:#ffd9a8;font-size:1.1em}
+.fuss-datum{font-weight:500;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(234,243,248,.6);margin-top:16px}
+.fuss-klein{font-size:11px;line-height:1.9;color:rgba(234,243,248,.34);
+  margin:clamp(30px,7vw,48px) auto 0;max-width:38ch}
+
+/* =========================================================
+   OHNE SKRIPT
+   Der Auftakt ist ein Handgriff, kein Schloss. Laedt das
+   Skript nicht, liegt die Karte einfach offen da - mit allem,
+   was darauf steht.
+   ========================================================= */
+html:not([data-js]) .auftakt{--auf:1}
+html:not([data-js]) .auftakt-hinweis,
+html:not([data-js]) .wand,
+html:not([data-js]) .vorhang,
+html:not([data-js]) .schabracke,
+html:not([data-js]) .stempelkopf{display:none}

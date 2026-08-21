@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amelie &amp; David — 12. Juni 2027</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f0ece1">
+<meta name="description" content="Einladung zur Hochzeit von Amelie und David am 12. Juni 2027 auf Gut Lindenhof in Odenthal.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Amelie &amp; David — 12. Juni 2027">
+<meta property="og:description" content="Wir heiraten. Gut Lindenhof, Odenthal.">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/herkunft/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/herkunft/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../gemeinsam/kern.css?v=202608212157">
+<link rel="stylesheet" href="css/herkunft.css?v=202608212157">
+<link rel="preload" as="image" href="bilder/auftakt.webp?v=202608212157" fetchpriority="high">
+</head>
+
+<body>
+
+<!-- Duenne Linie am oberen Rand. Haengt am Bildlauf selbst,
+     wo der Browser das kann. -->
+<div class="fortschritt"><i data-fortschritt></i></div>
+
+<button class="musik" type="button" data-musik aria-pressed="false">
+  <span class="nur-fuer-schirmleser">Musik an oder aus</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3">
+    <path d="M9 9v7.2a2.4 2.4 0 1 1-1.6-2.26"/><path d="M9 9l7-2v7.2a2.4 2.4 0 1 1-1.6-2.26"/>
+  </svg>
+</button>
+
+
+<!-- =========================================================
+     AUFTAKT — das Kuvert
+     Die Karte wird herausgezogen, nicht weggeklickt. Wer zieht,
+     zieht sie mit; wer nur tippt, bekommt sie trotzdem.
+     ========================================================= -->
+<section class="auftakt" id="auftakt" aria-label="Umschlag">
+  <img class="auftakt-bild" src="bilder/auftakt.webp?v=202608212157" alt="" width="1200" height="2150" fetchpriority="high" decoding="async">
+
+  <div class="auftakt-karte" id="karte" role="button" tabindex="0"
+       aria-label="Einladung aus dem Umschlag ziehen">
+    <div class="auftakt-karte-flaeche">
+      <svg class="farn" id="farn" viewBox="0 0 120 200" aria-hidden="true"
+           fill="none" stroke="currentColor" stroke-width="1.1"
+           stroke-linecap="round" stroke-linejoin="round"></svg>
+      <p class="auftakt-ueber">Wir heiraten</p>
+      <h1 class="auftakt-namen">Amelie<span class="amp">&amp;</span>David</h1>
+      <p class="auftakt-datum"><span>12</span><i>Juni</i><span>2027</span></p>
+    </div>
+  </div>
+
+  <p class="auftakt-hinweis" id="hinweis">
+    <span class="auftakt-pfeil" aria-hidden="true"></span>
+    Nach oben ziehen
+  </p>
+</section>
+
+
+<main class="heft" id="heft">
+
+<!-- ---------- 01 Der Anfang ---------- -->
+<section class="blatt blatt--creme" data-auftritt>
+  <span class="ecke ecke--ol" aria-hidden="true"></span><span class="ecke ecke--or" aria-hidden="true"></span>
+  <span class="ecke ecke--ul" aria-hidden="true"></span><span class="ecke ecke--ur" aria-hidden="true"></span>
+
+  <p class="nummer">01</p>
+  <h2 class="titel">Es ist so weit</h2>
+  <p class="satz">
+    Nach elf Jahren, drei Wohnungen, einem Hund und ungefähr
+    vierhundert gemeinsamen Sonntagen: Wir heiraten. Und wir hätten
+    das gern mit euch zusammen — nicht mit vielen, sondern mit euch.
+  </p>
+  <p class="notiz">Bitte kommt. Wirklich.</p>
+
+  <div class="uhr" aria-label="Countdown">
+    <div class="uhr-teil" data-folge><b data-zaehler="tage">–</b><i>Tage</i></div>
+    <div class="uhr-teil" data-folge><b data-zaehler="stunden">–</b><i>Stunden</i></div>
+    <div class="uhr-teil" data-folge><b data-zaehler="minuten">–</b><i>Minuten</i></div>
+    <div class="uhr-teil" data-folge><b data-zaehler="sekunden">–</b><i>Sekunden</i></div>
+  </div>
+  <p class="uhr-vorbei" data-countdown-vorbei hidden>Heute ist der Tag.</p>
+</section>
+
+
+<!-- ---------- 02 Unsere Geschichte ---------- -->
+<section class="blatt blatt--papier" data-auftritt>
+  <span class="ecke ecke--ol" aria-hidden="true"></span><span class="ecke ecke--or" aria-hidden="true"></span>
+  <p class="nummer">02</p>
+  <h2 class="titel">Wie es dazu kam</h2>
+
+  <ol class="zeitleiste">
+    <li data-folge>
+      <b class="jahr">2016</b>
+      <h3>Ein Regenschirm zu wenig</h3>
+      <p>Botanischer Garten, Aprilschauer, ein Schirm für zwei. Amelie
+         behauptet bis heute, sie habe ihn zuerst gehabt.</p>
+    </li>
+    <li data-folge>
+      <b class="jahr">2018</b>
+      <h3>Der erste Sommer</h3>
+      <p>Ein Sommer in den Vogesen, ein Zelt, das nicht dicht war, und
+         die Erkenntnis, dass sich das aushalten lässt.</p>
+    </li>
+    <li data-folge>
+      <b class="jahr">2021</b>
+      <h3>Das Haus mit dem schiefen Boden</h3>
+      <p>Wir zogen in ein Haus, in dem jede Murmel nach Westen rollt.
+         Wir blieben trotzdem. Oder deswegen.</p>
+    </li>
+    <li data-folge>
+      <b class="jahr">2026</b>
+      <h3>Die Frage</h3>
+      <p>Gestellt an einem Dienstag, ohne Anlass, in der Küche,
+         während der Reis anbrannte. Die Antwort kam vorher.</p>
+    </li>
+  </ol>
+</section>
+
+
+<!-- ---------- 03 Gesammelte Momente ---------- -->
+<section class="blatt blatt--creme blatt--weit" data-auftritt>
+  <p class="nummer">03</p>
+  <h2 class="titel">Gesammeltes</h2>
+  <p class="notiz notiz--rechts">eingeklebt, nicht sortiert</p>
+
+  <div class="mappe">
+    <figure class="mappe-bild mappe-bild--hoch" data-folge>
+      <div class="px-rahmen" data-px="5">
+        <img src="bilder/m1.webp?v=202608212157" alt="Zwei Ringe auf einem gepressten Farnwedel" width="900" height="1205" loading="lazy" decoding="async">
+      </div>
+    </figure>
+    <figure class="mappe-bild mappe-bild--quer" data-folge>
+      <div class="px-rahmen" data-px="4">
+        <img src="bilder/tafel.webp?v=202608212157" alt="Lange gedeckte Tafel unter einem Baum" width="1400" height="939" loading="lazy" decoding="async">
+      </div>
+    </figure>
+    <figure class="mappe-bild mappe-bild--hoch" data-folge>
+      <div class="px-rahmen" data-px="5">
+        <img src="bilder/m2.webp?v=202608212157" alt="Wild gebundener Brautstrauß aus Wiesenkerbel und Farn" width="900" height="1205" loading="lazy" decoding="async">
+      </div>
+    </figure>
+  </div>
+</section>
+
+
+<!-- ---------- 04 Der Tag ---------- -->
+<section class="blatt blatt--salbei" data-auftritt>
+  <span class="ecke ecke--ol" aria-hidden="true"></span><span class="ecke ecke--ur" aria-hidden="true"></span>
+  <p class="nummer">04</p>
+  <h2 class="titel">Der Tag</h2>
+  <p class="satz satz--kurz">Alles der Reihe nach, damit niemand fragen muss.</p>
+
+  <ol class="ablauf">
+    <li data-folge><b>14<i>30</i></b><span><h3>Ankommen</h3><p>Im Hof. Es gibt kalten Holunder.</p></span></li>
+    <li data-folge><b>15<i>00</i></b><span><h3>Trauung</h3><p>Freie Trauung unter der alten Linde.</p></span></li>
+    <li data-folge><b>16<i>00</i></b><span><h3>Sekt und Zeit</h3><p>Der Teil, in dem alle einander begrüßen.</p></span></li>
+    <li data-folge><b>18<i>30</i></b><span><h3>Essen</h3><p>An einer langen Tafel, ohne Sitzordnung.</p></span></li>
+    <li data-folge><b>21<i>00</i></b><span><h3>Der erste Tanz</h3><p>Kurz. Versprochen.</p></span></li>
+    <li data-folge><b>21<i>30</i></b><span><h3>Feiern</h3><p>Bis es hell wird oder das Bier alle ist.</p></span></li>
+    <li data-folge><b>03<i>00</i></b><span><h3>Schluss</h3><p>Der letzte Shuttle fährt.</p></span></li>
+  </ol>
+</section>
+
+
+<!-- ---------- 05 Der Ort ---------- -->
+<section class="blatt blatt--creme blatt--weit" data-auftritt>
+  <p class="nummer">05</p>
+  <h2 class="titel">Der Ort</h2>
+
+  <figure class="ort-bild px-rahmen" data-px="7">
+    <img src="bilder/ort.webp?v=202608212157" alt="Gut Lindenhof: Bruchsteinhaus mit ummauertem Garten" width="1400" height="933" loading="lazy" decoding="async">
+  </figure>
+
+  <div class="ort-satz" data-folge>
+    <h3>Gut Lindenhof</h3>
+    <p class="adresse">Lindenhofweg 4<br>51519 Odenthal</p>
+    <p class="notiz">Der Hof liegt hinter der Kurve. Nicht vorher abbiegen.</p>
+  </div>
+
+  <div class="tasten" data-folge>
+    <a class="taste" data-route="google" href="#">Route bei Google</a>
+    <a class="taste" data-route="apple" href="#">Route bei Apple</a>
+    <button class="taste taste--voll" type="button" data-kalender>Termin in den Kalender</button>
+  </div>
+</section>
+
+
+<!-- ---------- 06 Anreise ---------- -->
+<section class="blatt blatt--papier" data-auftritt>
+  <span class="ecke ecke--or" aria-hidden="true"></span><span class="ecke ecke--ul" aria-hidden="true"></span>
+  <p class="nummer">06</p>
+  <h2 class="titel">Hinkommen, bleiben</h2>
+
+  <ul class="anreise">
+    <li data-folge>
+      <h3>Mit dem Auto</h3>
+      <p>A3 bis Abfahrt Odenthal, dann sieben Minuten. Auf der Wiese
+         hinter dem Hof wird eingewiesen, Platz ist genug.</p>
+    </li>
+    <li data-folge>
+      <h3>Mit der Bahn</h3>
+      <p>Bis Bergisch Gladbach, von dort holt euch ein Shuttle ab.
+         Abfahrten um 13:30 und 14:00, zurück ab 23:00 stündlich.</p>
+    </li>
+    <li data-folge>
+      <h3>Übernachten</h3>
+      <p>Für alle, die von weiter kommen, haben wir vorgemerkt:</p>
+      <ul class="haeuser">
+        <li><b>Landhaus Altenberg</b><i>4 km · Kontingent „Amelie &amp; David“ bis 1. Mai</i></li>
+        <li><b>Hotel Zur Post, Odenthal</b><i>6 km · einfach und freundlich</i></li>
+        <li><b>Gästezimmer auf dem Gut</b><i>vor Ort · sechs Zimmer, bitte früh melden</i></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+
+<!-- ---------- 07 Kleiderordnung ---------- -->
+<section class="blatt blatt--creme" data-auftritt>
+  <p class="nummer">07</p>
+  <h2 class="titel">Was man anzieht</h2>
+  <p class="satz">
+    Festlich, aber nicht steif. Es geht über Wiese und Kies —
+    hohe, dünne Absätze werden den Abend nicht überstehen.
+    Abends wird es kühl, denkt an etwas für drüber.
+  </p>
+  <p class="dresscode-farben" aria-hidden="true">
+    <i style="--f:#7d8d70"></i><i style="--f:#b0563a"></i><i style="--f:#d9cfb8"></i><i style="--f:#4a4a3d"></i>
+  </p>
+  <p class="notiz">Weiß bleibt an diesem einen Tag reserviert.</p>
+</section>
+
+
+<!-- ---------- 08 Rueckmeldung ---------- -->
+<section class="blatt blatt--salbei" id="rueckmeldung" data-auftritt>
+  <p class="nummer">08</p>
+  <h2 class="titel">Sagt uns Bescheid</h2>
+  <p class="satz satz--kurz">Bis zum <b>1. April 2027</b>, damit wir planen können.</p>
+
+  <form class="formular" data-rueckmeldung novalidate>
+    <label class="feld"><span class="feld-name">Dein Name</span>
+      <input type="text" name="name" autocomplete="name" required></label>
+
+    <label class="feld"><span class="feld-name">E-Mail</span>
+      <input type="email" name="email" autocomplete="email" required></label>
+
+    <fieldset class="wahl">
+      <legend class="feld-name">Kommst du?</legend>
+      <label><input type="radio" name="antwort" value="zusage" checked><span>Ja, ich komme gern</span></label>
+      <label><input type="radio" name="antwort" value="absage"><span>Leider nicht</span></label>
+    </fieldset>
+
+    <div data-nur-zusage>
+      <label class="feld"><span class="feld-name">Was isst du?</span>
+        <select name="essen0" required>
+          <option value="">Bitte wählen</option>
+          <option>Fleisch</option><option>Fisch</option>
+          <option>Vegetarisch</option><option>Vegan</option>
+        </select></label>
+
+      <div class="begleitung">
+        <p class="feld-name">Begleitung <span class="begleitung-zahl" data-begleitung-zahl></span></p>
+        <div data-begleitung></div>
+        <button class="taste taste--klein" type="button" data-begleitung-mehr>+ Begleitung hinzufügen</button>
+      </div>
+
+      <label class="feld"><span class="feld-name">Allergien, Unverträglichkeiten</span>
+        <input type="text" name="allergien" placeholder="z. B. Nüsse, Laktose"></label>
+    </div>
+
+    <label class="feld"><span class="feld-name">Möchtest du uns etwas schreiben?</span>
+      <textarea name="gruss" rows="3"></textarea></label>
+
+    <button class="taste taste--voll" type="submit">Rückmeldung abschicken</button>
+    <p class="klein">Öffnet eine fertige E-Mail an uns — abschicken müsst ihr sie selbst.</p>
+  </form>
+
+  <div class="danke" data-danke hidden>
+    <h3>Danke, <span data-danke-name></span>.</h3>
+    <p>Deine E-Mail sollte sich gerade geöffnet haben. Falls nicht:
+       <a data-danke-post href="#">hier noch einmal</a>.</p>
+  </div>
+</section>
+
+
+<!-- ---------- 09 Geschenke ---------- -->
+<section class="blatt blatt--creme" data-auftritt>
+  <p class="nummer">09</p>
+  <h2 class="titel">Geschenke</h2>
+  <p class="satz">
+    Wir haben zwei von allem und brauchen nichts. Wer trotzdem etwas
+    dalassen möchte: Wir sparen auf ein Dach, das dicht ist.
+  </p>
+  <button class="taste taste--klein" type="button" data-iban-zeigen>Bankverbindung anzeigen</button>
+  <div class="iban" data-iban hidden>
+    <p><b>Amelie Brandt &amp; David Reuter</b><br>
+       <span class="iban-nr">DE00 0000 0000 0000 0000 00</span></p>
+    <button class="taste taste--klein" type="button" data-iban-kopieren>IBAN kopieren</button>
+  </div>
+</section>
+
+
+<!-- ---------- 10 Fragen ---------- -->
+<section class="blatt blatt--papier" data-auftritt>
+  <p class="nummer">10</p>
+  <h2 class="titel">Was oft gefragt wird</h2>
+
+  <div class="fragen">
+    <details data-frage data-folge><summary>Darf ich jemanden mitbringen?</summary>
+      <div class="frage-antwort"><div><p>Wenn auf eurer Einladung eine Begleitung steht: sehr gern.
+        Tragt sie einfach oben mit ein. Sonst wird es leider eng.</p></div></div></details>
+
+    <details data-frage data-folge><summary>Sind Kinder dabei?</summary>
+      <div class="frage-antwort"><div><p>Ja. Es gibt eine Scheune mit Strohballen, eine Betreuung
+        ab 15 Uhr und Essen, das Kinder auch essen.</p></div></div></details>
+
+    <details data-frage data-folge><summary>Darf ich während der Trauung fotografieren?</summary>
+      <div class="frage-antwort"><div><p>Bitte nicht. Eine halbe Stunde ohne Telefone — danach
+        gern und viel.</p></div></div></details>
+
+    <details data-frage data-folge><summary>Wo parke ich?</summary>
+      <div class="frage-antwort"><div><p>Auf der Wiese hinter dem Hof, es wird eingewiesen.
+        Über Nacht stehenbleiben ist kein Problem.</p></div></div></details>
+
+    <details data-frage data-folge><summary>Ich kann doch nicht kommen. Und jetzt?</summary>
+      <div class="frage-antwort"><div><p>Sagt uns rechtzeitig Bescheid, das ist alles. Wir sind
+        nicht beleidigt, nur traurig.</p></div></div></details>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="fuss">
+  <svg class="farn farn--fuss" id="farn-fuss" viewBox="0 0 120 200" aria-hidden="true"
+       fill="none" stroke="currentColor" stroke-width="1.1"
+       stroke-linecap="round" stroke-linejoin="round"></svg>
+  <p class="fuss-namen">Amelie &amp; David</p>
+  <p class="fuss-datum">12. Juni 2027 · Gut Lindenhof</p>
+  <p class="fuss-klein">Amelie und David, Termin, Ort und Bankverbindung sind frei erfunden.</p>
+</footer>
+
+<script src="../gemeinsam/kern.js?v=202608212157"></script>
+<script src="js/herkunft.js?v=202608212157"></script>
+</body>
+</html>

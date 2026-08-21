@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Drei Kartenstile</title>
+<title>Zwölf Kartenstile</title>
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Drei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife, Wachssiegel zum Freirubbeln und ein Siegel, das man selbst aufbricht.">
+<meta name="description" content="Zwölf digitale Hochzeitskarten zum Ausprobieren — jede mit eigener Typografie, eigener Bildwelt und einem eigenen Handgriff, mit dem sie sich öffnet.">
 
 <!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
      og:image braucht eine vollstaendige Adresse - relative Pfade
      ignorieren die Messenger. -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Furkan &amp; Dilara">
-<meta property="og:title" content="Drei Kartenstile">
-<meta property="og:description" content="Drei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife, Wachssiegel zum Freirubbeln und ein Siegel, das man selbst aufbricht.">
+<meta property="og:site_name" content="Digitale Hochzeitskarten">
+<meta property="og:title" content="Zwölf Kartenstile">
+<meta property="og:description" content="Zwölf digitale Hochzeitskarten — jede mit eigener Typografie, eigener Bildwelt und einem eigenen Handgriff.">
 <meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/">
 <meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/vorschau.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Drei Kartenstile nebeneinander: Prägedruck, Wachssiegel und Nacht mit Gold">
+<meta property="og:image:alt" content="Zwölf digitale Hochzeitskarten nebeneinander">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -26,95 +26,247 @@
   font-weight:300 500;font-display:swap}
 @font-face{font-family:'Manrope';src:url('../assets/fonts/Manrope-latin.woff2') format('woff2');
   font-weight:200 800;font-display:swap}
+
 *{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;padding:56px 22px;
-  background:#f4efe6;color:#3b352d;
-  font-family:'Cormorant',Georgia,serif;
-  display:flex;flex-direction:column;align-items:center;gap:34px;
+:root{
+  --grund:#f2efe8;
+  --karte:#fffdf8;
+  --linie:#ded6c4;
+  --tinte:#38332b;
+  --tinte-2:#6f675a;
+  --marke:#9a8f79;
 }
-h1{font-weight:300;font-size:clamp(28px,7vw,38px);margin:0;text-align:center}
+body{
+  margin:0;min-height:100vh;
+  padding:clamp(44px,9vw,76px) clamp(18px,5vw,40px) clamp(60px,10vw,90px);
+  background:var(--grund);color:var(--tinte);
+  font-family:'Cormorant',Georgia,serif;
+  display:flex;flex-direction:column;align-items:center;gap:clamp(30px,6vw,48px);
+}
+
+.kopf{text-align:center;max-width:56ch}
 .unter{
   font-family:'Manrope',system-ui,sans-serif;
-  font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8d8271;
-  margin:0 0 8px;text-align:center;
+  font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--marke);
+  margin:0 0 12px;
 }
-.reihe{display:grid;gap:22px;width:100%;max-width:760px;grid-template-columns:1fr}
-@media (min-width:640px){.reihe{grid-template-columns:1fr 1fr;max-width:760px}}
-/* Bei drei Kacheln stuende sonst eine allein in der zweiten Zeile. */
-@media (min-width:980px){.reihe{grid-template-columns:repeat(3,1fr);max-width:1120px}}
+h1{font-weight:300;font-size:clamp(30px,7.5vw,46px);margin:0;line-height:1.14}
+.kopf p{
+  margin:clamp(16px,3vw,22px) auto 0;max-width:52ch;
+  font-size:clamp(16px,1rem + .3vw,19px);line-height:1.72;color:var(--tinte-2);
+}
+
+/* Ein Kamm statt einer Reihe: die Kacheln wachsen mit dem
+   Platz, aber nie ueber 380px - sonst wird aus einer Uebersicht
+   eine Diaschau. */
+.reihe{
+  display:grid;gap:clamp(18px,3.4vw,28px);width:100%;max-width:1240px;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));
+}
+
 .kachel{
-  display:block;text-decoration:none;color:inherit;
-  border:1px solid #ded1b8;border-radius:3px;overflow:hidden;
-  background:#fffdf8;
-  transition:transform .3s ease,box-shadow .3s ease;
+  display:flex;flex-direction:column;text-decoration:none;color:inherit;
+  background:var(--karte);border:1px solid var(--linie);
+  overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s ease,border-color .35s;
 }
-.kachel:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(120,95,60,.18)}
-/* Die Kachel zeigt die Karte selbst, nicht eine Farbe, die sie
-   andeutet. Das Bild dient zugleich als Vorschau beim Teilen. */
-.probe{position:relative;aspect-ratio:1200/630;overflow:hidden;background:#efe7d8}
-.probe img{width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .6s cubic-bezier(.2,.7,.3,1)}
-.kachel:hover .probe img{transform:scale(1.04)}
+.kachel:hover,.kachel:focus-visible{
+  transform:translateY(-5px);
+  box-shadow:0 18px 38px -18px rgba(60,50,32,.45);
+  border-color:var(--marke);
+}
+
+.probe{position:relative;aspect-ratio:1200/630;overflow:hidden;background:#eae2d2}
+.probe img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .7s cubic-bezier(.2,.7,.3,1);
+}
+.kachel:hover .probe img{transform:scale(1.045)}
 .marke{
-  position:absolute;left:14px;bottom:14px;
-  background:rgba(255,253,248,.9);
-  backdrop-filter:blur(6px);
-  padding:7px 13px;border-radius:2px;
-  font-family:'Manrope',system-ui,sans-serif;font-weight:600;
-  font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+  position:absolute;left:12px;bottom:12px;
+  background:rgba(255,253,248,.92);backdrop-filter:blur(6px);
+  padding:6px 11px;
+  font-family:'Manrope',system-ui,sans-serif;font-weight:700;
+  font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--tinte);
 }
-.marke.a{color:#4c5878}
-.marke.b{color:#2b3aa8}
-.marke.c{color:#7d1a2c}
-.text{padding:20px 22px 24px}
-.text h2{margin:0 0 8px;font-weight:400;font-size:24px}
-.text p{margin:0;font-size:16px;line-height:1.6;color:#6d6355}
+
+.text{padding:clamp(16px,3vw,22px) clamp(16px,3vw,22px) clamp(20px,3.6vw,26px);
+  display:flex;flex-direction:column;gap:9px;flex:1}
+.text h2{margin:0;font-weight:400;font-size:clamp(21px,4.6vw,25px);line-height:1.2}
+.text p{margin:0;font-size:15.5px;line-height:1.62;color:var(--tinte-2)}
+/* Der Handgriff steht getrennt vom Text: er ist das, was die
+   Karte von den anderen unterscheidet, und nicht ein Satz
+   unter vielen. */
+.griff{
+  margin-top:auto;padding-top:11px;border-top:1px solid var(--linie);
+  font-family:'Manrope',system-ui,sans-serif;font-weight:600;
+  font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--marke);
+}
+
+.trenner{
+  display:flex;align-items:center;gap:16px;width:100%;max-width:1240px;
+  font-family:'Manrope',system-ui,sans-serif;font-weight:600;
+  font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--marke);
+}
+.trenner::before,.trenner::after{content:'';flex:1;height:1px;background:var(--linie)}
+
 .fuss{
-  font-family:'Manrope',system-ui,sans-serif;font-size:11px;letter-spacing:.16em;
-  color:#a1957f;text-align:center;max-width:44ch;line-height:1.8;margin:0;
+  font-family:'Manrope',system-ui,sans-serif;font-size:11px;letter-spacing:.1em;
+  color:var(--marke);text-align:center;max-width:52ch;line-height:1.95;margin:0;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .kachel,.probe img{transition:none}
+  .kachel:hover{transform:none}
+  .kachel:hover .probe img{transform:none}
 }
 </style>
 </head>
 <body>
-  <div>
-    <p class="unter">Digitale Hochzeitskarten</p>
-    <h1>Drei Stile zur Auswahl</h1>
-  </div>
 
-  <div class="reihe">
-    <a class="kachel" href="eleganz/">
-      <div class="probe"><img src="eleganz/vorschau.jpg" alt="Geprägte Karte mit Satinschleife" width="1200" height="630" loading="lazy" decoding="async"><span class="marke a">Prägedruck</span></div>
-      <div class="text">
-        <h2>Eleganz</h2>
-        <p>Geprägte Flügel mit Satinschleife, dahinter die Einladung als Heft:
-           fünf nummerierte Bogen mit eigenem Papierton, getrennt durch
-           gerissene Ränder.</p>
-      </div>
-    </a>
+<div class="kopf">
+  <p class="unter">Digitale Hochzeitskarten</p>
+  <h1>Zwölf Stile</h1>
+  <p>Jede Karte hat ihre eigene Typografie, ihre eigene Bildwelt und
+     einen eigenen Handgriff, mit dem sie sich öffnet. Keine ist eine
+     andere in einer anderen Farbe.</p>
+</div>
 
-    <a class="kachel" href="siegel/">
-      <div class="probe"><img src="siegel/vorschau.jpg" alt="Rosa Umschlag mit blauem Wachssiegel" width="1200" height="630" loading="lazy" decoding="async"><span class="marke b">Wachssiegel</span></div>
-      <div class="text">
-        <h2>Siegel</h2>
-        <p>Wachssiegel aufbrechen, das blaue Glitzerherz freirubbeln —
-           darunter Countdown, Termin, Ort und alles, was jetzt schon
-           feststeht.</p>
-      </div>
-    </a>
+<p class="trenner">Neun neue Karten</p>
 
-    <a class="kachel" href="funke/">
-      <div class="probe"><img src="funke/vorschau.jpg" alt="Dunkelrotes Wachssiegel im Dunkeln" width="1200" height="630" loading="lazy" decoding="async"><span class="marke c">Nacht und Gold</span></div>
-      <div class="text">
-        <h2>Funke</h2>
-        <p>Das Siegel wird selbst aufgebrochen — der Sprung wächst dort, wo
-           der Finger liegt. Das Wachs fällt weg, aus dem Licht darin
-           entstehen die Namen.</p>
-      </div>
-    </a>
-  </div>
+<div class="reihe">
 
-  <p class="fuss">Demo-Datensatz Furkan &amp; Dilara — Paar, Termin, Location
-     und Bankverbindung sind frei erfunden.</p>
+  <a class="kachel" href="herkunft/">
+    <div class="probe"><img src="herkunft/vorschau.jpg" alt="Geprägtes salbeigrünes Kuvert mit rotem Wachssiegel, davor die herausgezogene Einladung" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Herbarium</span></div>
+    <div class="text">
+      <h2>Herkunft</h2>
+      <p>Ein botanisches Sammelbuch: aufgezogene Bogen, Klebeecken und
+         Bemerkungen, die jemand mit der Hand danebengeschrieben hat.</p>
+      <p class="griff">Die Karte wird gezogen</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="brunnen/">
+    <div class="probe"><img src="brunnen/vorschau.jpg" alt="Rosenblätter auf dunklem Wasser in einem Messingbrunnen" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Wasser</span></div>
+    <div class="text">
+      <h2>Brunnen</h2>
+      <p>Alles steht auf einer Mittelachse, und alles hat eine
+         Spiegelung. Die Namen liegen zuerst unter der Oberfläche.</p>
+      <p class="griff">Das Wasser wird berührt</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="goldstunde/">
+    <div class="probe"><img src="goldstunde/vorschau.jpg" alt="Elfenbeinfarbenes Kuvert mit goldenem Siegel zwischen grünen Samtvorhängen" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Gesellschaftsblatt</span></div>
+    <div class="text">
+      <h2>Goldene Stunde</h2>
+      <p>Die Einladung gibt sich als Klatschspalte aus: Kolumnentitel,
+         Initialen im ersten Absatz, Zierstücke statt Linien.</p>
+      <p class="griff">Der Vorhang wird aufgezogen</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="mitternacht/">
+    <div class="probe"><img src="mitternacht/vorschau.jpg" alt="Eine brennende Kerze im Dunkeln, darunter die Namen" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Kerzenlicht</span></div>
+    <div class="text">
+      <h2>Mitternacht</h2>
+      <p>Die strengste der zwölf: keine Schreibschrift, kein Zierrat,
+         nur Versalien und sehr viel Schwarz.</p>
+      <p class="griff">Das Licht folgt dem Finger</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="azur/">
+    <div class="probe"><img src="azur/vorschau.jpg" alt="Blau-weiße Azulejos an einer Terracottawand" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Azulejo</span></div>
+    <div class="text">
+      <h2>Azur</h2>
+      <p>Das Kachelraster ist nicht Hilfsmittel, sondern Motiv — bis
+         hin zu den Farbfeldern der Kleiderordnung.</p>
+      <p class="griff">Die Wand kippt um</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="zuckerguss/">
+    <div class="probe"><img src="zuckerguss/vorschau.jpg" alt="Rosa Konfetti und Satinbänder auf cremefarbenem Grund" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Konfetti</span></div>
+    <div class="text">
+      <h2>Zuckerguss</h2>
+      <p>Die einzige ohne eine einzige gerade Ecke. Genau eine Farbe
+         ist kräftig, der Rest ist Zucker.</p>
+      <p class="griff">Es knallt, wo getippt wird</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="fernweh/">
+    <div class="probe"><img src="fernweh/vorschau.jpg" alt="Seekarte mit Kompass und einer frisch gestempelten Büttenkarte" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Reisetagebuch</span></div>
+    <div class="text">
+      <h2>Fernweh</h2>
+      <p>Ein Heft, in das jemand unterwegs geschrieben hat: Einträge,
+         Klebestreifen und eine Route, die beim Lesen mitläuft.</p>
+      <p class="griff">Ein Stempel schlägt auf</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="bluete/">
+    <div class="probe"><img src="bluete/vorschau.jpg" alt="Weit geöffnete cremeweiße Pfingstrose im Honiglicht" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Glashaus</span></div>
+    <div class="text">
+      <h2>Blüte</h2>
+      <p>Alles kommt von unten: die Abschnitte steigen herein, die
+         Bilder wachsen aus ihrem Bogen heraus.</p>
+      <p class="griff">Halten lässt die Knospe aufgehen</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="rein/">
+    <div class="probe"><img src="rein/vorschau.jpg" alt="Weiße Spitze auf Büttenpapier, die Namen als Blindprägung" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Weiß auf Weiß</span></div>
+    <div class="text">
+      <h2>Rein</h2>
+      <p>Keine zweite Farbe, kein Kasten, kein Schatten. Die Namen sind
+         nicht gedruckt, sondern in das Papier geprägt.</p>
+      <p class="griff">Verlangt als einzige nichts</p>
+    </div>
+  </a>
+
+</div>
+
+<p class="trenner">Die ersten drei</p>
+
+<div class="reihe">
+
+  <a class="kachel" href="eleganz/">
+    <div class="probe"><img src="eleganz/vorschau.jpg" alt="Geprägte Karte mit Satinschleife" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Prägedruck</span></div>
+    <div class="text">
+      <h2>Eleganz</h2>
+      <p>Geprägte Flügel mit Satinschleife, dahinter die Einladung als
+         Heft: fünf nummerierte Bogen mit gerissenen Rändern.</p>
+      <p class="griff">Die Schleife wird gelöst</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="siegel/">
+    <div class="probe"><img src="siegel/vorschau.jpg" alt="Rosa Umschlag mit blauem Wachssiegel" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Wachssiegel</span></div>
+    <div class="text">
+      <h2>Siegel</h2>
+      <p>Save the Date: Wachssiegel aufbrechen, das blaue Glitzerherz
+         freirubbeln, darunter Countdown, Termin und Ort.</p>
+      <p class="griff">Das Herz wird freigerubbelt</p>
+    </div>
+  </a>
+
+  <a class="kachel" href="funke/">
+    <div class="probe"><img src="funke/vorschau.jpg" alt="Dunkelrotes Wachssiegel im Dunkeln" width="1200" height="630" loading="lazy" decoding="async"><span class="marke">Nacht und Gold</span></div>
+    <div class="text">
+      <h2>Funke</h2>
+      <p>Osmanische Ornamentik, ausschließlich aus Strichen. Aus dem
+         Licht im zerspringenden Wachs entstehen die Namen.</p>
+      <p class="griff">Das Siegel wird aufgebrochen</p>
+    </div>
+  </a>
+
+</div>
+
+<p class="fuss">Alle Paare, Termine, Orte und Bankverbindungen sind frei
+   erfunden. Die Schriften liegen lokal, es werden keine Daten an Dritte
+   geladen.</p>
+
 </body>
 </html>

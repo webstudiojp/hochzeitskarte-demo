@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nora &amp; Julius — 4. September 2027</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#efe3cc">
+<meta name="description" content="Einladung zur Hochzeit von Nora und Julius am 4. September 2027 in der Alten Werft, Hamburg.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nora &amp; Julius — 4. September 2027">
+<meta property="og:description" content="Wir heiraten. Alte Werft, Hamburg.">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/fernweh/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/fernweh/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../gemeinsam/kern.css?v=202608212157">
+<link rel="stylesheet" href="css/fernweh.css?v=202608212157">
+<link rel="preload" as="image" href="bilder/auftakt.webp?v=202608212157" fetchpriority="high">
+</head>
+
+<body>
+
+<div class="fortschritt"><i data-fortschritt></i></div>
+
+<button class="musik" type="button" data-musik aria-pressed="false">
+  <span class="nur-fuer-schirmleser">Musik an oder aus</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4">
+    <path d="M9 9v7.2a2.4 2.4 0 1 1-1.6-2.26"/><path d="M9 9l7-2v7.2a2.4 2.4 0 1 1-1.6-2.26"/>
+  </svg>
+</button>
+
+<!-- Der Stempel wird nicht sauber gedruckt. Die Turbulenz bricht
+     die Kanten auf und laesst Farbe aus - ein glatter Abdruck
+     saehe aus wie gesetzt, nicht wie gestempelt. -->
+<svg class="filterablage" aria-hidden="true" focusable="false">
+  <filter id="tinte" x="-8%" y="-8%" width="116%" height="116%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.06 0.09" numOctaves="4" seed="11" result="rau"/>
+    <feDisplacementMap in="SourceGraphic" in2="rau" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="versetzt"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3" seed="4" result="flecken"/>
+    <feColorMatrix in="flecken" type="matrix"
+      values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 -0.18" result="maske"/>
+    <feComposite in="versetzt" in2="maske" operator="out"/>
+  </filter>
+</svg>
+
+
+<!-- =========================================================
+     AUFTAKT — der Stempel
+     ========================================================= -->
+<section class="auftakt" id="auftakt" aria-label="Reisepass">
+  <img class="auftakt-bild" src="bilder/auftakt.webp?v=202608212157" alt="" width="1200" height="2150" fetchpriority="high" decoding="async">
+
+  <div class="karte" id="karte">
+    <div class="karte-flaeche">
+      <p class="karte-ueber">Save the Date</p>
+
+      <div class="abdruck" id="abdruck">
+        <svg viewBox="0 0 300 172" aria-hidden="true">
+          <g class="abdruck-tinte">
+            <rect x="6" y="6" width="288" height="160" rx="9" fill="none" stroke="currentColor" stroke-width="3.4"/>
+            <rect x="14" y="14" width="272" height="144" rx="5" fill="none" stroke="currentColor" stroke-width="1.1"/>
+            <path d="M28 84h34M238 84h34" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="72" cy="84" r="3.4" fill="currentColor"/>
+            <circle cx="228" cy="84" r="3.4" fill="currentColor"/>
+          </g>
+          <text class="abdruck-namen" x="150" y="72" text-anchor="middle">NORA &amp; JULIUS</text>
+          <text class="abdruck-datum" x="150" y="110" text-anchor="middle">04 · 09 · 2027</text>
+          <text class="abdruck-ort" x="150" y="136" text-anchor="middle">HAMBURG</text>
+        </svg>
+      </div>
+
+      <div class="stempelkopf" id="stempelkopf" aria-hidden="true"></div>
+      <p class="karte-unten">Alte Werft · Hamburg</p>
+    </div>
+  </div>
+
+  <button class="stempelgriff" id="stempelgriff" type="button">
+    <span class="nur-fuer-schirmleser">Stempeln und die Einladung öffnen</span>
+  </button>
+
+  <p class="auftakt-hinweis" id="hinweis">Stempeln</p>
+</section>
+
+
+<main class="tagebuch">
+
+<!-- Die gestrichelte Route laeuft neben dem Text mit. Wo der
+     Browser scrollgetriebene Animationen kann, haengt sie am
+     Bildlauf selbst - dann wird sie genau so schnell gezogen,
+     wie der Gast weiterliest. -->
+<svg class="route" id="route" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 40 1000">
+  <path class="route-plan" d="M20 0 C34 120 6 210 20 320 C34 430 6 520 20 640 C34 760 6 850 20 1000"
+        fill="none" stroke="currentColor" stroke-width="1.3"
+        stroke-dasharray="6 9" vector-effect="non-scaling-stroke"/>
+  <path id="routenweg" d="M20 0 C34 120 6 210 20 320 C34 430 6 520 20 640 C34 760 6 850 20 1000"
+        fill="none" stroke="currentColor" stroke-width="2" pathLength="1"
+        stroke-dasharray="0 1" vector-effect="non-scaling-stroke"/>
+</svg>
+
+<!-- ---------- 01 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 01</p>
+  <h2 class="titel" data-folge>Endlich zu Hause</h2>
+  <p class="satz" data-folge>
+    Wir haben uns unterwegs kennengelernt und danach ziemlich viel
+    Zeit damit verbracht, unterwegs zu sein. Jetzt heiraten wir da,
+    wo wir angekommen sind: am Hafen, in einer alten Werfthalle,
+    zwischen Kränen.
+  </p>
+
+  <div class="uhr" data-folge aria-label="Countdown">
+    <div class="uhr-teil"><b data-zaehler="tage">–</b><i>Tage</i></div>
+    <div class="uhr-teil"><b data-zaehler="stunden">–</b><i>Std</i></div>
+    <div class="uhr-teil"><b data-zaehler="minuten">–</b><i>Min</i></div>
+    <div class="uhr-teil"><b data-zaehler="sekunden">–</b><i>Sek</i></div>
+  </div>
+  <p class="uhr-vorbei" data-countdown-vorbei hidden>Heute ist der Tag.</p>
+</section>
+
+<!-- ---------- 02 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 02</p>
+  <h2 class="titel" data-folge>Die Strecke bis hier</h2>
+  <ol class="etappen">
+    <li data-folge><b>Hanoi 2018</b><h3>Derselbe Nachtbus</h3>
+      <p>Zwei gebuchte Plätze, ein Sitz. Nora hat gewonnen. Julius
+         hat elf Stunden im Gang gestanden und trotzdem seine
+         Nummer dagelassen.</p></li>
+    <li data-folge><b>Porto 2020</b><h3>Drei Monate zu lang geblieben</h3>
+      <p>Aus zwei Wochen wurden zwei Jahreszeiten. Wir haben
+         Portugiesisch gelernt und beides wieder vergessen.</p></li>
+    <li data-folge><b>Hamburg 2023</b><h3>Ein Schlüssel für zwei</h3>
+      <p>Zurückgekommen, weil das Meer hier zwar kälter ist, aber
+         die Leute näher.</p></li>
+    <li data-folge><b>Island 2026</b><h3>Die Frage</h3>
+      <p>An einem schwarzen Strand, im Regen, mit einem Ring aus
+         der Manteltasche. Es hat niemand zugesehen.</p></li>
+  </ol>
+</section>
+
+<!-- ---------- 03 ---------- -->
+<section class="seite seite--weit" data-auftritt>
+  <p class="marke" data-folge>Eintrag 03</p>
+  <h2 class="titel" data-folge>Mitgebracht</h2>
+  <div class="album">
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m1.webp?v=202608212157" alt="Offener Lederkoffer mit Briefen, Kamera und Karte" width="900" height="1205" loading="lazy" decoding="async"></div>
+      <figcaption>Der Koffer, den wir nie leer bekommen</figcaption></figure>
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m2.webp?v=202608212157" alt="Alte Poststempel auf vergilbtem Papier" width="900" height="1205" loading="lazy" decoding="async"></div>
+      <figcaption>Vierzehn Länder, ein Pass</figcaption></figure>
+    <figure class="album--breit" data-folge><div class="px-rahmen" data-px="4">
+      <img src="bilder/tafel.webp?v=202608212157" alt="Lange Tafel mit Landkartenläufer und Messingkompassen" width="1400" height="939" loading="lazy" decoding="async"></div>
+      <figcaption>So soll es aussehen</figcaption></figure>
+  </div>
+</section>
+
+<!-- ---------- 04 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 04</p>
+  <h2 class="titel" data-folge>Fahrplan</h2>
+  <ol class="ablauf">
+    <li data-folge><b>15:00</b><span><h3>Ankunft</h3><p>An der Halle. Es gibt Franzbrötchen.</p></span></li>
+    <li data-folge><b>16:00</b><span><h3>Trauung</h3><p>Am Wasser, mit Blick auf die Kräne.</p></span></li>
+    <li data-folge><b>17:00</b><span><h3>Anstoßen</h3><p>Auf dem Kai, solange die Sonne steht.</p></span></li>
+    <li data-folge><b>19:00</b><span><h3>Essen</h3><p>An langen Tischen, alles zum Weiterreichen.</p></span></li>
+    <li data-folge><b>21:30</b><span><h3>Tanz</h3><p>In der Halle. Es hallt, das ist Absicht.</p></span></li>
+    <li data-folge><b>01:00</b><span><h3>Currywurst</h3><p>Vom Wagen draußen.</p></span></li>
+    <li data-folge><b>04:00</b><span><h3>Endstation</h3><p>Die letzten Taxis fahren vom Sandtorkai.</p></span></li>
+  </ol>
+</section>
+
+<!-- ---------- 05 ---------- -->
+<section class="seite seite--weit" data-auftritt>
+  <p class="marke" data-folge>Eintrag 05</p>
+  <h2 class="titel" data-folge>Der Ort</h2>
+  <figure class="ort-bild px-rahmen" data-px="8">
+    <img src="bilder/ort.webp?v=202608212157" alt="Küstenstraße im Abendlicht mit einem alten Cabrio" width="1400" height="939" loading="lazy" decoding="async">
+  </figure>
+  <p class="ortname" data-folge>Alte Werft</p>
+  <p class="adresse" data-folge>Am Sandtorkai 30 · 20457 Hamburg</p>
+  <p class="notiz" data-folge>Eingang Süd, nicht der große am Wasser.</p>
+  <div class="tasten" data-folge>
+    <a class="taste" data-route="google" href="#">Route bei Google</a>
+    <a class="taste" data-route="apple" href="#">Route bei Apple</a>
+    <button class="taste taste--voll" type="button" data-kalender>In den Kalender</button>
+  </div>
+</section>
+
+<!-- ---------- 06 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 06</p>
+  <h2 class="titel" data-folge>Anreise</h2>
+  <ul class="liste">
+    <li data-folge><h3>Bahn</h3><p>Bis Hamburg Hbf, dann U4 bis Überseequartier — von dort
+      acht Minuten zu Fuß. Das ist ehrlich der einfachste Weg.</p></li>
+    <li data-folge><h3>Auto</h3><p>Parkhaus Überseequartier, 400 Meter. In der Hafencity
+      gibt es keine kostenlosen Plätze, spart euch die Suche.</p></li>
+    <li data-folge><h3>Übernachten</h3><p>Vorgemerkt bis 1. Juli:</p>
+      <ul class="haeuser">
+        <li><b>Hotel Speicher am Kai</b><i>300 m · Kontingent „Nora &amp; Julius“</i></li>
+        <li><b>Pension Elbblick</b><i>1,2 km · klein, günstig, laut</i></li>
+        <li><b>Hafenhotel Süd</b><i>2 km · gut für Familien</i></li>
+      </ul></li>
+  </ul>
+</section>
+
+<!-- ---------- 07 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 07</p>
+  <h2 class="titel" data-folge>Kleiderordnung</h2>
+  <p class="satz" data-folge>
+    Festlich, aber hafentauglich. Der Boden ist Beton, draußen weht
+    es immer, und abends wird es am Wasser kühl. Bringt etwas mit,
+    das windfest ist — Hüte fliegen hier weg.
+  </p>
+  <p class="farben" data-folge aria-hidden="true">
+    <i style="--f:#22354f"></i><i style="--f:#b0873f"></i><i style="--f:#7c2b2b"></i><i style="--f:#e6dcc6"></i>
+  </p>
+  <p class="notiz" data-folge>Weiß ist für einen Tag vergeben.</p>
+</section>
+
+<!-- ---------- 08 ---------- -->
+<section class="seite" id="rueckmeldung" data-auftritt>
+  <p class="marke" data-folge>Eintrag 08</p>
+  <h2 class="titel" data-folge>Rückmeldung</h2>
+  <p class="satz satz--eng" data-folge>Bitte bis zum <b>1. Juli 2027</b>.</p>
+
+  <form class="formular" data-rueckmeldung novalidate>
+    <label class="feld-block"><span class="feld-name">Dein Name</span>
+      <input type="text" name="name" autocomplete="name" required></label>
+    <label class="feld-block"><span class="feld-name">E-Mail</span>
+      <input type="email" name="email" autocomplete="email" required></label>
+
+    <fieldset class="wahl">
+      <legend class="feld-name">Kommst du?</legend>
+      <label><input type="radio" name="antwort" value="zusage" checked><span>Ja, ich bin dabei</span></label>
+      <label><input type="radio" name="antwort" value="absage"><span>Leider nicht</span></label>
+    </fieldset>
+
+    <div data-nur-zusage>
+      <label class="feld-block"><span class="feld-name">Was isst du?</span>
+        <select name="essen0" required>
+          <option value="">Bitte wählen</option>
+          <option>Fleisch</option><option>Fisch</option>
+          <option>Vegetarisch</option><option>Vegan</option>
+        </select></label>
+      <div class="begleitung">
+        <p class="feld-name">Begleitung <span class="begleitung-zahl" data-begleitung-zahl></span></p>
+        <div data-begleitung></div>
+        <button class="taste taste--klein" type="button" data-begleitung-mehr>+ Begleitung</button>
+      </div>
+      <label class="feld-block"><span class="feld-name">Allergien</span>
+        <input type="text" name="allergien" placeholder="z. B. Nüsse, Laktose"></label>
+    </div>
+
+    <label class="feld-block"><span class="feld-name">Ein Gruß?</span>
+      <textarea name="gruss" rows="3"></textarea></label>
+
+    <button class="taste taste--voll" type="submit">Abschicken</button>
+    <p class="klein">Öffnet eine fertige E-Mail an uns — abschicken müsst ihr sie selbst.</p>
+  </form>
+
+  <div class="danke" data-danke hidden>
+    <h3>Danke, <span data-danke-name></span>.</h3>
+    <p>Die E-Mail sollte offen sein. Falls nicht: <a data-danke-post href="#">hier</a>.</p>
+  </div>
+</section>
+
+<!-- ---------- 09 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 09</p>
+  <h2 class="titel" data-folge>Geschenke</h2>
+  <p class="satz" data-folge>
+    Wir besitzen wenig und wollen es dabei belassen. Wenn ihr etwas
+    beitragen möchtet: Wir sparen auf eine lange Reise, von der wir
+    schon zu oft erzählt haben.
+  </p>
+  <button class="taste taste--klein" type="button" data-iban-zeigen>Bankverbindung zeigen</button>
+  <div class="iban" data-iban hidden>
+    <p><b>Nora Beckmann &amp; Julius Voigt</b><br>
+       <span class="iban-nr">DE00 0000 0000 0000 0000 00</span></p>
+    <button class="taste taste--klein" type="button" data-iban-kopieren>IBAN kopieren</button>
+  </div>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="seite" data-auftritt>
+  <p class="marke" data-folge>Eintrag 10</p>
+  <h2 class="titel" data-folge>Fragen</h2>
+  <div class="fragen">
+    <details data-frage data-folge><summary>Darf ich jemanden mitbringen?</summary>
+      <div class="frage-antwort"><div><p>Wenn auf eurer Karte eine Begleitung steht: gern, bitte
+        oben eintragen. Sonst wird die Halle zu voll.</p></div></div></details>
+    <details data-frage data-folge><summary>Kinder?</summary>
+      <div class="frage-antwort"><div><p>Ja. Es gibt einen abgetrennten Bereich mit Betreuung
+        ab 17 Uhr und Betten für die Kleinen ab 21 Uhr.</p></div></div></details>
+    <details data-frage data-folge><summary>Wie kalt wird es abends?</summary>
+      <div class="frage-antwort"><div><p>Am Wasser um die vierzehn Grad, drinnen zwanzig.
+        Der Wind macht den Unterschied, nicht die Temperatur.</p></div></div></details>
+    <details data-frage data-folge><summary>Gibt es Parkplätze?</summary>
+      <div class="frage-antwort"><div><p>Nur im Parkhaus nebenan, kostenpflichtig. Kommt mit
+        der U4, das ist schneller und billiger.</p></div></div></details>
+    <details data-frage data-folge><summary>Ich schaffe es nicht.</summary>
+      <div class="frage-antwort"><div><p>Sagt früh Bescheid. Wir schicken euch eine Postkarte
+        von dem Tag.</p></div></div></details>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="fuss">
+  <p class="fuss-marke" aria-hidden="true">✦</p>
+  <p class="fuss-namen">Nora &amp; Julius</p>
+  <p class="fuss-datum">04 · 09 · 2027 — Hamburg</p>
+  <p class="fuss-klein">Nora und Julius, Termin, Ort und Bankverbindung sind frei erfunden.</p>
+</footer>
+
+<script src="../gemeinsam/kern.js?v=202608212157"></script>
+<script src="js/fernweh.js?v=202608212157"></script>
+</body>
+</html>

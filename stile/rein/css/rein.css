@@ -1,0 +1,386 @@
+/* =========================================================
+   REIN — weiss auf weiss
+
+   Die stillste der neun. Es gibt keine zweite Farbe, keinen
+   Kasten, keinen Schatten unter einem Element und keine
+   Schreibschrift. Was traegt, sind drei Dinge: sehr viel
+   Weissraum, eine einzige Mittelachse und Haarlinien.
+
+   Die Namen sind nicht gedruckt, sondern gepraegt: dieselbe
+   Farbe wie das Papier, nur mit Licht und Schatten. Genau
+   deshalb ist hier auch alles andere farblos - eine Praegung
+   neben einer bunten Flaeche verschwindet.
+   ========================================================= */
+
+@font-face{font-family:'Tenor Sans';src:url('../../../assets/fonts/TenorSans-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Spectral';src:url('../../../assets/fonts/Spectral-latin.woff2') format('woff2');
+  font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Spectral';src:url('../../../assets/fonts/Spectral-italic-latin.woff2') format('woff2');
+  font-weight:300;font-style:italic;font-display:swap}
+
+:root{
+  --weiss:#ffffff;
+  --papier:#faf8f4;
+  --papier-2:#f3f0ea;
+  --perl:#e6e2da;
+  --grau:#8c867c;
+  --gold:#ab8f52;
+  --tinte:#2e2c27;
+
+  --display:'Tenor Sans',Optima,Candara,sans-serif;
+  --serif:'Spectral',Georgia,serif;
+
+  --rand:clamp(24px,7vw,80px);
+  --spalte:min(540px,100%);
+}
+
+body{
+  background:var(--papier);
+  color:var(--tinte);
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(16px,1rem + .3vw,18px);
+  line-height:1.92;
+}
+
+.filterablage{position:absolute;width:0;height:0;overflow:hidden}
+
+.fortschritt{position:fixed;inset:0 0 auto;height:1px;z-index:60;background:var(--perl)}
+.fortschritt i{display:block;height:100%;background:var(--gold)}
+
+.musik{
+  position:fixed;right:calc(var(--rand) * .42);bottom:calc(var(--rand) * .42);z-index:60;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--perl);background:rgba(255,255,255,.9);
+  backdrop-filter:blur(8px);color:var(--grau);
+  display:grid;place-items:center;transition:color .3s,border-color .3s;
+}
+.musik svg{width:19px;height:19px}
+.musik:hover{color:var(--gold);border-color:var(--gold)}
+.musik[data-an]{color:var(--gold);border-color:var(--gold)}
+
+/* =========================================================
+   AUFTAKT
+   Die einzige Karte ohne Griff. Sie verlangt nichts: wer
+   weiterliest, webt die Borte. --webe kommt aus dem Bildlauf
+   im Auftakt selbst, deshalb ist er hoeher als der Schirm
+   und sein Inhalt bleibt darin stehen.
+   ========================================================= */
+.auftakt{position:relative;height:210svh;--webe:0}
+.auftakt-halt{
+  position:sticky;top:0;height:100svh;overflow:hidden;
+  background:var(--papier);
+  display:grid;place-items:center;
+}
+.auftakt-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  /* Das Foto ist hier Grund, nicht Motiv: es traegt die
+     Textur des Papiers und sonst nichts. */
+  opacity:calc(.5 - var(--webe) * .18);
+  transform:scale(calc(1.06 + var(--webe) * .05));
+  filter:saturate(.2) brightness(1.1);
+}
+
+.borte{
+  position:absolute;left:0;right:0;height:clamp(52px,13vw,92px);
+  color:var(--perl);z-index:2;pointer-events:none;
+}
+.borte--oben{top:0}
+.borte--unten{bottom:0;transform:scaleY(-1)}
+.borte path{
+  stroke-width:1;vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--webe));
+}
+
+.auftakt-satz{
+  position:relative;z-index:3;text-align:center;padding:0 var(--rand);
+}
+.auftakt-ueber{
+  font-family:var(--display);
+  font-size:10px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--grau);margin-left:.5em;
+  opacity:calc(var(--webe) * 2.2 - .2);
+}
+.auftakt-namen{
+  margin:clamp(16px,4vw,26px) 0;
+  /* Die Praegung kommt erst, wenn die Borte fertig gewebt ist -
+     zuerst das Papier, dann das, was darin steht. */
+  opacity:calc(var(--webe) * 2.6 - 1.1);
+}
+.auftakt-namen svg{width:min(74vw,330px);height:auto;overflow:visible}
+.gepraegt{
+  fill:var(--papier);
+  filter:url(#praegung);
+  font-family:var(--display);
+}
+@supports not (filter:url(#praegung)){
+  /* Ohne Filter waere die Schrift unsichtbar - dann wird sie
+     eben gedruckt statt gepraegt. */
+  .gepraegt{fill:var(--grau);filter:none}
+}
+.gepraegt--gross{font-size:60px;letter-spacing:.02em}
+.gepraegt--klein{font-size:21px;letter-spacing:.34em;text-transform:lowercase}
+.auftakt-datum{
+  font-family:var(--display);
+  font-size:10.5px;letter-spacing:.44em;color:var(--grau);margin-left:.44em;
+  opacity:calc(var(--webe) * 2.6 - 1.3);
+}
+
+.auftakt-hinweis{
+  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);z-index:4;
+  text-align:center;font-family:var(--display);
+  font-size:9.5px;letter-spacing:.4em;text-transform:uppercase;color:var(--grau);
+  opacity:calc(.9 - var(--webe) * 3);transition:opacity .4s;pointer-events:none;
+}
+.auftakt-hinweis span{
+  display:block;width:1px;height:30px;margin:0 auto 14px;
+  background:linear-gradient(to bottom,transparent,var(--perl));
+  animation:sinken 2.6s ease-in-out infinite;
+}
+@keyframes sinken{0%,100%{transform:translateY(-4px);opacity:.4}50%{transform:translateY(4px);opacity:1}}
+
+/* =========================================================
+   DER BOGEN
+   ========================================================= */
+.bogen{position:relative;z-index:1;background:var(--papier)}
+
+.feld{
+  padding:clamp(72px,17vw,150px) var(--rand);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  border-top:1px solid var(--perl);
+}
+.feld > *{width:var(--spalte)}
+.feld--weit > *{width:min(820px,100%)}
+
+@media (prefers-reduced-motion:no-preference){
+  html[data-js] [data-folge]{
+    opacity:0;transform:translateY(12px);
+    transition:opacity 1.1s ease,transform 1.2s cubic-bezier(.16,.7,.24,1);
+    transition-delay:calc(var(--folge,0) * 110ms);
+  }
+  html[data-js] .da [data-folge]{opacity:1;transform:none}
+}
+
+.zahl{
+  font-family:var(--display);font-size:10px;letter-spacing:.5em;
+  color:var(--gold);margin-left:.5em;
+}
+.titel{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(26px,6.6vw,40px);line-height:1.24;letter-spacing:.015em;
+  margin:clamp(18px,4vw,26px) 0 clamp(24px,5vw,36px);
+}
+.satz{margin-inline:auto;max-width:38ch;color:var(--tinte)}
+.satz--eng{max-width:30ch;color:var(--grau);font-size:.95em;margin-top:1.4em}
+.satz b{font-weight:300;color:var(--gold)}
+.klein{font-size:12px;line-height:1.75;color:var(--grau);margin-top:14px}
+
+/* =========================================================
+   Countdown
+   Nichts als Zahlen auf einer Linie.
+   ========================================================= */
+.uhr{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(36px,8vw,56px)}
+.uhr-teil{padding:clamp(20px,4.5vw,30px) 4px 0;border-top:1px solid var(--perl)}
+.uhr-teil b{
+  display:block;font-family:var(--display);font-weight:400;
+  font-size:clamp(24px,7vw,40px);line-height:1;font-variant-numeric:tabular-nums;
+}
+.uhr-teil i{
+  display:block;margin-top:12px;font-style:normal;font-family:var(--display);
+  font-size:8.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--grau);
+}
+.uhr-teil b.rollt{animation:ruhig .7s ease}
+@keyframes ruhig{from{opacity:.25}to{opacity:1}}
+.uhr-vorbei{margin-top:22px;font-style:italic;color:var(--gold)}
+
+/* =========================================================
+   Linie und Ablauf
+   ========================================================= */
+.linie{display:flex;flex-direction:column;gap:clamp(30px,7vw,48px)}
+.linie li{position:relative;padding-top:clamp(22px,5vw,32px)}
+.linie li::before{
+  content:'';position:absolute;left:50%;top:0;width:1px;height:clamp(14px,3.4vw,22px);
+  background:var(--perl);
+}
+.linie b{
+  display:block;font-family:var(--display);font-size:10px;letter-spacing:.42em;
+  color:var(--gold);margin-bottom:1em;
+}
+.linie h3{font-family:var(--display);font-weight:400;font-size:clamp(18px,4.6vw,23px);
+  letter-spacing:.02em;margin-bottom:.5em}
+.linie p{max-width:34ch;margin-inline:auto;color:var(--grau);font-size:.95em}
+
+.ablauf{display:flex;flex-direction:column}
+.ablauf li{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,5vw,34px);
+  text-align:left;align-items:baseline;
+  padding:clamp(16px,3.6vw,22px) 0;border-bottom:1px solid var(--perl);
+}
+.ablauf li:first-child{border-top:1px solid var(--perl)}
+.ablauf b{font-family:var(--display);font-size:12.5px;letter-spacing:.1em;
+  color:var(--gold);font-variant-numeric:tabular-nums}
+.ablauf h3{font-family:var(--display);font-weight:400;font-size:clamp(16.5px,4.2vw,20px);
+  letter-spacing:.02em}
+.ablauf p{font-size:.9em;color:var(--grau);margin-top:.2em;line-height:1.6}
+
+/* =========================================================
+   Bilder
+   Ohne Rahmen, ohne Schatten, ohne Rundung. Auf dieser Karte
+   liegt nichts auf - es steht darin.
+   ========================================================= */
+.reihe{display:grid;gap:clamp(14px,3.5vw,24px);grid-template-columns:1fr}
+@media (min-width:620px){
+  .reihe{grid-template-columns:1fr 1fr}
+  .reihe--breit{grid-column:1/-1}
+}
+.reihe .px-rahmen{width:100%;aspect-ratio:3/4}
+.reihe--breit .px-rahmen{aspect-ratio:3/2}
+.ort-bild{aspect-ratio:3/2;margin:0 0 clamp(26px,5vw,36px)}
+.adresse{font-family:var(--display);font-size:11px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--grau)}
+
+.tasten{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:clamp(28px,6vw,40px)}
+.taste{
+  display:inline-block;text-decoration:none;background:transparent;
+  font-family:var(--display);
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  padding:15px 22px;border:1px solid var(--perl);color:var(--tinte);
+  transition:border-color .35s,color .35s;
+}
+.taste:hover{border-color:var(--gold);color:var(--gold)}
+/* Genau eine gefuellte Taste auf der ganzen Seite. */
+.taste--voll{background:var(--tinte);border-color:var(--tinte);color:var(--papier)}
+.taste--voll:hover{background:var(--gold);border-color:var(--gold);color:var(--papier)}
+.taste--klein{font-size:9px;padding:12px 17px}
+.taste:disabled{opacity:.35;cursor:not-allowed}
+
+/* =========================================================
+   Listen
+   ========================================================= */
+.liste{display:flex;flex-direction:column;gap:clamp(26px,6vw,38px);text-align:left}
+.liste h3{font-family:var(--display);font-size:10px;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:1em}
+.liste p{max-width:38ch;color:var(--grau)}
+.haeuser{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.haeuser li{padding-top:14px;border-top:1px solid var(--perl)}
+.haeuser b{display:block;font-family:var(--display);font-weight:400;font-size:1.06em;
+  letter-spacing:.02em;color:var(--tinte)}
+.haeuser i{display:block;margin-top:3px;font-style:normal;font-size:12px;color:var(--grau)}
+
+.farben{display:flex;gap:0;justify-content:center;margin-top:clamp(26px,6vw,36px)}
+.farben i{display:block;width:clamp(38px,9vw,52px);aspect-ratio:1;background:var(--f);
+  box-shadow:inset 0 0 0 1px rgba(46,44,39,.07)}
+
+/* =========================================================
+   Formular
+   Nur Linien. Kein Feld hat einen Rahmen, weil auf dieser
+   Karte nichts einen Rahmen hat.
+   ========================================================= */
+.formular{display:flex;flex-direction:column;gap:clamp(22px,4.5vw,28px);
+  margin-top:clamp(30px,6vw,42px);text-align:left}
+.feld-block{display:block}
+.feld-block input,.feld-block select,.feld-block textarea{width:100%}
+.feld-name{
+  display:block;font-family:var(--display);font-size:9px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:11px;
+}
+.formular input[type=text],.formular input[type=email],.formular select,.formular textarea{
+  background:transparent;border:0;border-bottom:1px solid var(--perl);
+  padding:7px 2px;font-family:var(--serif);font-weight:300;font-size:16px;line-height:1.5;
+  color:var(--tinte);border-radius:0;appearance:none;transition:border-color .35s;
+}
+.formular select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),
+                   linear-gradient(135deg,var(--gold) 50%,transparent 50%);
+  background-position:right 8px center,right 3px center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:22px;
+}
+.formular input:focus,.formular select:focus,.formular textarea:focus{outline:none;border-bottom-color:var(--gold)}
+.formular textarea{border:1px solid var(--perl);padding:11px}
+.formular input::placeholder{color:var(--grau);opacity:.5}
+
+.wahl{border:0;padding:0;margin:0}
+.wahl label{display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer}
+.wahl input{
+  appearance:none;width:14px;height:14px;flex:none;border-radius:50%;
+  border:1px solid var(--grau);transition:background .25s,box-shadow .25s,border-color .25s;
+}
+.wahl input:checked{background:var(--tinte);border-color:var(--tinte);box-shadow:inset 0 0 0 3px var(--papier)}
+.begleitung-zahl{font-family:var(--serif);font-style:italic;font-size:14px;letter-spacing:0;
+  text-transform:none;color:var(--grau);margin-left:.6em}
+.begleitung-zeile{padding:16px 0;border-top:1px solid var(--perl)}
+@media (min-width:560px){.begleitung-zeile{grid-template-columns:1fr auto auto;align-items:end}}
+.begleitung-weg{background:none;border:0;padding:8px 0;justify-self:start;
+  font-family:var(--display);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--grau)}
+.begleitung-weg:hover{color:var(--tinte);text-decoration:underline}
+.begleitung [data-begleitung]{margin-bottom:14px}
+
+.danke{padding:clamp(26px,6vw,40px) 0;text-align:center}
+.danke h3{font-family:var(--display);font-weight:400;font-size:clamp(24px,6vw,32px);margin-bottom:.6em}
+.danke p{color:var(--grau)}
+.danke a{color:var(--gold)}
+
+.iban{margin-top:22px;padding:22px 0;text-align:center;
+  border-top:1px solid var(--perl);border-bottom:1px solid var(--perl)}
+.iban p{margin-bottom:16px;line-height:2}
+.iban b{font-family:var(--display);font-weight:400}
+.iban-nr{font-family:var(--display);font-size:13px;letter-spacing:.16em;color:var(--gold)}
+[data-iban-zeigen]{margin-top:clamp(24px,5vw,34px)}
+
+/* =========================================================
+   Fragen
+   ========================================================= */
+.fragen{text-align:left}
+.fragen details{border-bottom:1px solid var(--perl)}
+.fragen details:first-child{border-top:1px solid var(--perl)}
+.fragen summary{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:clamp(17px,3.8vw,23px) 0;font-size:.98em;transition:color .3s;
+}
+.fragen summary:hover{color:var(--gold)}
+.fragen summary::after{
+  content:'';flex:none;width:9px;height:1px;background:var(--gold);position:relative;
+}
+/* Ein Kreuz, das zum Strich wird - auf dieser Karte gibt es
+   keine Pfeile. */
+.fragen summary{position:relative}
+.fragen summary::before{
+  content:'';position:absolute;right:4px;top:50%;width:1px;height:9px;
+  background:var(--gold);transform:translateY(-50%);
+  transition:transform .35s cubic-bezier(.2,.7,.3,1),opacity .35s;
+}
+.fragen details[open] summary::before{transform:translateY(-50%) rotate(90deg);opacity:0}
+.frage-antwort{transition:grid-template-rows .45s cubic-bezier(.2,.7,.3,1)}
+.fragen details:not([open]) .frage-antwort{grid-template-rows:0fr}
+.fragen p{padding-bottom:clamp(17px,3.8vw,23px);color:var(--grau);font-size:.94em;max-width:50ch}
+
+/* =========================================================
+   Fuss
+   ========================================================= */
+.fuss{
+  position:relative;text-align:center;background:var(--weiss);
+  padding:clamp(84px,18vw,150px) var(--rand) calc(env(safe-area-inset-bottom,0px) + clamp(46px,10vw,84px));
+  border-top:1px solid var(--perl);
+}
+.borte--fuss{top:0;left:0;right:0;height:clamp(46px,11vw,78px);color:var(--perl)}
+.borte--fuss path{stroke-dashoffset:0}
+.fuss-namen{font-family:var(--display);font-weight:400;font-size:clamp(22px,5.6vw,30px);
+  letter-spacing:.03em}
+.fuss-datum{font-family:var(--display);font-size:9.5px;letter-spacing:.36em;
+  text-transform:uppercase;color:var(--gold);margin-top:18px}
+.fuss-klein{font-size:11.5px;line-height:1.95;color:var(--grau);opacity:.7;
+  margin:clamp(36px,8vw,56px) auto 0;max-width:36ch}
+
+/* =========================================================
+   OHNE SKRIPT
+   Der Auftakt ist ein Handgriff, kein Schloss. Laedt das
+   Skript nicht, liegt die Karte einfach offen da - mit allem,
+   was darauf steht.
+   ========================================================= */
+html:not([data-js]) .auftakt{--webe:1}
+html:not([data-js]) .auftakt-hinweis,
+html:not([data-js]) .wand,
+html:not([data-js]) .vorhang,
+html:not([data-js]) .schabracke,
+html:not([data-js]) .stempelkopf{display:none}

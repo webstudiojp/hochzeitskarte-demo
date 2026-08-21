@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sophie &amp; Elias — 20. März 2027</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#faf8f4">
+<meta name="description" content="Einladung zur Hochzeit von Sophie und Elias am 20. März 2027 in der Kapelle am Hang, Königswinter.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sophie &amp; Elias — 20. März 2027">
+<meta property="og:description" content="Wir heiraten. Kapelle am Hang, Königswinter.">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/rein/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/rein/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../gemeinsam/kern.css?v=202608212157">
+<link rel="stylesheet" href="css/rein.css?v=202608212157">
+<link rel="preload" as="image" href="bilder/auftakt.webp?v=202608212157" fetchpriority="high">
+</head>
+
+<body>
+
+<div class="fortschritt"><i data-fortschritt></i></div>
+
+<button class="musik" type="button" data-musik aria-pressed="false">
+  <span class="nur-fuer-schirmleser">Musik an oder aus</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+    <path d="M9 9v7.2a2.4 2.4 0 1 1-1.6-2.26"/><path d="M9 9l7-2v7.2a2.4 2.4 0 1 1-1.6-2.26"/>
+  </svg>
+</button>
+
+<!-- Die Praegung. Kein Ton, keine Farbe - nur Licht und der
+     versetzte Schatten darunter. Genau so entsteht sie auch
+     auf Papier. -->
+<svg class="filterablage" aria-hidden="true" focusable="false">
+  <filter id="praegung" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="1.3" result="weich"/>
+    <feSpecularLighting in="weich" surfaceScale="3.4" specularConstant="1.1"
+                        specularExponent="19" lighting-color="#ffffff" result="licht">
+      <feDistantLight azimuth="238" elevation="56"/>
+    </feSpecularLighting>
+    <feComposite in="licht" in2="SourceAlpha" operator="in" result="lichtIn"/>
+    <feOffset in="SourceAlpha" dx="0.9" dy="1.5" result="tiefA"/>
+    <feFlood flood-color="#cec8bd" result="tiefF"/>
+    <feComposite in="tiefF" in2="tiefA" operator="in" result="tief"/>
+    <feComposite in="tief" in2="SourceAlpha" operator="out" result="tiefAussen"/>
+    <feMerge>
+      <feMergeNode in="tiefAussen"/>
+      <feMergeNode in="lichtIn"/>
+    </feMerge>
+  </filter>
+</svg>
+
+
+<!-- =========================================================
+     AUFTAKT — die Spitze
+     Die einzige der neun Karten, die nichts verlangt. Sie
+     oeffnet sich nicht auf einen Griff, sondern beim Lesen:
+     wer scrollt, webt die Borte weiter.
+     ========================================================= -->
+<section class="auftakt" id="auftakt" aria-label="Auftakt">
+  <div class="auftakt-halt">
+    <img class="auftakt-bild" src="bilder/auftakt.webp?v=202608212157" alt="" width="1200" height="2150" fetchpriority="high" decoding="async">
+
+    <svg class="borte borte--oben" id="borte-oben" viewBox="0 0 1000 130"
+         preserveAspectRatio="none" aria-hidden="true"
+         fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></svg>
+
+    <div class="auftakt-satz">
+      <p class="auftakt-ueber">Wir heiraten</p>
+      <h1 class="auftakt-namen">
+        <svg viewBox="0 0 460 200" aria-hidden="true">
+          <text class="gepraegt gepraegt--gross" x="230" y="82" text-anchor="middle">Sophie</text>
+          <text class="gepraegt gepraegt--klein" x="230" y="122" text-anchor="middle">und</text>
+          <text class="gepraegt gepraegt--gross" x="230" y="180" text-anchor="middle">Elias</text>
+        </svg>
+        <span class="nur-fuer-schirmleser">Sophie und Elias</span>
+      </h1>
+      <p class="auftakt-datum">20 · III · 2027</p>
+    </div>
+
+    <svg class="borte borte--unten" id="borte-unten" viewBox="0 0 1000 130"
+         preserveAspectRatio="none" aria-hidden="true"
+         fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></svg>
+
+    <p class="auftakt-hinweis" id="hinweis"><span aria-hidden="true"></span>Weiterlesen</p>
+  </div>
+</section>
+
+
+<main class="bogen">
+
+<!-- ---------- 01 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>I</p>
+  <h2 class="titel" data-folge>Wir heiraten</h2>
+  <p class="satz" data-folge>
+    Es wird klein. Vierzig Menschen, eine Kapelle am Hang, ein langer
+    Nachmittag. Wir haben lange überlegt, ob wir überhaupt feiern —
+    und dann gemerkt, dass wir genau euch dabeihaben wollen.
+  </p>
+
+  <div class="uhr" data-folge aria-label="Countdown">
+    <div class="uhr-teil"><b data-zaehler="tage">–</b><i>Tage</i></div>
+    <div class="uhr-teil"><b data-zaehler="stunden">–</b><i>Stunden</i></div>
+    <div class="uhr-teil"><b data-zaehler="minuten">–</b><i>Minuten</i></div>
+    <div class="uhr-teil"><b data-zaehler="sekunden">–</b><i>Sekunden</i></div>
+  </div>
+  <p class="uhr-vorbei" data-countdown-vorbei hidden>Heute ist der Tag.</p>
+</section>
+
+<!-- ---------- 02 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>II</p>
+  <h2 class="titel" data-folge>Bis hierher</h2>
+  <ol class="linie">
+    <li data-folge><b>2015</b><h3>Ein Chor</h3>
+      <p>Zweiter Sopran, erster Bass. Wir haben ein halbes Jahr
+         nebeneinander gesungen, bevor jemand etwas gesagt hat.</p></li>
+    <li data-folge><b>2018</b><h3>Eine Wohnung ohne Möbel</h3>
+      <p>Drei Monate lang nur eine Matratze und ein Klavier. Es war
+         die beste Zeit, sagen wir heute.</p></li>
+    <li data-folge><b>2022</b><h3>Ein Jahr Pause</h3>
+      <p>Wir waren getrennt, elf Monate lang. Es gehört dazu, und
+         ohne das wäre der Rest nicht wahr.</p></li>
+    <li data-folge><b>2026</b><h3>Ohne viele Worte</h3>
+      <p>An einem Sonntagmorgen, in der Küche, halb angezogen.
+         Es hat keine drei Minuten gedauert.</p></li>
+  </ol>
+</section>
+
+<!-- ---------- 03 ---------- -->
+<section class="feld feld--weit" data-auftritt>
+  <p class="zahl" data-folge>III</p>
+  <h2 class="titel" data-folge>Bilder</h2>
+  <div class="reihe">
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m1.webp?v=202608212157" alt="Ein Seidenkleid an einer weißen Wand" width="900" height="1205" loading="lazy" decoding="async"></div></figure>
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m2.webp?v=202608212157" alt="Weiße Callas auf Büttenpapier" width="900" height="1205" loading="lazy" decoding="async"></div></figure>
+    <figure class="reihe--breit" data-folge><div class="px-rahmen" data-px="4">
+      <img src="bilder/tafel.webp?v=202608212157" alt="Weiß gedeckte Tafel mit einer feinen Goldlinie" width="1400" height="939" loading="lazy" decoding="async"></div></figure>
+  </div>
+</section>
+
+<!-- ---------- 04 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>IV</p>
+  <h2 class="titel" data-folge>Der Ablauf</h2>
+  <ol class="ablauf">
+    <li data-folge><b>14:30</b><span><h3>Ankommen</h3><p>Vor der Kapelle.</p></span></li>
+    <li data-folge><b>15:00</b><span><h3>Trauung</h3><p>Mit Orgel. Sie ist von 1904.</p></span></li>
+    <li data-folge><b>16:00</b><span><h3>Kaffee</h3><p>Im Garten hinter dem Pfarrhaus.</p></span></li>
+    <li data-folge><b>18:00</b><span><h3>Abendessen</h3><p>An einer Tafel für vierzig.</p></span></li>
+    <li data-folge><b>20:30</b><span><h3>Musik</h3><p>Kein DJ. Ein Klavier und wer mag.</p></span></li>
+    <li data-folge><b>01:00</b><span><h3>Ende</h3><p>Wir sind früh dran. Absichtlich.</p></span></li>
+  </ol>
+</section>
+
+<!-- ---------- 05 ---------- -->
+<section class="feld feld--weit" data-auftritt>
+  <p class="zahl" data-folge>V</p>
+  <h2 class="titel" data-folge>Kapelle am Hang</h2>
+  <figure class="ort-bild px-rahmen" data-px="8">
+    <img src="bilder/ort.webp?v=202608212157" alt="Weiße Kapelle mit einem hohen Bogenfenster" width="1400" height="939" loading="lazy" decoding="async">
+  </figure>
+  <p class="adresse" data-folge>Bergstraße 40 · 53639 Königswinter</p>
+  <p class="satz satz--eng" data-folge>
+    Der Weg hinauf ist steil und gepflastert. Wer nicht gut zu Fuß
+    ist, sagt uns Bescheid — wir holen euch oben ab.
+  </p>
+  <div class="tasten" data-folge>
+    <a class="taste" data-route="google" href="#">Route bei Google</a>
+    <a class="taste" data-route="apple" href="#">Route bei Apple</a>
+    <button class="taste taste--voll" type="button" data-kalender>In den Kalender</button>
+  </div>
+</section>
+
+<!-- ---------- 06 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>VI</p>
+  <h2 class="titel" data-folge>Anreise</h2>
+  <ul class="liste">
+    <li data-folge><h3>Auto</h3><p>A3 bis Königswinter. Oben an der Kapelle gibt es acht
+      Plätze; alle weiteren parken am Fuß des Bergs, dort fährt ein Kleinbus.</p></li>
+    <li data-folge><h3>Bahn</h3><p>Bis Königswinter, dann die Zahnradbahn — sie fährt bis
+      16 Uhr alle zwanzig Minuten und ist ehrlich gesagt der schönere Weg.</p></li>
+    <li data-folge><h3>Übernachten</h3><p>Vorgemerkt bis zum 1. Februar:</p>
+      <ul class="haeuser">
+        <li><b>Hotel Am Drachenfels</b><i>1 km · Kontingent „Sophie &amp; Elias“</i></li>
+        <li><b>Gästehaus Rheinblick</b><i>2 km · sechs Zimmer</i></li>
+        <li><b>Pension Talstation</b><i>3 km · einfach und günstig</i></li>
+      </ul></li>
+  </ul>
+</section>
+
+<!-- ---------- 07 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>VII</p>
+  <h2 class="titel" data-folge>Kleidung</h2>
+  <p class="satz" data-folge>
+    Schlicht und hell. Wir haben keine Regeln, aber wenn ihr eine
+    wollt: möglichst wenig Muster. Im März ist es oben am Hang windig
+    und die Kapelle wird nicht warm — zieht euch etwas darüber an.
+  </p>
+  <p class="farben" data-folge aria-hidden="true">
+    <i style="--f:#ffffff"></i><i style="--f:#eae6df"></i><i style="--f:#c9c3b8"></i><i style="--f:#b09455"></i>
+  </p>
+  <p class="satz satz--eng" data-folge>Weiß trägt an diesem Tag nur eine.</p>
+</section>
+
+<!-- ---------- 08 ---------- -->
+<section class="feld" id="rueckmeldung" data-auftritt>
+  <p class="zahl" data-folge>VIII</p>
+  <h2 class="titel" data-folge>Rückmeldung</h2>
+  <p class="satz satz--eng" data-folge>Bitte bis zum <b>15. Januar 2027</b>.</p>
+
+  <form class="formular" data-rueckmeldung novalidate>
+    <label class="feld-block"><span class="feld-name">Dein Name</span>
+      <input type="text" name="name" autocomplete="name" required></label>
+    <label class="feld-block"><span class="feld-name">E-Mail</span>
+      <input type="email" name="email" autocomplete="email" required></label>
+
+    <fieldset class="wahl">
+      <legend class="feld-name">Kommst du?</legend>
+      <label><input type="radio" name="antwort" value="zusage" checked><span>Ja</span></label>
+      <label><input type="radio" name="antwort" value="absage"><span>Nein</span></label>
+    </fieldset>
+
+    <div data-nur-zusage>
+      <label class="feld-block"><span class="feld-name">Was isst du?</span>
+        <select name="essen0" required>
+          <option value="">Bitte wählen</option>
+          <option>Fleisch</option><option>Fisch</option>
+          <option>Vegetarisch</option><option>Vegan</option>
+        </select></label>
+      <div class="begleitung">
+        <p class="feld-name">Begleitung <span class="begleitung-zahl" data-begleitung-zahl></span></p>
+        <div data-begleitung></div>
+        <button class="taste taste--klein" type="button" data-begleitung-mehr>+ Begleitung</button>
+      </div>
+      <label class="feld-block"><span class="feld-name">Allergien</span>
+        <input type="text" name="allergien" placeholder="z. B. Nüsse, Laktose"></label>
+    </div>
+
+    <label class="feld-block"><span class="feld-name">Etwas an uns?</span>
+      <textarea name="gruss" rows="3"></textarea></label>
+
+    <button class="taste taste--voll" type="submit">Abschicken</button>
+    <p class="klein">Öffnet eine fertige E-Mail an uns — abschicken müsst ihr sie selbst.</p>
+  </form>
+
+  <div class="danke" data-danke hidden>
+    <h3>Danke, <span data-danke-name></span>.</h3>
+    <p>Die E-Mail sollte offen sein. Falls nicht: <a data-danke-post href="#">hier</a>.</p>
+  </div>
+</section>
+
+<!-- ---------- 09 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>IX</p>
+  <h2 class="titel" data-folge>Geschenke</h2>
+  <p class="satz" data-folge>
+    Wir wünschen uns nichts. Das ist keine Floskel — wir haben alles,
+    was wir brauchen. Wer trotzdem etwas geben möchte: Die Orgel der
+    Kapelle wird seit Jahren repariert und sammelt dafür.
+  </p>
+  <button class="taste taste--klein" type="button" data-iban-zeigen>Bankverbindung zeigen</button>
+  <div class="iban" data-iban hidden>
+    <p><b>Förderverein Kapelle am Hang</b><br>
+       <span class="iban-nr">DE00 0000 0000 0000 0000 00</span></p>
+    <button class="taste taste--klein" type="button" data-iban-kopieren>IBAN kopieren</button>
+  </div>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="feld" data-auftritt>
+  <p class="zahl" data-folge>X</p>
+  <h2 class="titel" data-folge>Fragen</h2>
+  <div class="fragen">
+    <details data-frage data-folge><summary>Darf ich jemanden mitbringen?</summary>
+      <div class="frage-antwort"><div><p>Nur wenn auf eurer Karte eine Begleitung steht. Die
+        Kapelle hat vierzig Plätze, mehr geht wirklich nicht.</p></div></div></details>
+    <details data-frage data-folge><summary>Kinder?</summary>
+      <div class="frage-antwort"><div><p>Sehr gern, aber sagt uns Bescheid. Es gibt keinen
+        eigenen Bereich — sie sind einfach dabei.</p></div></div></details>
+    <details data-frage data-folge><summary>Fotos?</summary>
+      <div class="frage-antwort"><div><p>Während der Trauung bitte nicht. Danach gern, aber
+        stellt euch nicht in den Weg der Fotografin.</p></div></div></details>
+    <details data-frage data-folge><summary>Wie kalt ist die Kapelle?</summary>
+      <div class="frage-antwort"><div><p>Um die vierzehn Grad. Sie wird nicht geheizt, und
+        eine Stunde darin merkt man.</p></div></div></details>
+    <details data-frage data-folge><summary>Ich schaffe es nicht.</summary>
+      <div class="frage-antwort"><div><p>Dann sagt es früh, damit jemand anderes den Platz
+        bekommt. Wir sind euch nicht böse.</p></div></div></details>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="fuss">
+  <svg class="borte borte--fuss" id="borte-fuss" viewBox="0 0 1000 130"
+       preserveAspectRatio="none" aria-hidden="true"
+       fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></svg>
+  <p class="fuss-namen">Sophie und Elias</p>
+  <p class="fuss-datum">20. März 2027 · Königswinter</p>
+  <p class="fuss-klein">Sophie und Elias, Termin, Ort und Bankverbindung sind frei erfunden.</p>
+</footer>
+
+<script src="../gemeinsam/kern.js?v=202608212157"></script>
+<script src="js/rein.js?v=202608212157"></script>
+</body>
+</html>

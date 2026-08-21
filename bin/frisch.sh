@@ -16,5 +16,10 @@ perl -0777 -i -pe "s|(^  version:\\s*')[^']*(')|\${1}$V\${2}|m" js/config.js
 for SEITE in stile/*/index.html; do
   perl -0777 -i -pe "s|(href=\"css/[a-z-]+\\.css)(\\?v=\\d+)?\"|\$1?v=$V\"|g" "$SEITE"
   perl -0777 -i -pe "s|(src=\"js/[a-z-]+\\.js)(\\?v=\\d+)?\"|\$1?v=$V\"|g" "$SEITE"
+  # Der gemeinsame Kern und die Bilder der Karte muessen mit. Ohne
+  # das haelt der Browser eine alte - oder, direkt nach dem Anlegen,
+  # eine leere - Fassung fest, und die Seite ist bilderlos.
+  perl -0777 -i -pe "s|(\"\\.\\./gemeinsam/kern\\.(?:css\|js))(\\?v=\\d+)?\"|\$1?v=$V\"|g" "$SEITE"
+  perl -0777 -i -pe "s|((?:src\|href)=\"bilder/[a-z0-9-]+\\.(?:webp\|jpg\|png))(\\?v=\\d+)?\"|\$1?v=$V\"|g" "$SEITE"
 done
 echo "Version $V"

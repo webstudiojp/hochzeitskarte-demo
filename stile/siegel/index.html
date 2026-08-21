@@ -32,7 +32,7 @@ if (!location.hash) {
   addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
 }
 </script>
-<link rel="stylesheet" href="css/siegel.css?v=202608211518">
+<link rel="stylesheet" href="css/siegel.css?v=202608212157">
 </head>
 <body class="zu">
 
@@ -105,8 +105,9 @@ if (!location.hash) {
     </button>
   </div>
 
-  <p class="umschlag-hinweis">Siegel antippen</p>
+  <p class="umschlag-hinweis" data-t="umschlag.hinweis">Siegel antippen</p>
 </div>
+
 
 
 <!-- =========================================================
@@ -118,6 +119,35 @@ if (!location.hash) {
 <!-- Duenne Linie am oberen Rand: zeigt, wie weit die Seite gelesen ist.
      Haengt am Bildlauf selbst, nicht an einem Zeitgeber. -->
 <div class="fortschritt" aria-hidden="true"></div>
+
+<button class="sprachwahl" id="sprachwahl" type="button"
+        aria-label="Sprache wechseln / Dili değiştir">
+  <!-- Als SVG gezeichnet, nicht als Emoji: Windows stellt Flaggen-Emoji
+       nur als Buchstabenpaar dar, dann staende dort "DE" statt einer Flagge. -->
+  <span class="flagge" data-lang="de">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <clipPath id="rund-de"><circle cx="12" cy="12" r="11"/></clipPath>
+      <g clip-path="url(#rund-de)">
+        <rect x="0" y="1"    width="24" height="7.34" fill="#1a1a19"/>
+        <rect x="0" y="8.34" width="24" height="7.33" fill="#c8102e"/>
+        <rect x="0" y="15.67" width="24" height="7.33" fill="#e8b71a"/>
+      </g>
+      <circle cx="12" cy="12" r="11" fill="none" stroke="rgba(90,60,70,.25)" stroke-width="1"/>
+    </svg>
+  </span>
+  <span class="flagge" data-lang="tr">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <clipPath id="rund-tr"><circle cx="12" cy="12" r="11"/></clipPath>
+      <g clip-path="url(#rund-tr)">
+        <rect x="0" y="0" width="24" height="24" fill="#e30a17"/>
+        <circle cx="10" cy="12" r="5" fill="#fff"/>
+        <circle cx="11.6" cy="12" r="4" fill="#e30a17"/>
+        <path d="M15.4 12 18.4 11l-1.9 2.5V9.5L18.4 13z" fill="#fff"/>
+      </g>
+      <circle cx="12" cy="12" r="11" fill="none" stroke="rgba(90,60,70,.25)" stroke-width="1"/>
+    </svg>
+  </span>
+</button>
 
 <div class="wand" aria-hidden="true">
   <div class="putz"></div>
@@ -145,7 +175,7 @@ if (!location.hash) {
       </svg>
 
       <div class="umriss-text">
-        <p class="hand">Wir feiern<br>unseren großen Tag</p>
+        <p class="hand" data-t="herz.text">Wir feiern<br>unseren großen Tag</p>
         <p class="datum">01.01.27</p>
       </div>
 
@@ -160,20 +190,20 @@ if (!location.hash) {
     <!-- Vor dem Rubbeln steht hier der Hinweis, danach der Knopf.
          Beides an derselben Stelle, damit die Seite nicht springt. -->
     <div class="fussfeld">
-      <p class="wink" id="wink"><span>✦</span> Herz freirubbeln <span>✦</span></p>
+      <p class="wink" id="wink"><span>✦</span> <span data-t="herz.wink">Herz freirubbeln</span> <span>✦</span></p>
 
       <button class="kalender" id="kalender" type="button" hidden>
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <rect x="3" y="5" width="18" height="16" rx="2.5"/>
           <path d="M3 10h18M8 3v4M16 3v4"/>
         </svg>
-        Zum Kalender hinzufügen
+        <span data-t="kalender.knopf">Zum Kalender hinzufügen</span>
       </button>
     </div>
   </div>
 
   <a class="scrollwink" id="scrollwink" href="#gruss" hidden>
-    <span>Mehr</span>
+    <span data-t="hero.mehr">Mehr</span>
     <svg viewBox="0 0 20 26" aria-hidden="true"><path d="M10 2v20m0 0-6-7m6 7 6-7"/></svg>
   </a>
 </section>
@@ -184,9 +214,9 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen" id="gruss">
   <div class="bogen-satz mitte">
-    <p class="kicker">Der Anfang</p>
-    <h2 class="script"><span class="schreiben">Wir haben Ja gesagt</span></h2>
-    <p class="fliess">Nach acht Jahren, zwei Umzügen und einem Hund
+    <p class="kicker" data-t="anfang.kicker">Der Anfang</p>
+    <h2 class="script"><span class="schreiben" data-t="anfang.titel">Wir haben Ja gesagt</span></h2>
+    <p class="fliess" data-t="anfang.text">Nach acht Jahren, zwei Umzügen und einem Hund
       wird es Zeit, das Ganze mit euch zu feiern. Der Tag steht fest —
       alles Weitere schicken wir euch rechtzeitig.</p>
     <span class="raute" aria-hidden="true"></span>
@@ -199,14 +229,14 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen" id="countdown">
   <div class="bogen-satz mitte">
-    <p class="kicker">Noch</p>
+    <p class="kicker" data-t="cd.kicker">Noch</p>
     <div class="zaehler" id="zaehler">
-      <div class="einheit"><div class="kachel"><b id="cd-t">—</b></div><span>Tage</span></div>
-      <div class="einheit"><div class="kachel"><b id="cd-s">—</b></div><span>Stunden</span></div>
-      <div class="einheit"><div class="kachel"><b id="cd-m">—</b></div><span>Minuten</span></div>
-      <div class="einheit"><div class="kachel"><b id="cd-k">—</b></div><span>Sekunden</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-t">—</b></div><span data-t="cd.tage">Tage</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-s">—</b></div><span data-t="cd.stunden">Stunden</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-m">—</b></div><span data-t="cd.minuten">Minuten</span></div>
+      <div class="einheit"><div class="kachel"><b id="cd-k">—</b></div><span data-t="cd.sekunden">Sekunden</span></div>
     </div>
-    <p class="zaehler-fuss" id="cd-fuss">bis zum 1. Januar 2027</p>
+    <p class="zaehler-fuss" id="cd-fuss" data-t="cd.fuss">bis zum 1. Januar 2027</p>
   </div>
 </section>
 
@@ -216,9 +246,9 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen" id="termin">
   <div class="bogen-satz mitte">
-    <p class="kicker">Der Tag</p>
-    <p class="anschlag">1. Januar 2027</p>
-    <p class="unterzeile">Freitag · ab 14:30 Uhr</p>
+    <p class="kicker" data-t="termin.kicker">Der Tag</p>
+    <p class="anschlag" data-t="datum.lang">1. Januar 2027</p>
+    <p class="unterzeile" data-t="datum.zeit">Freitag · ab 14:30 Uhr</p>
     <span class="raute" aria-hidden="true"></span>
   </div>
 </section>
@@ -231,7 +261,7 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen" id="ort">
   <div class="bogen-satz mitte">
-    <p class="kicker">Wo wir feiern</p>
+    <p class="kicker" data-t="ort.kicker">Wo wir feiern</p>
 
     <svg class="haus" viewBox="0 0 240 130" aria-hidden="true">
       <g fill="none" stroke="#8d6f83" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
@@ -266,21 +296,21 @@ if (!location.hash) {
           <path d="M12 21s7-6.4 7-11.6A7 7 0 0 0 5 9.4C5 14.6 12 21 12 21z"/>
           <circle cx="12" cy="9.4" r="2.6"/>
         </svg>
-        Route mit Google Maps
+        <span data-t="weg.google">Route mit Google Maps</span>
       </a>
       <a class="wegknopf" id="weg-apple" href="#" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M3 7.5 9 5l6 2.5L21 5v11.5L15 19l-6-2.5L3 19z"/>
           <path d="M9 5v11.5M15 7.5V19"/>
         </svg>
-        Route mit Apple Karten
+        <span data-t="weg.apple">Route mit Apple Karten</span>
       </a>
       <button class="wegknopf leise" id="adresse-kopieren" type="button">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <rect x="9" y="9" width="12" height="12" rx="2"/>
           <path d="M15 5H5a2 2 0 0 0-2 2v10"/>
         </svg>
-        <span id="kopier-text">Adresse kopieren</span>
+        <span id="kopier-text" data-t="weg.kopieren">Adresse kopieren</span>
       </button>
     </div>
   </div>
@@ -292,30 +322,30 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen" id="anreise">
   <div class="bogen-satz">
-    <p class="kicker mitte-t">Anreise</p>
+    <p class="kicker mitte-t" data-t="anreise.titel">Anreise</p>
 
     <div class="posten seitlich links">
-      <p class="postenname">Mit dem Auto</p>
-      <p class="postenzeile">A59 bis Abfahrt Düsseldorf-Benrath, danach der
+      <p class="postenname" data-t="anreise.auto">Mit dem Auto</p>
+      <p class="postenzeile" data-t="anreise.autoText">A59 bis Abfahrt Düsseldorf-Benrath, danach der
         Beschilderung zum Schloss folgen. Von der Autobahn sind es
         knapp fünf Minuten.</p>
     </div>
 
     <div class="posten seitlich rechts">
-      <p class="postenname">Mit der Bahn</p>
-      <p class="postenzeile">S6 bis Düsseldorf-Benrath. Von dort acht Minuten
+      <p class="postenname" data-t="anreise.bahn">Mit der Bahn</p>
+      <p class="postenzeile" data-t="anreise.bahnText">S6 bis Düsseldorf-Benrath. Von dort acht Minuten
         zu Fuß durch den Schlosspark — der Weg ist ausgeschildert.</p>
     </div>
 
     <div class="posten seitlich links">
-      <p class="postenname">Parken</p>
-      <p class="postenzeile">Kostenfreie Plätze am Besucherparkplatz Süd,
+      <p class="postenname" data-t="anreise.parken">Parken</p>
+      <p class="postenzeile" data-t="anreise.parkenText">Kostenfreie Plätze am Besucherparkplatz Süd,
         direkt neben dem Parkeingang. Platz ist genug.</p>
     </div>
 
     <div class="posten seitlich rechts">
-      <p class="postenname">Mit dem Taxi</p>
-      <p class="postenzeile">Sagt einfach „Schloss Benrath, Haupteingang".
+      <p class="postenname" data-t="anreise.taxi">Mit dem Taxi</p>
+      <p class="postenzeile" data-t="anreise.taxiText">Sagt einfach „Schloss Benrath, Haupteingang".
         Aus der Innenstadt sind es rund 20 Minuten.</p>
     </div>
   </div>
@@ -329,23 +359,23 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen" id="wissen">
   <div class="bogen-satz">
-    <p class="kicker mitte-t">Gut zu wissen</p>
+    <p class="kicker mitte-t" data-t="wissen.titel">Gut zu wissen</p>
 
     <div class="posten">
-      <p class="postenname">Haltet das Wochenende frei</p>
-      <p class="postenzeile">Wir feiern von Freitagnachmittag bis tief in die Nacht.
+      <p class="postenname" data-t="wissen.wochenende">Haltet das Wochenende frei</p>
+      <p class="postenzeile" data-t="wissen.wochenendeText">Wir feiern von Freitagnachmittag bis tief in die Nacht.
         Wer mag, bleibt auch am Samstag noch zum Frühstück.</p>
     </div>
 
     <div class="posten">
-      <p class="postenname">Die Einladung folgt</p>
-      <p class="postenzeile">Im Frühjahr 2026 bekommt ihr alle Einzelheiten:
+      <p class="postenname" data-t="wissen.einladung">Die Einladung folgt</p>
+      <p class="postenzeile" data-t="wissen.einladungText">Im Frühjahr 2026 bekommt ihr alle Einzelheiten:
         Ablauf, Dresscode, Anreise und die Bitte um Rückmeldung.</p>
     </div>
 
     <div class="posten">
-      <p class="postenname">Übernachtung</p>
-      <p class="postenzeile">Rund um den Schlosspark gibt es genug Zimmer.
+      <p class="postenname" data-t="wissen.hotel">Übernachtung</p>
+      <p class="postenzeile" data-t="wissen.hotelText">Rund um den Schlosspark gibt es genug Zimmer.
         Wir nennen euch mit der Einladung ein paar Häuser, die wir kennen.</p>
     </div>
   </div>
@@ -359,15 +389,15 @@ if (!location.hash) {
      ========================================================= -->
 <section class="bogen schluss" id="merken">
   <div class="bogen-satz mitte">
-    <p class="kicker">Damit es nicht untergeht</p>
-    <h2 class="script"><span class="schreiben">Tragt euch den Tag ein</span></h2>
+    <p class="kicker" data-t="merken.kicker">Damit es nicht untergeht</p>
+    <h2 class="script"><span class="schreiben" data-t="merken.titel">Tragt euch den Tag ein</span></h2>
 
     <button class="kalender gross" id="kalender-unten" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="5" width="18" height="16" rx="2.5"/>
         <path d="M3 10h18M8 3v4M16 3v4"/>
       </svg>
-      Zum Kalender hinzufügen
+      <span data-t="kalender.knopf">Zum Kalender hinzufügen</span>
     </button>
   </div>
 </section>
@@ -379,18 +409,18 @@ if (!location.hash) {
 <footer class="fuss">
   <div class="bogen-satz mitte">
     <p class="fuss-monogramm">F&amp;D</p>
-    <p class="script klein"><span class="schreiben">Bis bald</span></p>
+    <p class="script klein"><span class="schreiben" data-t="fuss.gruss">Bis bald</span></p>
     <p class="fuss-namen">Furkan &amp; Dilara</p>
-    <p class="fuss-datum">1. Januar · 2027</p>
+    <p class="fuss-datum" data-t="fuss.datum">1. Januar · 2027</p>
 
     <span class="raute" aria-hidden="true"></span>
 
-    <p class="kicker">Bei Fragen</p>
+    <p class="kicker" data-t="fuss.fragen">Bei Fragen</p>
     <p class="fuss-mail"><a href="mailto:hallo@furkan-und-dilara.de">hallo@furkan-und-dilara.de</a></p>
   </div>
 </footer>
 </main>
 
-<script src="js/siegel.js?v=202608211518"></script>
+<script src="js/siegel.js?v=202608212157"></script>
 </body>
 </html>

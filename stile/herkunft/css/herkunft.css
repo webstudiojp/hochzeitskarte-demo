@@ -1,0 +1,559 @@
+/* =========================================================
+   HERKUNFT — Herbarium
+
+   Die Einladung ist ein botanisches Sammelbuch: aufgezogene
+   Bogen, Klebeecken, mit der Hand daneben geschriebene
+   Bemerkungen. Was traegt, ist nicht Zierrat, sondern der
+   Bau: jeder Abschnitt ist ein *Blatt*, das leicht schief
+   auf dem darunter liegt, und die Nummer steht so, wie sie
+   in einem Herbar steht - klein, oben, gestempelt.
+
+   Genau eine Sache ist auf der ganzen Seite gefuellt: die
+   Taste, um die es geht.
+   ========================================================= */
+
+/* ---------- Schriften ---------- *
+   Geholt, nicht verlinkt. Ein Link zu Google Fonts schickt
+   bei jedem Aufruf die IP des Gastes an einen Dritten. */
+@font-face{font-family:'EB Garamond';src:url('../../../assets/fonts/EBGaramond-latin.woff2') format('woff2');
+  font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:'EB Garamond';src:url('../../../assets/fonts/EBGaramond-italic-latin.woff2') format('woff2');
+  font-weight:400 600;font-style:italic;font-display:swap}
+@font-face{font-family:'Karla';src:url('../../../assets/fonts/Karla-latin.woff2') format('woff2');
+  font-weight:300 700;font-style:normal;font-display:swap}
+@font-face{font-family:'La Belle Aurore';src:url('../../../assets/fonts/LaBelleAurore-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --papier:#f2eee4;
+  --papier-2:#ebe4d4;
+  --creme:#f8f5ed;
+  --salbei-bogen:#e4e7dc;
+  --salbei:#7d8d70;
+  --salbei-tief:#54644a;
+  --terra:#a9502f;
+  --tinte:#35332a;
+  --tinte-2:#6d6755;
+  --linie:rgba(84,100,74,.22);
+
+  --serif:'EB Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Karla',system-ui,-apple-system,sans-serif;
+  --hand:'La Belle Aurore','EB Garamond',cursive;
+
+  --rand:clamp(20px,5.5vw,52px);
+  --bogen:min(680px,100%);
+}
+
+/* Papierfaser. Ein Rauschen ueber der Flaeche, sonst ist
+   jeder Bogen eine glatte Farbe und sieht nach Bildschirm
+   aus statt nach Papier. */
+.blatt::before,
+.auftakt-karte-flaeche::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.055;mix-blend-mode:multiply;
+}
+
+body{
+  background:var(--papier);
+  color:var(--tinte);
+  font-family:var(--serif);
+  font-size:clamp(17px,1.05rem + .35vw,20px);
+  line-height:1.72;
+}
+
+/* =========================================================
+   Fortschritt und Musik
+   ========================================================= */
+.fortschritt{position:fixed;inset:0 0 auto;height:2px;z-index:60;background:rgba(84,100,74,.12)}
+.fortschritt i{display:block;height:100%;background:var(--salbei-tief)}
+
+.musik{
+  position:fixed;right:calc(var(--rand) * .7);bottom:calc(var(--rand) * .7);z-index:60;
+  width:46px;height:46px;border-radius:50%;
+  border:1px solid var(--linie);background:rgba(248,245,237,.86);
+  backdrop-filter:blur(8px);color:var(--salbei-tief);
+  display:grid;place-items:center;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1),background .3s;
+}
+.musik svg{width:21px;height:21px}
+.musik:hover{transform:scale(1.06)}
+.musik[data-an]{background:var(--salbei-tief);color:var(--creme);border-color:var(--salbei-tief)}
+
+/* =========================================================
+   AUFTAKT
+   Das Kuvert liegt still, die Karte wird herausgezogen. Der
+   Weg der Karte und die Gegenbewegung des Kuverts haengen
+   an derselben Zahl --zug, damit sich beides nicht
+   auseinanderrechnet.
+   ========================================================= */
+.auftakt{
+  position:relative;height:100svh;overflow:hidden;
+  background:#8a9a80;
+  --zug:0;
+}
+.auftakt-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  /* Die Reserve steckt im Massstab, nicht in der Breite: eine
+     Ueberbreite kaeme mit max-width in Streit, ein Massstab nicht. */
+  transform:scale(calc(1.1 + var(--zug) * .06)) translateY(calc(var(--zug) * 2.5svh));
+  filter:brightness(calc(1 - var(--zug) * .22)) saturate(calc(1 - var(--zug) * .1));
+  will-change:transform,filter;
+}
+
+.auftakt-karte{
+  position:absolute;left:50%;top:50%;z-index:2;
+  width:min(78vw,340px);
+  /* Der Bogen der Einladung, nicht der des Bildschirms. */
+  aspect-ratio:5/7;
+  transform:
+    translate3d(-50%,calc(-50% + (1 - var(--zug)) * 84svh),0)
+    rotate(calc((1 - var(--zug)) * -2.1deg));
+  will-change:transform;
+  cursor:grab;touch-action:none;
+  filter:drop-shadow(0 calc(14px + var(--zug) * 26px) calc(24px + var(--zug) * 40px) rgba(48,54,40,.34));
+}
+.auftakt-karte:active{cursor:grabbing}
+
+.auftakt-karte-flaeche{
+  position:relative;height:100%;overflow:hidden;
+  background:
+    linear-gradient(158deg,#fbf9f3 0%,var(--creme) 46%,#f0ebdf 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(10px,2.4vw,18px);
+  padding:clamp(22px,6vw,34px) clamp(16px,4.5vw,26px);
+  text-align:center;
+}
+/* Eine haarfeine Innenlinie - Praegedruck hat immer eine. */
+.auftakt-karte-flaeche::after{
+  content:'';position:absolute;inset:9px;pointer-events:none;
+  border:1px solid rgba(84,100,74,.2);
+}
+
+.farn{width:clamp(44px,11.5vw,58px);height:auto;color:var(--salbei)}
+.farn path{vector-effect:non-scaling-stroke;stroke-width:1}
+
+.auftakt-ueber{
+  font-family:var(--sans);font-weight:500;
+  font-size:clamp(8.5px,2.2vw,10px);letter-spacing:.42em;text-transform:uppercase;
+  color:var(--salbei-tief);margin-left:.42em;
+}
+.auftakt-namen{
+  font-weight:400;font-size:clamp(30px,8.6vw,42px);line-height:1.06;
+  letter-spacing:.005em;
+}
+.auftakt-namen .amp{
+  display:block;font-style:italic;color:var(--terra);
+  font-size:.56em;line-height:1.5;font-weight:400;
+}
+.auftakt-datum{
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--sans);font-weight:400;
+  font-size:clamp(9.5px,2.5vw,11px);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--tinte-2);
+}
+.auftakt-datum i{
+  position:relative;font-style:normal;color:var(--terra);
+  letter-spacing:.24em;margin:0 2.4em 0 2.6em;
+}
+.auftakt-datum i::before,.auftakt-datum i::after{
+  content:'';position:absolute;top:50%;width:1.4em;height:1px;background:var(--linie);
+}
+.auftakt-datum i::before{right:calc(100% + .8em)}
+.auftakt-datum i::after{left:calc(100% + .6em)}
+
+.auftakt-hinweis{
+  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);
+  z-index:3;text-align:center;
+  font-family:var(--sans);font-weight:500;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  color:rgba(255,253,247,.9);text-shadow:0 1px 12px rgba(40,50,34,.55);
+  opacity:calc(1 - var(--zug) * 2.6);transition:opacity .3s;
+}
+.auftakt-pfeil{
+  display:block;width:1px;height:26px;margin:0 auto 12px;
+  background:linear-gradient(to top,transparent,rgba(255,253,247,.9));
+  animation:zupf 2.3s ease-in-out infinite;
+}
+@keyframes zupf{0%,100%{transform:translateY(4px);opacity:.45}50%{transform:translateY(-4px);opacity:1}}
+
+/* Bis gezogen wurde, bleibt die Seite stehen. Sonst scrollt
+   jemand am Auftakt vorbei, ohne ihn gesehen zu haben. */
+html[data-zu]{overflow:hidden}
+html[data-zu] body{overflow:hidden}
+
+/* =========================================================
+   DAS HEFT
+   Jedes Blatt liegt leicht schief auf dem darunter. Der
+   Winkel wechselt das Vorzeichen, sonst kippt die ganze
+   Seite nach einer Seite weg.
+   ========================================================= */
+.heft{
+  position:relative;z-index:1;
+  padding:clamp(46px,10vw,90px) var(--rand) clamp(30px,7vw,60px);
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(30px,7vw,62px);
+}
+
+.blatt{
+  position:relative;width:var(--bogen);
+  padding:clamp(34px,7vw,58px) clamp(24px,6vw,52px) clamp(38px,8vw,64px);
+  background:var(--creme);
+  box-shadow:0 1px 2px rgba(60,68,50,.1),0 14px 34px -18px rgba(60,68,50,.4);
+  transform:rotate(var(--kipp,0deg));
+}
+.blatt--papier{background:var(--papier-2)}
+.blatt--salbei{background:var(--salbei-bogen)}
+.blatt--weit{width:min(880px,100%)}
+
+.blatt:nth-of-type(odd){--kipp:-.32deg}
+.blatt:nth-of-type(even){--kipp:.28deg}
+
+/* Auftritt. Das Blatt kommt nicht von unten hereingeschoben,
+   sondern legt sich hin: erst der Winkel, dann die Deckung.
+   Unsichtbarer Text ist nie der Ruhezustand - faellt der
+   Auftritt aus, steht das Blatt einfach da. */
+@media (prefers-reduced-motion:no-preference){
+  html[data-js] .blatt[data-auftritt]{
+    opacity:0;transform:rotate(calc(var(--kipp,0deg) * 3.4)) translateY(26px) scale(.985);
+    transition:opacity .7s ease,transform .9s cubic-bezier(.2,.7,.25,1);
+  }
+  html[data-js] .blatt[data-auftritt].da{opacity:1;transform:rotate(var(--kipp,0deg)) translateY(0) scale(1)}
+  html[data-js] [data-folge]{
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.25,1);
+    transition-delay:calc(var(--folge,0) * 90ms + 120ms);
+  }
+  html[data-js] .da [data-folge]{opacity:1;transform:none}
+}
+
+/* ---------- Klebeecken ----------
+   Nicht gezeichnet, sondern gefaltet: ein Dreieck aus
+   halbdurchsichtigem Papier ueber der Blattecke. */
+.ecke{
+  position:absolute;width:clamp(26px,5.5vw,38px);aspect-ratio:1;
+  background:linear-gradient(135deg,rgba(216,205,178,.92),rgba(196,182,150,.72));
+  box-shadow:0 1px 2px rgba(60,60,40,.16);
+}
+.ecke--ol{top:-1px;left:-1px;clip-path:polygon(0 0,100% 0,0 100%)}
+.ecke--or{top:-1px;right:-1px;clip-path:polygon(100% 0,100% 100%,0 0)}
+.ecke--ul{bottom:-1px;left:-1px;clip-path:polygon(0 100%,100% 100%,0 0)}
+.ecke--ur{bottom:-1px;right:-1px;clip-path:polygon(100% 100%,0 100%,100% 0)}
+
+/* ---------- Satz ----------
+   Nummer und Titel mittig, der grosse Satz darunter
+   linksbuendig. Diese eine Asymmetrie traegt die Seite. */
+.nummer{
+  font-family:var(--sans);font-weight:600;
+  font-size:10px;letter-spacing:.4em;color:var(--salbei);
+  text-align:center;margin-bottom:clamp(12px,3vw,18px);
+}
+.titel{
+  font-weight:400;font-size:clamp(27px,6.4vw,38px);line-height:1.15;
+  text-align:center;margin-bottom:clamp(18px,4vw,28px);
+}
+.titel::after{
+  content:'';display:block;width:34px;height:1px;margin:clamp(14px,3vw,20px) auto 0;
+  background:var(--linie);
+}
+.satz{max-width:44ch;color:var(--tinte)}
+.satz--kurz{max-width:38ch;color:var(--tinte-2);font-size:.94em}
+.satz b{font-weight:600;color:var(--terra)}
+
+.notiz{
+  font-family:var(--hand);font-size:clamp(17px,4vw,21px);line-height:1.5;
+  color:var(--salbei-tief);
+  transform:rotate(-1.6deg);
+  margin-top:clamp(16px,3.5vw,24px);
+}
+.notiz--rechts{text-align:right;transform:rotate(1.2deg)}
+
+.klein{
+  font-family:var(--sans);font-size:12px;line-height:1.6;
+  color:var(--tinte-2);opacity:.8;margin-top:12px;
+}
+
+/* =========================================================
+   Countdown
+   Ohne Kacheln, nur durch Haarlinien getrennt. Ein Kasten
+   waere ein zweites Motiv neben den Klebeecken.
+   ========================================================= */
+.uhr{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  margin-top:clamp(26px,6vw,40px);
+}
+.uhr-teil{text-align:center;padding:0 4px;border-left:1px solid var(--linie)}
+.uhr-teil:first-child{border-left:0}
+.uhr-teil b{
+  display:block;font-weight:400;
+  font-size:clamp(28px,7.6vw,44px);line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.uhr-teil i{
+  display:block;margin-top:8px;font-style:normal;font-family:var(--sans);
+  font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--salbei);
+}
+.uhr-teil b.rollt{animation:rollen .45s cubic-bezier(.2,.7,.3,1)}
+@keyframes rollen{from{opacity:.25;transform:translateY(-.16em)}to{opacity:1;transform:none}}
+.uhr-vorbei{text-align:center;margin-top:20px;font-style:italic;color:var(--terra)}
+
+/* =========================================================
+   Zeitleiste
+   Die Jahreszahl steht nicht auf einer Achse, sondern am
+   Rand - wie eine Fundnotiz.
+   ========================================================= */
+.zeitleiste{display:flex;flex-direction:column;gap:clamp(24px,5vw,38px)}
+.zeitleiste{--achse:clamp(46px,12vw,60px)}
+.zeitleiste li{position:relative;padding-left:calc(var(--achse) + clamp(18px,4.5vw,26px))}
+.zeitleiste li::before{
+  content:'';position:absolute;left:var(--achse);top:.6em;bottom:-.9em;
+  width:1px;background:var(--linie);
+}
+.zeitleiste li:last-child::before{display:none}
+.zeitleiste li::after{
+  content:'';position:absolute;left:calc(var(--achse) - 2.5px);top:.55em;
+  width:6px;height:6px;background:var(--salbei);transform:rotate(45deg);
+}
+.jahr{
+  position:absolute;left:0;top:.1em;width:calc(var(--achse) - 12px);
+  font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.14em;
+  color:var(--salbei-tief);
+}
+.zeitleiste h3{font-weight:500;font-size:clamp(19px,4.6vw,23px);margin-bottom:.25em}
+.zeitleiste p{color:var(--tinte-2);font-size:.94em}
+
+/* =========================================================
+   Mappe
+   Drei Bilder, aufgezogen wie Fotos im Album: leicht schief,
+   mit Rand, mit Schatten.
+   ========================================================= */
+.mappe{
+  display:grid;gap:clamp(22px,5.5vw,34px);
+  grid-template-columns:1fr;
+}
+@media (min-width:620px){
+  .mappe{grid-template-columns:1fr 1fr}
+  .mappe-bild--quer{grid-column:1/-1}
+}
+.mappe-bild{
+  background:#fff;padding:clamp(7px,1.7vw,11px);
+  box-shadow:0 2px 3px rgba(60,68,50,.12),0 16px 30px -20px rgba(60,68,50,.5);
+  transform:rotate(var(--dreh,0deg));
+}
+.mappe-bild .px-rahmen{height:100%}
+.mappe-bild:nth-child(1){--dreh:-.8deg}
+.mappe-bild:nth-child(2){--dreh:.5deg}
+.mappe-bild:nth-child(3){--dreh:1deg}
+.mappe-bild--hoch .px-rahmen{aspect-ratio:3/4}
+.mappe-bild--quer .px-rahmen{aspect-ratio:3/2}
+
+/* =========================================================
+   Ablauf
+   ========================================================= */
+.ablauf{display:flex;flex-direction:column;gap:clamp(16px,3.6vw,24px);margin-top:clamp(22px,5vw,32px)}
+.ablauf li{display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,4vw,26px);align-items:baseline}
+.ablauf b{
+  font-weight:400;font-size:clamp(21px,5vw,26px);
+  font-variant-numeric:tabular-nums;color:var(--salbei-tief);
+  white-space:nowrap;
+}
+.ablauf b i{font-style:normal;font-size:.6em;vertical-align:.32em;margin-left:.1em;color:var(--salbei)}
+.ablauf h3{font-weight:500;font-size:clamp(18px,4.3vw,21px)}
+.ablauf p{font-size:.9em;color:var(--tinte-2);line-height:1.55}
+
+/* =========================================================
+   Ort
+   ========================================================= */
+.ort-bild{
+  aspect-ratio:3/2;margin:0 0 clamp(24px,5vw,34px);
+  box-shadow:0 2px 3px rgba(60,68,50,.12),0 20px 40px -24px rgba(60,68,50,.55);
+}
+.ort-satz{text-align:center}
+.ort-satz h3{font-weight:400;font-size:clamp(24px,5.6vw,30px);margin-bottom:.35em}
+.adresse{font-family:var(--sans);font-size:14px;letter-spacing:.05em;line-height:1.9;color:var(--tinte-2)}
+.ort-satz .notiz{text-align:center;transform:rotate(-1deg)}
+
+.tasten{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  margin-top:clamp(24px,5vw,34px);
+}
+.taste{
+  display:inline-block;text-decoration:none;
+  font-family:var(--sans);font-weight:500;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 22px;border:1px solid var(--salbei);color:var(--salbei-tief);
+  background:transparent;
+  transition:background .3s ease,color .3s ease,border-color .3s ease;
+}
+.taste:hover{background:rgba(125,141,112,.12)}
+/* Genau eine Taste auf der Seite ist gefuellt: die, um die
+   es geht. */
+.taste--voll{background:var(--salbei-tief);border-color:var(--salbei-tief);color:var(--creme)}
+.taste--voll:hover{background:var(--tinte);border-color:var(--tinte)}
+.taste--klein{font-size:10px;padding:11px 16px;letter-spacing:.16em}
+.taste:disabled{opacity:.4;cursor:not-allowed}
+
+/* =========================================================
+   Anreise
+   ========================================================= */
+.anreise{display:flex;flex-direction:column;gap:clamp(22px,4.6vw,32px);margin-top:clamp(20px,4vw,28px)}
+.anreise h3{
+  font-family:var(--sans);font-weight:600;
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--salbei-tief);
+  margin-bottom:.7em;
+}
+.anreise p{color:var(--tinte-2);font-size:.95em}
+.haeuser{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.haeuser li{padding-left:16px;border-left:1px solid var(--linie)}
+.haeuser b{display:block;font-weight:500;font-size:1.03em}
+.haeuser i{
+  font-style:normal;font-family:var(--sans);font-size:12px;
+  letter-spacing:.03em;color:var(--tinte-2);
+}
+
+/* =========================================================
+   Kleiderordnung
+   ========================================================= */
+.dresscode-farben{display:flex;gap:10px;margin-top:clamp(22px,4.6vw,30px)}
+.dresscode-farben i{
+  display:block;width:clamp(38px,9vw,52px);aspect-ratio:1;
+  background:var(--f);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+}
+
+/* =========================================================
+   Formular
+   Linien statt Kaesten. Auf Papier gibt es keine
+   Eingabefelder, nur Zeilen, auf die man schreibt.
+   ========================================================= */
+.formular{display:flex;flex-direction:column;gap:clamp(18px,3.6vw,24px);margin-top:clamp(24px,5vw,34px)}
+.feld-name{
+  display:block;font-family:var(--sans);font-weight:500;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--salbei-tief);margin-bottom:9px;
+}
+.formular input[type=text],.formular input[type=email],.formular select,.formular textarea{
+  background:transparent;border:0;border-bottom:1px solid var(--linie);
+  padding:7px 2px;font-family:var(--serif);font-size:1.02em;
+  border-radius:0;appearance:none;
+  transition:border-color .3s ease;
+}
+.formular select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--salbei) 50%),
+                   linear-gradient(135deg,var(--salbei) 50%,transparent 50%);
+  background-position:right 8px center,right 3px center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+  padding-right:22px;
+}
+.formular input:focus,.formular select:focus,.formular textarea:focus{
+  outline:none;border-bottom-color:var(--salbei-tief);
+}
+.formular textarea{border:1px solid var(--linie);padding:10px}
+
+.wahl{border:0;padding:0;margin:0}
+.wahl label{display:flex;align-items:center;gap:11px;padding:9px 0;cursor:pointer}
+.wahl input{
+  appearance:none;width:15px;height:15px;flex:none;
+  border:1px solid var(--salbei);border-radius:50%;
+  transition:box-shadow .25s ease,background .25s ease;
+}
+.wahl input:checked{background:var(--salbei-tief);box-shadow:inset 0 0 0 3px var(--creme)}
+.wahl span{font-size:.98em}
+
+.begleitung-zahl{
+  font-family:var(--serif);font-size:14px;letter-spacing:0;
+  text-transform:none;color:var(--tinte-2);font-style:italic;margin-left:.4em;
+}
+.begleitung-zeile{
+  grid-template-columns:1fr;gap:14px;
+  padding:14px 0;border-top:1px dashed var(--linie);
+}
+@media (min-width:560px){.begleitung-zeile{grid-template-columns:1fr auto auto;align-items:end}}
+.begleitung-weg{
+  background:none;border:0;padding:7px 0;
+  font-family:var(--sans);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--terra);opacity:.75;justify-self:start;
+}
+.begleitung-weg:hover{opacity:1;text-decoration:underline}
+.begleitung [data-begleitung]{margin-bottom:12px}
+
+.danke{text-align:center;padding:clamp(24px,5vw,36px) 0}
+.danke h3{font-weight:400;font-size:clamp(24px,5.6vw,30px);margin-bottom:.5em}
+.danke p{color:var(--tinte-2)}
+.danke a{color:var(--terra)}
+
+/* =========================================================
+   Geschenke
+   ========================================================= */
+.iban{margin-top:18px;padding:18px 20px;background:rgba(125,141,112,.09);border-left:2px solid var(--salbei)}
+.iban p{margin-bottom:12px;line-height:1.7}
+.iban-nr{font-family:var(--sans);font-size:14px;letter-spacing:.11em}
+[data-iban-zeigen]{margin-top:clamp(20px,4vw,28px)}
+
+/* =========================================================
+   Fragen
+   ========================================================= */
+.fragen{margin-top:clamp(20px,4vw,28px);border-top:1px solid var(--linie)}
+.fragen details{border-bottom:1px solid var(--linie)}
+.fragen summary{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:clamp(15px,3.2vw,19px) 0;font-size:1.02em;
+  transition:color .25s ease;
+}
+.fragen summary:hover{color:var(--salbei-tief)}
+.fragen summary::after{
+  content:'';flex:none;width:9px;height:9px;
+  border-right:1px solid var(--salbei);border-bottom:1px solid var(--salbei);
+  transform:rotate(45deg) translate(-2px,-2px);
+  transition:transform .35s cubic-bezier(.2,.7,.3,1);
+}
+.fragen details[open] summary::after{transform:rotate(-135deg) translate(-3px,-3px)}
+.frage-antwort{transition:grid-template-rows .38s cubic-bezier(.2,.7,.3,1)}
+.fragen details:not([open]) .frage-antwort{grid-template-rows:0fr}
+.fragen p{padding-bottom:clamp(15px,3.2vw,19px);color:var(--tinte-2);font-size:.95em;max-width:52ch}
+
+/* =========================================================
+   Fuss
+   ========================================================= */
+.fuss{
+  text-align:center;padding:clamp(50px,11vw,86px) var(--rand) calc(env(safe-area-inset-bottom,0px) + clamp(40px,9vw,70px));
+  background:var(--salbei-tief);color:#eae7dc;
+}
+.farn--fuss{width:clamp(52px,13vw,68px);margin:0 auto clamp(22px,5vw,32px);color:rgba(234,231,220,.55)}
+.fuss-namen{font-size:clamp(24px,6vw,32px);font-weight:400}
+.fuss-datum{
+  font-family:var(--sans);font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(234,231,220,.62);margin-top:14px;
+}
+.fuss-klein{
+  font-family:var(--sans);font-size:11px;line-height:1.8;
+  color:rgba(234,231,220,.38);margin-top:clamp(28px,6vw,44px);max-width:40ch;
+  margin-inline:auto;
+}
+
+/* =========================================================
+   Der Strichzug
+   stroke-dasharray wird vererbt und wirkt deshalb auch in
+   dem Schattenbaum, den ein <use> erzeugt. pathLength="1"
+   normiert jede Laenge auf eins, sodass ein Wert fuer alle
+   Striche genuegt - egal, wie lang sie wirklich sind.
+   ========================================================= */
+@media (prefers-reduced-motion:no-preference){
+  .farn path{stroke-dasharray:1;stroke-dashoffset:1}
+  .farn.zeichnet path{animation:strich 1.5s cubic-bezier(.4,0,.2,1) forwards;
+    animation-delay:calc(var(--i,0) * 32ms)}
+}
+@keyframes strich{to{stroke-dashoffset:0}}
+
+/* =========================================================
+   OHNE SKRIPT
+   Der Auftakt ist ein Handgriff, kein Schloss. Laedt das
+   Skript nicht, liegt die Karte einfach offen da - mit allem,
+   was darauf steht.
+   ========================================================= */
+html:not([data-js]) .auftakt{--zug:1}
+html:not([data-js]) .auftakt-hinweis,
+html:not([data-js]) .wand,
+html:not([data-js]) .vorhang,
+html:not([data-js]) .schabracke,
+html:not([data-js]) .stempelkopf{display:none}

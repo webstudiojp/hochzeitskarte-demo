@@ -1,0 +1,395 @@
+/* =========================================================
+   ZUCKERGUSS — rund
+
+   Die einzige der neun, die nirgends eine gerade Ecke hat.
+   Abschnitte sind Kapseln, Bilder sind Kapseln, Tasten sind
+   Kapseln, und das Konfetti faellt ueber alles hinweg.
+
+   Das ist der ganze Trick: eine Karte, die froehlich sein
+   will, darf keine rechten Winkel haben - und sie darf nicht
+   grell werden. Deshalb ist genau eine Farbe kraeftig
+   (Kirsche), der Rest ist Zucker.
+   ========================================================= */
+
+@font-face{font-family:'Fraunces';src:url('../../../assets/fonts/Fraunces-latin.woff2') format('woff2');
+  font-weight:300 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Fraunces';src:url('../../../assets/fonts/Fraunces-italic-latin.woff2') format('woff2');
+  font-weight:300 500;font-style:italic;font-display:swap}
+@font-face{font-family:'Outfit';src:url('../../../assets/fonts/Outfit-latin.woff2') format('woff2');
+  font-weight:200 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Parisienne';src:url('../../../assets/fonts/Parisienne-latin.woff2') format('woff2');
+  font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --creme:#fdf7f2;
+  --rosa:#fbe9e5;
+  --blush:#f3c9c4;
+  --blush-2:#e79f99;
+  --kirsche:#c0334a;
+  --kirsche-2:#9d2439;
+  --gold:#d9b46a;
+  --tinte:#4a3336;
+  --tinte-2:#8b7275;
+
+  --display:'Fraunces',Georgia,serif;
+  --sans:'Outfit',system-ui,-apple-system,sans-serif;
+  --hand:'Parisienne','Fraunces',cursive;
+
+  --rand:clamp(20px,5.5vw,56px);
+  --spalte:min(600px,100%);
+  --rund:26px;
+}
+
+body{
+  background:var(--creme);
+  color:var(--tinte);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:clamp(15.5px,.95rem + .3vw,17.5px);
+  line-height:1.78;
+}
+
+.konfetti{position:fixed;inset:0;z-index:50;pointer-events:none}
+
+.fortschritt{position:fixed;inset:0 0 auto;height:4px;z-index:60;background:rgba(192,51,74,.1)}
+.fortschritt i{display:block;height:100%;background:var(--kirsche);border-radius:0 4px 4px 0}
+
+.musik{
+  position:fixed;right:calc(var(--rand) * .6);bottom:calc(var(--rand) * .6);z-index:60;
+  width:48px;height:48px;border-radius:50%;
+  border:0;background:#fff;box-shadow:0 6px 20px rgba(74,51,54,.16);
+  color:var(--kirsche);display:grid;place-items:center;
+  transition:transform .3s cubic-bezier(.3,1.5,.5,1),background .3s,color .3s;
+}
+.musik svg{width:21px;height:21px}
+.musik:hover{transform:scale(1.1) rotate(-6deg)}
+.musik[data-an]{background:var(--kirsche);color:#fff}
+
+/* =========================================================
+   AUFTAKT
+   ========================================================= */
+.auftakt{position:relative;height:100svh;overflow:hidden;background:var(--rosa);--auf:0}
+.auftakt-bild{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(calc(1.14 - var(--auf) * .12));
+  transition:transform 1.6s cubic-bezier(.16,.7,.24,1);
+}
+.auftakt-grund{
+  position:absolute;left:50%;top:50%;z-index:2;
+  width:min(150vw,820px);aspect-ratio:1;transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(253,247,242,.86),rgba(253,247,242,.5) 52%,transparent 76%);
+  pointer-events:none;
+}
+.auftakt-satz{
+  position:absolute;left:0;right:0;top:50%;z-index:3;
+  transform:translateY(-50%);padding:0 var(--rand);text-align:center;pointer-events:none;
+}
+.auftakt-ueber{
+  font-family:var(--sans);font-weight:600;
+  font-size:10px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--kirsche);margin-left:.42em;
+}
+.auftakt-namen{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(42px,13vw,76px);line-height:.98;letter-spacing:-.015em;
+  color:var(--tinte);margin:clamp(12px,3vw,18px) 0;
+}
+.auftakt-namen i{
+  display:block;font-family:var(--hand);font-style:normal;
+  font-size:.66em;line-height:1.05;color:var(--kirsche);margin:.02em 0;
+}
+.auftakt-datum{
+  display:inline-block;font-weight:500;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--tinte);background:#fff;border-radius:999px;
+  padding:11px 22px;box-shadow:0 5px 18px rgba(74,51,54,.12);
+}
+
+.knall{position:absolute;inset:0;z-index:4;background:none;border:0;padding:0;cursor:pointer}
+.knall:disabled{cursor:default;pointer-events:none}
+
+.auftakt-hinweis{
+  position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);z-index:5;
+  transform:translateX(-50%);
+  font-family:var(--sans);font-weight:600;
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#fff;
+  background:var(--kirsche);border-radius:999px;padding:12px 22px;
+  box-shadow:0 8px 22px rgba(192,51,74,.34);
+  opacity:calc(1 - var(--auf) * 2.4);transition:opacity .5s;pointer-events:none;
+  animation:huepfen 1.9s cubic-bezier(.4,0,.3,1) infinite;
+}
+@keyframes huepfen{0%,100%{transform:translateX(-50%) translateY(0)}42%{transform:translateX(-50%) translateY(-7px)}}
+
+html[data-zu],html[data-zu] body{overflow:hidden}
+
+/* =========================================================
+   DIE TORTE
+   ========================================================= */
+.torte{position:relative;z-index:1;padding:clamp(16px,4vw,30px) var(--rand) 0}
+
+.stueck{
+  margin:0 auto clamp(16px,4vw,26px);
+  padding:clamp(42px,10vw,80px) clamp(22px,5.5vw,50px);
+  border-radius:var(--rund);background:#fff;
+  box-shadow:0 3px 20px rgba(74,51,54,.06);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  max-width:min(680px,100%);
+}
+.stueck > *{width:100%}
+.stueck--weit{max-width:min(900px,100%)}
+.stueck--rosa{background:var(--rosa)}
+
+@media (prefers-reduced-motion:no-preference){
+  html[data-js] .stueck[data-auftritt]{
+    opacity:0;transform:translateY(26px) scale(.985);
+    transition:opacity .7s ease,transform .8s cubic-bezier(.22,1.1,.36,1);
+  }
+  html[data-js] .stueck[data-auftritt].da{opacity:1;transform:none}
+  html[data-js] [data-folge]{
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s ease,transform .7s cubic-bezier(.22,1.1,.36,1);
+    transition-delay:calc(var(--folge,0) * 75ms + 100ms);
+  }
+  html[data-js] .da [data-folge]{opacity:1;transform:none}
+}
+
+/* Die Schleife als Abschnittsmarke. Zwei Boegen und ein
+   Knoten, alles aus border-radius - eine Zeichnung waere hier
+   ein Fremdkoerper, weil auf dieser Karte nichts gezeichnet
+   ist, sondern alles gerundet. */
+.schleife{
+  width:clamp(38px,9vw,52px) !important;height:clamp(20px,5vw,28px);
+  margin:0 auto clamp(20px,4.5vw,30px);position:relative;
+}
+.schleife::before,.schleife::after{
+  content:'';position:absolute;top:0;width:47%;height:100%;
+  background:var(--blush);
+  border:2px solid var(--kirsche);
+}
+.schleife::before{left:0;border-radius:60% 20% 60% 20%/70% 30% 70% 30%}
+.schleife::after{right:0;border-radius:20% 60% 20% 60%/30% 70% 30% 70%}
+.schleife--gross{width:clamp(50px,12vw,68px) !important;height:clamp(26px,6.5vw,36px)}
+
+.titel{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(28px,7.6vw,46px);line-height:1.1;letter-spacing:-.015em;
+  margin-bottom:clamp(18px,4vw,28px);
+}
+.satz{margin-inline:auto;max-width:40ch;color:var(--tinte-2)}
+.satz--eng{max-width:32ch}
+.satz b{color:var(--kirsche);font-weight:600}
+.hand{
+  font-family:var(--hand);font-size:clamp(24px,6vw,32px);line-height:1.2;
+  color:var(--kirsche);margin-top:clamp(16px,3.6vw,24px);
+}
+.klein{font-size:11.5px;line-height:1.7;color:var(--tinte-2);opacity:.8;margin-top:13px}
+
+/* =========================================================
+   Countdown — vier Bonbons
+   ========================================================= */
+.uhr{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(7px,2vw,13px);
+  margin-top:clamp(30px,6.5vw,46px)}
+.uhr-teil{
+  padding:clamp(14px,3.4vw,20px) 4px;border-radius:18px;
+  background:var(--rosa);
+}
+.stueck--rosa .uhr-teil{background:#fff}
+.uhr-teil b{
+  display:block;font-family:var(--display);font-weight:500;
+  font-size:clamp(24px,7vw,38px);line-height:1;color:var(--kirsche);
+  font-variant-numeric:tabular-nums;
+}
+.uhr-teil i{
+  display:block;margin-top:7px;font-style:normal;font-weight:500;
+  font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinte-2);
+}
+.uhr-teil b.rollt{animation:springen .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes springen{from{transform:scale(.7);opacity:.3}to{transform:none;opacity:1}}
+.uhr-vorbei{margin-top:18px;color:var(--kirsche);font-weight:500}
+
+/* =========================================================
+   Karten und Ablauf
+   ========================================================= */
+.karten{display:grid;gap:clamp(12px,3vw,18px)}
+@media (min-width:640px){.karten{grid-template-columns:1fr 1fr}}
+.karten li{
+  padding:clamp(18px,4vw,26px);border-radius:20px;background:#fff;text-align:left;
+}
+.karten b{
+  display:inline-block;font-weight:600;font-size:10px;letter-spacing:.2em;
+  color:#fff;background:var(--blush-2);border-radius:999px;padding:4px 11px;margin-bottom:.9em;
+}
+.karten h3{font-family:var(--display);font-weight:500;font-size:clamp(18px,4.6vw,22px);margin-bottom:.35em}
+.karten p{font-size:.92em;color:var(--tinte-2);line-height:1.62}
+
+.ablauf{display:flex;flex-direction:column;gap:clamp(9px,2.2vw,13px)}
+.ablauf li{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(14px,4vw,26px);
+  text-align:left;align-items:center;
+  padding:clamp(13px,3vw,18px) clamp(15px,3.6vw,22px);
+  border-radius:999px 20px 20px 999px;background:var(--rosa);
+}
+.stueck--rosa .ablauf li{background:#fff}
+.ablauf b{
+  display:grid;place-items:center;flex:none;
+  width:clamp(52px,13vw,64px);height:clamp(52px,13vw,64px);border-radius:50%;
+  background:#fff;color:var(--kirsche);
+  font-weight:600;font-size:clamp(11.5px,3vw,13px);font-variant-numeric:tabular-nums;
+}
+.stueck--rosa .ablauf b{background:var(--rosa)}
+.ablauf h3{font-family:var(--display);font-weight:500;font-size:clamp(16.5px,4.2vw,20px)}
+.ablauf p{font-size:.86em;color:var(--tinte-2);line-height:1.5;margin-top:.1em}
+
+/* =========================================================
+   Bilder
+   ========================================================= */
+.reihe{display:grid;gap:clamp(12px,3vw,18px);grid-template-columns:1fr}
+@media (min-width:620px){
+  .reihe{grid-template-columns:1fr 1fr}
+  .reihe--breit{grid-column:1/-1}
+}
+.reihe .px-rahmen{width:100%;aspect-ratio:3/4;border-radius:20px}
+.reihe--breit .px-rahmen{aspect-ratio:3/2}
+
+.ort-bild{aspect-ratio:3/2;margin:0 0 clamp(22px,4.5vw,32px);border-radius:22px}
+.ortname{font-family:var(--display);font-weight:500;font-size:clamp(22px,5.4vw,28px)}
+.adresse{font-weight:400;font-size:13px;letter-spacing:.06em;color:var(--tinte-2);margin-top:6px}
+
+.tasten{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:clamp(24px,5vw,34px)}
+.taste{
+  display:inline-block;text-decoration:none;background:#fff;border-radius:999px;
+  font-family:var(--sans);font-weight:600;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  padding:15px 24px;border:1.5px solid var(--blush);color:var(--kirsche);
+  transition:transform .25s cubic-bezier(.3,1.5,.5,1),background .25s,border-color .25s,color .25s;
+}
+.taste:hover{transform:translateY(-2px);border-color:var(--kirsche)}
+.taste--voll{background:var(--kirsche);border-color:var(--kirsche);color:#fff;
+  box-shadow:0 8px 20px rgba(192,51,74,.28)}
+.taste--voll:hover{background:var(--kirsche-2);border-color:var(--kirsche-2)}
+.taste--klein{font-size:10px;padding:12px 18px}
+.taste:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* =========================================================
+   Listen
+   ========================================================= */
+.liste{display:flex;flex-direction:column;gap:clamp(22px,5vw,32px);text-align:left}
+.liste h3{font-weight:600;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--kirsche);margin-bottom:.8em}
+.liste p{color:var(--tinte-2);max-width:40ch}
+.haeuser{margin-top:15px;display:grid;gap:9px}
+.haeuser li{padding:13px 17px;border-radius:16px;background:var(--rosa)}
+.stueck--rosa .haeuser li{background:#fff}
+.haeuser b{display:block;font-family:var(--display);font-weight:500;font-size:1.05em}
+.haeuser i{display:block;margin-top:2px;font-style:normal;font-size:11.5px;color:var(--tinte-2)}
+
+.farben{display:flex;gap:11px;justify-content:center;margin-top:clamp(24px,5vw,34px)}
+.farben i{display:block;width:clamp(36px,9vw,50px);aspect-ratio:1;border-radius:50%;background:var(--f);
+  box-shadow:0 3px 10px rgba(74,51,54,.12)}
+
+/* =========================================================
+   Formular
+   ========================================================= */
+.formular{display:flex;flex-direction:column;gap:clamp(17px,3.6vw,23px);
+  margin-top:clamp(26px,5.5vw,38px);text-align:left}
+.feld-block{display:block}
+.feld-block input,.feld-block select,.feld-block textarea{width:100%}
+.feld-name{
+  display:block;font-weight:600;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--kirsche);margin-bottom:8px;
+}
+.formular input[type=text],.formular input[type=email],.formular select,.formular textarea{
+  background:var(--rosa);border:1.5px solid transparent;border-radius:14px;
+  padding:13px 16px;font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.5;
+  color:var(--tinte);appearance:none;transition:border-color .25s,background .25s;
+}
+.stueck--rosa .formular input,.stueck--rosa .formular select,.stueck--rosa .formular textarea{background:#fff}
+.formular select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--kirsche) 50%),
+                   linear-gradient(135deg,var(--kirsche) 50%,transparent 50%);
+  background-position:right 18px center,right 13px center;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px;
+}
+.formular input:focus,.formular select:focus,.formular textarea:focus{
+  outline:none;border-color:var(--blush-2);background:#fff;
+}
+.formular input::placeholder{color:var(--tinte-2);opacity:.55}
+
+.wahl{border:0;padding:0;margin:0}
+.wahl label{display:flex;align-items:center;gap:11px;padding:9px 0;cursor:pointer}
+.wahl input{
+  appearance:none;width:18px;height:18px;flex:none;border-radius:50%;
+  border:1.5px solid var(--blush-2);background:#fff;transition:background .25s,box-shadow .25s;
+}
+.wahl input:checked{background:var(--kirsche);border-color:var(--kirsche);box-shadow:inset 0 0 0 4px #fff}
+.begleitung-zahl{font-size:12px;letter-spacing:.02em;text-transform:none;
+  color:var(--tinte-2);margin-left:.6em;font-weight:400}
+.begleitung-zeile{padding:14px 0}
+@media (min-width:560px){.begleitung-zeile{grid-template-columns:1fr auto auto;align-items:end}}
+.begleitung-weg{background:none;border:0;padding:8px 0;justify-self:start;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--kirsche);font-weight:600}
+.begleitung-weg:hover{text-decoration:underline}
+.begleitung [data-begleitung]{margin-bottom:10px}
+
+.danke{padding:clamp(24px,5vw,36px) 0;text-align:center}
+.danke h3{font-family:var(--display);font-weight:500;font-size:clamp(24px,6vw,32px);margin-bottom:.5em}
+.danke a{color:var(--kirsche)}
+
+.iban{margin-top:18px;padding:20px 22px;border-radius:18px;background:#fff;text-align:center}
+.stueck--rosa .iban{background:#fff}
+.iban p{margin-bottom:14px;line-height:1.9}
+.iban b{font-family:var(--display);font-weight:500;font-size:1.08em}
+.iban-nr{font-size:13.5px;letter-spacing:.1em;color:var(--kirsche)}
+[data-iban-zeigen]{margin-top:clamp(20px,4.5vw,30px)}
+
+/* =========================================================
+   Fragen
+   ========================================================= */
+.fragen{text-align:left;display:grid;gap:9px}
+.fragen details{background:var(--rosa);border-radius:18px}
+.stueck--rosa .fragen details{background:#fff}
+.fragen summary{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:clamp(14px,3.2vw,19px) clamp(16px,3.8vw,22px);font-weight:400;transition:color .3s;
+}
+.fragen summary:hover{color:var(--kirsche)}
+.fragen summary::after{
+  content:'';flex:none;width:9px;height:9px;
+  border-right:2px solid var(--kirsche);border-bottom:2px solid var(--kirsche);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .35s cubic-bezier(.3,1.3,.5,1);
+}
+.fragen details[open] summary::after{transform:rotate(-135deg) translate(-3px,-3px)}
+.frage-antwort{transition:grid-template-rows .4s cubic-bezier(.2,.7,.3,1)}
+.fragen details:not([open]) .frage-antwort{grid-template-rows:0fr}
+.fragen p{padding:0 clamp(16px,3.8vw,22px) clamp(14px,3.2vw,19px);
+  color:var(--tinte-2);font-size:.94em;max-width:52ch}
+
+/* =========================================================
+   Fuss
+   ========================================================= */
+.fuss{
+  text-align:center;margin:clamp(16px,4vw,26px) auto 0;max-width:min(680px,calc(100% - 2 * var(--rand)));
+  border-radius:var(--rund) var(--rund) 0 0;background:var(--kirsche);color:#fff;
+  padding:clamp(48px,11vw,84px) var(--rand) calc(env(safe-area-inset-bottom,0px) + clamp(40px,9vw,70px));
+}
+.fuss .schleife{margin-bottom:clamp(22px,5vw,32px)}
+.fuss .schleife::before,.fuss .schleife::after{background:rgba(255,255,255,.22);border-color:#fff}
+.fuss-namen{font-family:var(--display);font-weight:400;font-size:clamp(26px,7vw,38px)}
+.fuss-namen i{font-family:var(--hand);font-style:normal;font-size:1.05em;color:var(--blush)}
+.fuss-datum{font-weight:500;font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);margin-top:15px}
+.fuss-klein{font-size:11px;line-height:1.9;color:rgba(255,255,255,.5);
+  margin:clamp(30px,6.5vw,46px) auto 0;max-width:38ch}
+
+/* =========================================================
+   OHNE SKRIPT
+   Der Auftakt ist ein Handgriff, kein Schloss. Laedt das
+   Skript nicht, liegt die Karte einfach offen da - mit allem,
+   was darauf steht.
+   ========================================================= */
+html:not([data-js]) .auftakt{--auf:1}
+html:not([data-js]) .auftakt-hinweis,
+html:not([data-js]) .wand,
+html:not([data-js]) .vorhang,
+html:not([data-js]) .schabracke,
+html:not([data-js]) .stempelkopf{display:none}

@@ -6,18 +6,162 @@ Statische Seite, kein Build-Schritt, kein Framework.
 **Demo-Datensatz Furkan & Dilara ist frei erfunden** — Paar, Termin,
 Location und Bankverbindung existieren nicht.
 
-## Drei weitere Stile
+## Zwölf Stile
 
-Neben der Hauptkarte liegen unter `stile/` drei eigenstaendige Demos, jede
-mit eigenem HTML, CSS und Skript. Sie teilen sich mit der Hauptkarte nur die
-lokalen Schriften und laufen ueber denselben Server:
+Unter `stile/` liegen zwölf eigenständige Demos, jede mit eigenem HTML,
+eigenem Stylesheet und eigenem Skript. Geteilt wird nur der Kern unter
+`stile/gemeinsam/` — und die lokalen Schriften.
 
-| Adresse | Stil |
-|---|---|
-| `stile/` | Uebersicht mit allen Kacheln |
-| `stile/eleganz/` | Praegedruck: zwei geprägte Flügel mit Satinschleife, dahinter die vollstaendige Einladung |
-| `stile/siegel/` | Wachssiegel aufbrechen, Glitzerherz freirubbeln, dann Countdown, Termin, Ort |
-| `stile/funke/` | Nacht und Gold: das Siegel selbst aufbrechen, aus dem Licht darin entstehen die Namen |
+| Adresse | Stil | Der Handgriff |
+|---|---|---|
+| `stile/` | Übersicht mit allen Kacheln | |
+| `stile/herkunft/` | Herbarium, Salbei und Terracotta | Die Karte wird aus dem Kuvert gezogen |
+| `stile/brunnen/` | Wasser, Rosé und Messing | Das Wasser wird berührt |
+| `stile/goldstunde/` | Gesellschaftsblatt, Elfenbein und Gold | Der Vorhang wird aufgezogen |
+| `stile/mitternacht/` | Kerzenlicht, Schwarz und Oliv | Das Licht folgt dem Finger |
+| `stile/azur/` | Azulejos, Azur und Terracotta | Die Kachelwand kippt um |
+| `stile/zuckerguss/` | Konfetti, Creme und Kirsche | Es knallt, wo getippt wird |
+| `stile/fernweh/` | Reisetagebuch, Karte und Tinte | Ein Stempel schlägt auf |
+| `stile/bluete/` | Glashaus, Creme und Bernstein | Halten lässt die Knospe aufgehen |
+| `stile/rein/` | Weiß auf Weiß | Verlangt als einzige nichts |
+| `stile/eleganz/` | Prägedruck mit Satinschleife | Die Schleife wird gelöst |
+| `stile/siegel/` | Wachssiegel und Glitzerherz | Das Herz wird freigerubbelt |
+| `stile/funke/` | Nacht und Gold, osmanische Ornamentik | Das Siegel wird aufgebrochen |
+
+### Was geteilt wird — und was ausdrücklich nicht
+
+`stile/gemeinsam/kern.js` trägt, was auf allen Karten technisch gleich
+ist: Countdown, Kalenderdatei, Route, Rückmeldung, Geschenke, Fragen,
+Musik, Auftritt beim Scrollen, Parallaxe. Angesprochen wird alles über
+`data`-Attribute; eine Karte, die einen Baustein nicht hat, lässt ihn
+weg, und der Kern schweigt. Neunmal dieselben zweihundert Zeilen zu
+kopieren wäre die Sorte Arbeit, die beim ersten Fehler neunmal
+nachgezogen werden muss.
+
+`kern.css` trägt bewusst **kein Aussehen** — nur Grundeinstellungen,
+Bedienbarkeit und den Vertrag für Parallaxe und Fortschritt. Keine
+Farbe, keine Schrift, kein Abstand, kein Auftritt. Ein gemeinsames
+Aussehen wäre bequem und würde aus zwölf Entwürfen einen mit zwölf
+Anstrichen machen.
+
+### Typografie
+
+Keine zwei Karten teilen sich eine Schrift. Das ist die teuerste und
+die wichtigste Entscheidung an dem Satz: Vorlagen erkennt man daran,
+dass unter jeder Farbe dieselbe Schrift steht.
+
+| Stil | Auszeichnung | Grundschrift | Dritte Stimme |
+|---|---|---|---|
+| Herkunft | EB Garamond | Karla | La Belle Aurore (Randnotizen) |
+| Brunnen | Bodoni Moda | Jost | Italianno |
+| Goldene Stunde | Cinzel | Cormorant | Pinyon Script |
+| Mitternacht | Italiana | Archivo | — bewusst keine |
+| Azur | Marcellus | Work Sans | Allura |
+| Zuckerguss | Fraunces | Outfit | Parisienne |
+| Fernweh | Playfair Display | Space Grotesk | Special Elite (nur Gestempeltes) |
+| Blüte | Lora | Josefin Sans | Sacramento |
+| Rein | Tenor Sans | Spectral | — bewusst keine |
+
+Alle liegen als woff2 in `assets/fonts/`, jede Karte lädt nur ihre
+eigenen. Nichts wird von Google Fonts nachgeladen: ein Link dorthin
+schickt bei jedem Aufruf die IP des Gastes an einen Dritten, und dafür
+gibt es bei einer Einladung keine Einwilligung.
+
+Geholt wurden sie einmalig mit `bin/schriften.py` über die
+css2-Schnittstelle, jeweils nur der Grundschnitt
+`latin` — der deckt ä, ö, ü und ß ab; `latin-ext` wäre ein zweiter
+Download für Zeichen, die auf keiner dieser Karten vorkommen.
+
+### Der Handgriff
+
+Jede Karte öffnet sich anders, und keine der neun Bewegungen ist
+abgespielt — alle werden gerechnet. Das ist der Unterschied zu einem
+Video: der Riss, der Ring, die Welle entstehen dort, wo der Finger war.
+
+* **Herkunft** — die Karte wird gezogen, mit Weg und Tempo. Wer
+  loslässt, bevor sie draußen ist, sieht sie zurückrutschen.
+* **Brunnen** — Ringe aus gestauchten Ellipsen (die Kamera schaut
+  schräg aufs Wasser), drei Kämme je Wurf, dazu ein SVG-Filter, der die
+  Schrift so lange bricht, wie sie unter der Oberfläche steht.
+* **Goldene Stunde** — zwei Samtbänder, quer auseinandergezogen. Der
+  Betrag zählt, nicht die Richtung.
+* **Mitternacht** — zwei addierte Masken: ein wandernder Schein, der
+  dem Zeiger nachläuft, und ein fester Hof um die Flamme. Das Flackern
+  ist die Summe dreier Sinus mit unrunden Perioden — sonst blinkt es.
+* **Azur** — die Wartezeit jeder Fliese kommt aus ihrem Abstand zum
+  Berührungspunkt. Deshalb sieht jeder Auftakt anders aus.
+* **Zuckerguss** — Partikel mit Masse und lageabhängigem
+  Luftwiderstand. Ein Stück Papier fällt nicht wie ein Stein, es
+  taumelt; genau das steckt in der Rechnung.
+* **Fernweh** — der Stempelkopf wird beim Fallen *größer*, ist im
+  Aufschlag weg, und die Tinte bricht über `feTurbulence` auf. Ein
+  glatter Abdruck sähe gesetzt aus, nicht gestempelt.
+* **Blüte** — zwei Aufnahmen derselben Blüte, verbunden über eine
+  Maske, die von der Knospe nach außen aufgeht. Gehalten wird sie
+  auf; losgelassen sinkt sie langsamer zurück, als sie aufging.
+* **Rein** — die einzige ohne Griff. Die Spitze webt sich beim Lesen;
+  wer stehenbleibt, sieht sie stehenbleiben.
+
+Alle neun haben denselben Notausgang: Nach **neun Sekunden** öffnet
+sich die Karte von selbst. Der Bildtakt steht in einem
+Hintergrundreiter still, und nicht jeder ahnt, dass hier gezogen,
+gehalten oder gestempelt werden will. Der Kniff ist hübsch, aber er
+darf niemanden aussperren.
+
+### Ohne Skript, ohne Bewegung
+
+Lädt das Skript nicht, setzt niemand `data-js` auf das `html`-Element —
+und dann greift keine einzige Regel, die etwas versteckt. Die Karte
+liegt offen da, mit allem, was darauf steht. Unsichtbarer Text darf nie
+der Ruhezustand sein.
+
+Wer `prefers-reduced-motion` gesetzt hat, bekommt jede Karte
+vollständig und ruhig: kein Auftakt, keine Auftritte, keine Parallaxe,
+keine Partikel.
+
+### Rückmeldung ohne Server
+
+Das Formular sammelt Name, Zusage, Essenswunsch, beliebig viele
+Begleitungen mit eigener Menüwahl und Allergien — und setzt daraus eine
+fertige E-Mail auf. Auf einer rein statischen Seite ist das der einzige
+Weg, der wirklich funktioniert, statt so zu tun als ob. Bei einer Absage
+verschwinden Begleitung, Essen und Allergien: sie stehenzulassen wäre
+keine Höflichkeit, sondern eine Frage, die niemand beantworten will.
+
+### Vorschau-Adresse
+
+`?offen` an der Adresse lässt den Auftakt aus und gibt gleich die ganze
+Karte frei. Gedacht für Vorschaubilder und zum Prüfen — sonst müsste
+jede Aufnahme neun Sekunden auf den Notausgang warten. Für Gäste ändert
+sich nichts.
+
+Die Kacheln unter `stile/` sind mit genau dieser Adresse aufgenommen:
+
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+      --headless=new --window-size=1200,630 --virtual-time-budget=8000 \
+      --screenshot=vorschau.png "http://localhost:4321/stile/herkunft/?offen"
+
+Die Kachel zeigt damit die Karte selbst, nicht eine Farbe, die sie
+andeutet — und dasselbe Bild dient als Vorschau beim Teilen.
+
+### Bilder
+
+Jede der neun Karten bringt fünf Motive in `stile/<stil>/bilder/` mit
+(Blüte sechs): `auftakt` als hochformatiger Auftakt, `ort`, `tafel` und
+zwei Detailaufnahmen. Erzeugt mit Higgsfield (nano-banana-pro), auf
+1200 bzw. 1400 Punkt Breite gerechnet und als WebP abgelegt; zusammen
+gut fünfeinhalb Megabyte für neun vollständige Karten.
+
+Zwei Dinge, die dabei wichtig waren. Erstens: **keine Menschen mit
+Gesicht.** Die Galerien zeigen Hände, Sträuße, gedeckte Tafeln und
+Räume — das ist nicht nur die vornehmere Wahl, es erspart auch den
+Versuch, dieselbe erfundene Person über vier Aufnahmen hinweg gleich
+aussehen zu lassen. Zweitens: **kein erfundener Text im Bild.** Die
+erste Fassung der Fernweh-Seekarte trug Ortsnamen, die keine Sprache
+sind; sie wurde neu erzeugt mit der ausdrücklichen Vorgabe, nur
+Küstenlinien, Höhenlinien und ein Gradnetz zu zeigen. Erfundene
+Buchstaben sind das eine Detail, an dem man ein erzeugtes Bild immer
+erkennt.
 
 **Eleganz** baut das Ornament nicht als gekachelte Tapete, sondern als halbes
 Motiv mit der Achse am Falz — der rechte Fluegel spiegelt den linken, ueber der
@@ -223,7 +367,11 @@ beiden Faellen im Browser, ohne Server.
 
 | Datei | Inhalt |
 |---|---|
-| `js/config.js` | Alle Inhalte. Pro Paar wird nur diese Datei angefasst. |
+| `js/config.js` | Alle Inhalte der Hauptkarte. Pro Paar wird nur diese Datei angefasst. |
+| `stile/gemeinsam/kern.js` | Was alle zwölf Karten können: Countdown, Kalender, Route, Rückmeldung, Geschenke, Fragen, Musik, Auftritt, Parallaxe. |
+| `stile/gemeinsam/kern.css` | Grundeinstellungen und Bedienbarkeit — ausdrücklich kein Aussehen. |
+| `stile/<stil>/js/<stil>.js` | Der `DATEN`-Block der Karte und ihr eigener Handgriff. Für ein anderes Paar wird nur `DATEN` angefasst. |
+| `bin/schriften.py` | Holt die Schriften einmalig als woff2 ins Haus. |
 | `js/hero.js` | Die Fahrt: Wagen, Perlenspur, Schriftzug auf der Fahrbahn. |
 | `js/karte.js` | Countdown, Kalenderdatei, Route, Formular, Galerie. |
 | `assets/img/` | Kulisse, Wagen, Rahmen und Fotos (WebP). |
@@ -283,6 +431,14 @@ Geprüft auf 360×640, 375×812, 430×932, 768×1024, 1024×768, 1440×900 und
 1920×1080 — jeweils auf seitlichen Überlauf, Hero-Höhe, Lücken zwischen
 Abschnitten und Zeilenlänge.
 
+Für die zwölf Stile wurde der seitliche Überlauf nicht angesehen, sondern
+gemessen: eine Prüfseite lädt jede Karte in einem Rahmen mit 360, 430,
+768 und 1440 Punkt Breite und vergleicht `scrollWidth` mit `clientWidth`.
+Auf dem Schreibtisch ist ein Überlauf fast unsichtbar, auf dem Telefon
+fällt er sofort auf. Gefunden hat das genau eine Stelle: die Lichtinsel
+hinter den Abschnitten von *Mitternacht* ist breiter als der Schirm und
+schob die Seite quer auf, bis sie beschnitten wurde.
+
 Die Hero-Szene ist hochformatig (1000:1800). Auf Schirmen, die breiter als
 hoch sind, würde sie so stark beschnitten, dass vom Wagen nichts übrig bliebe.
 Dort steht sie deshalb als Bühne in voller Höhe mittig, daneben dieselbe Allee
@@ -307,5 +463,16 @@ Die generierten Motive tragen die großen Flächen: `g4-tafel` den Zitat-Moment,
 
 ## Noch nicht angebunden
 
-Rückmeldung und Gästealbum sind vollständige Oberflächen ohne Server:
-Eingaben werden geprüft, aber nicht versendet oder gespeichert.
+Auf der **Hauptkarte** sind Rückmeldung und Gästealbum vollständige
+Oberflächen ohne Server: Eingaben werden geprüft, aber nicht versendet
+oder gespeichert.
+
+Die **zwölf Stile** haben kein Gästealbum, und ihre Rückmeldung setzt
+statt eines Versands eine fertige E-Mail an das Paar auf — siehe
+„Rückmeldung ohne Server“. Wer echte Zusagen in einer Tabelle sammeln
+will, braucht dafür einen Endpunkt; die Stelle dafür ist eine einzige
+Funktion in `stile/gemeinsam/kern.js`.
+
+Musik bringt bisher nur die Hauptkarte mit. Bei den zwölf Stilen steht
+`musik: null` im `DATEN`-Block, und der Notenknopf bleibt verborgen —
+legt man eine Datei ab und trägt ihren Pfad ein, ist er da.

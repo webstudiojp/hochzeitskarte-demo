@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rosa &amp; Nikolas — 22. Mai 2027</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#101f1e">
+<meta name="description" content="Einladung zur Hochzeit von Rosa und Nikolas am 22. Mai 2027 in der Villa Rosenau, Bad Honnef.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rosa &amp; Nikolas — 22. Mai 2027">
+<meta property="og:description" content="Wir heiraten. Villa Rosenau, Bad Honnef.">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/brunnen/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/brunnen/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../gemeinsam/kern.css?v=202608212157">
+<link rel="stylesheet" href="css/brunnen.css?v=202608212157">
+<link rel="preload" as="image" href="bilder/auftakt.webp?v=202608212157" fetchpriority="high">
+</head>
+
+<body>
+
+<div class="fortschritt"><i data-fortschritt></i></div>
+
+<button class="musik" type="button" data-musik aria-pressed="false">
+  <span class="nur-fuer-schirmleser">Musik an oder aus</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M9 9v7.2a2.4 2.4 0 1 1-1.6-2.26"/><path d="M9 9l7-2v7.2a2.4 2.4 0 1 1-1.6-2.26"/>
+  </svg>
+</button>
+
+<!-- Die Brechung. Ein einziger Filter, dessen Staerke am
+     Auftakt haengt: erst steht die Schrift tief im Wasser,
+     dann kommt sie herauf. -->
+<svg class="filterablage" aria-hidden="true" focusable="false">
+  <filter id="brechung" x="-12%" y="-12%" width="124%" height="124%">
+    <feTurbulence id="wellenrauschen" type="fractalNoise"
+                  baseFrequency="0.012 0.045" numOctaves="2" seed="7" result="rauschen"/>
+    <feDisplacementMap id="wellenversatz" in="SourceGraphic" in2="rauschen"
+                       scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+
+<!-- =========================================================
+     AUFTAKT — die Wasseroberflaeche
+     Wer tippt, wirft etwas ins Wasser. Die Ringe laufen von
+     dort, wo der Finger war, und mit ihnen kommt die Schrift
+     aus der Tiefe herauf.
+     ========================================================= -->
+<section class="auftakt" id="auftakt" aria-label="Wasseroberfläche">
+  <img class="auftakt-bild" src="bilder/auftakt.webp?v=202608212157" alt="" width="1200" height="2150" fetchpriority="high" decoding="async">
+  <canvas class="wasser" id="wasser" aria-hidden="true"></canvas>
+  <div class="auftakt-schleier" aria-hidden="true"></div>
+
+  <div class="auftakt-satz" id="satz">
+    <p class="auftakt-ueber">Wir heiraten</p>
+    <h1 class="auftakt-namen">Rosa<i>und</i>Nikolas</h1>
+    <p class="auftakt-datum">XXII · V · MMXXVII</p>
+  </div>
+
+  <button class="auftakt-flaeche" id="flaeche" type="button">
+    <span class="nur-fuer-schirmleser">Die Einladung öffnen</span>
+  </button>
+
+  <p class="auftakt-hinweis" id="hinweis"><span aria-hidden="true"></span>Das Wasser berühren</p>
+</section>
+
+
+<main class="strom">
+
+<!-- ---------- 01 ---------- -->
+<section class="lage" data-auftritt>
+  <p class="marke" data-folge>I</p>
+  <h2 class="titel" data-spiegel="Endlich" data-folge>Endlich</h2>
+  <p class="satz" data-folge>
+    Sieben Jahre, vier Umzüge und ein hartnäckiger Streit über die
+    richtige Art, Basilikum zu schneiden. Jetzt also doch. Wir würden
+    das gern mit euch begießen.
+  </p>
+
+  <div class="uhr" data-folge aria-label="Countdown">
+    <div class="uhr-teil"><b data-zaehler="tage">–</b><i>Tage</i></div>
+    <div class="uhr-teil"><b data-zaehler="stunden">–</b><i>Std</i></div>
+    <div class="uhr-teil"><b data-zaehler="minuten">–</b><i>Min</i></div>
+    <div class="uhr-teil"><b data-zaehler="sekunden">–</b><i>Sek</i></div>
+  </div>
+  <p class="uhr-vorbei" data-countdown-vorbei hidden>Heute ist der Tag.</p>
+</section>
+
+<!-- ---------- 02 ---------- -->
+<section class="lage lage--tief" data-auftritt>
+  <p class="marke" data-folge>II</p>
+  <h2 class="titel" data-spiegel="Wie es kam" data-folge>Wie es kam</h2>
+
+  <ol class="strang">
+    <li data-folge><b>2019</b><h3>Eine falsche Adresse</h3>
+      <p>Nikolas stand vor der falschen Haustür. Rosa machte auf.
+         Beide behaupten, sie hätten es sofort gewusst; beide lügen.</p></li>
+    <li data-folge><b>2021</b><h3>Der Brunnen</h3>
+      <p>In einem Innenhof in Verona, nachts, mit nassen Schuhen.
+         Von da an war es kein Zufall mehr.</p></li>
+    <li data-folge><b>2024</b><h3>Zwei Schlüssel</h3>
+      <p>Eine Wohnung mit schlechtem Licht und einer guten Küche.
+         Es reichte vollkommen.</p></li>
+    <li data-folge><b>2026</b><h3>Ohne Kniefall</h3>
+      <p>Gefragt haben wir uns gegenseitig, im Auto, an einer
+         roten Ampel. Es hat länger gedauert als die Ampel.</p></li>
+  </ol>
+</section>
+
+<!-- ---------- 03 ---------- -->
+<section class="lage lage--weit" data-auftritt>
+  <p class="marke" data-folge>III</p>
+  <h2 class="titel" data-spiegel="Gesehen" data-folge>Gesehen</h2>
+
+  <div class="reihe">
+    <figure class="bild bild--hoch" data-folge>
+      <div class="px-rahmen" data-px="6">
+        <img src="bilder/m1.webp?v=202608212157" alt="Eine Hand im dunklen Wasser eines Messingbrunnens" width="900" height="1205" loading="lazy" decoding="async"></div>
+    </figure>
+    <figure class="bild bild--hoch" data-folge>
+      <div class="px-rahmen" data-px="6">
+        <img src="bilder/m2.webp?v=202608212157" alt="Übervolle Rosen in einer Messingurne" width="900" height="1205" loading="lazy" decoding="async"></div>
+    </figure>
+    <figure class="bild bild--quer" data-folge>
+      <div class="px-rahmen" data-px="4">
+        <img src="bilder/tafel.webp?v=202608212157" alt="Runde Tafel am Wasser, nur von Kerzen beleuchtet" width="1400" height="939" loading="lazy" decoding="async"></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ---------- 04 ---------- -->
+<section class="lage lage--tief" data-auftritt>
+  <p class="marke" data-folge>IV</p>
+  <h2 class="titel" data-spiegel="Der Ablauf" data-folge>Der Ablauf</h2>
+
+  <ol class="ablauf">
+    <li data-folge><b>16:00</b><span><h3>Ankommen</h3><p>Im Rosengarten. Es gibt kalten Wermut.</p></span></li>
+    <li data-folge><b>16:30</b><span><h3>Trauung</h3><p>Am Brunnen. Bitte pünktlich, es dauert nur zwanzig Minuten.</p></span></li>
+    <li data-folge><b>17:30</b><span><h3>Aperitivo</h3><p>Auf der Terrasse, solange die Sonne dort steht.</p></span></li>
+    <li data-folge><b>19:30</b><span><h3>Abendessen</h3><p>Vier Gänge, italienisch, an einer langen Tafel.</p></span></li>
+    <li data-folge><b>22:00</b><span><h3>Der erste Tanz</h3><p>Und danach alle anderen.</p></span></li>
+    <li data-folge><b>02:00</b><span><h3>Mitternachtssuppe</h3><p>Für alle, die noch stehen.</p></span></li>
+    <li data-folge><b>04:00</b><span><h3>Schluss</h3><p>Die Taxis warten am Tor.</p></span></li>
+  </ol>
+</section>
+
+<!-- ---------- 05 ---------- -->
+<section class="lage lage--weit" data-auftritt>
+  <p class="marke" data-folge>V</p>
+  <h2 class="titel" data-spiegel="Der Ort" data-folge>Der Ort</h2>
+
+  <figure class="ort-bild px-rahmen" data-px="8">
+    <img src="bilder/ort.webp?v=202608212157" alt="Innenhof mit Steinbrunnen und Kletterrosen in der Abenddämmerung" width="1400" height="939" loading="lazy" decoding="async">
+  </figure>
+
+  <div class="ort-satz" data-folge>
+    <h3>Villa Rosenau</h3>
+    <p class="adresse">Rosenauer Weg 12 · 53604 Bad Honnef</p>
+    <p class="hand">Das Tor sieht geschlossen aus. Ist es nicht.</p>
+  </div>
+
+  <div class="tasten" data-folge>
+    <a class="taste" data-route="google" href="#">Route bei Google</a>
+    <a class="taste" data-route="apple" href="#">Route bei Apple</a>
+    <button class="taste taste--voll" type="button" data-kalender>Termin merken</button>
+  </div>
+</section>
+
+<!-- ---------- 06 ---------- -->
+<section class="lage" data-auftritt>
+  <p class="marke" data-folge>VI</p>
+  <h2 class="titel" data-spiegel="Anreise" data-folge>Anreise</h2>
+
+  <ul class="liste">
+    <li data-folge><h3>Mit dem Auto</h3>
+      <p>A3 bis Bad Honnef/Linz, danach ist es ausgeschildert. Parken
+         auf dem Gelände, die Einfahrt liegt hinter der Kapelle.</p></li>
+    <li data-folge><h3>Mit der Bahn</h3>
+      <p>Bis Bad Honnef, von dort sind es zehn Minuten mit dem Taxi.
+         Ab 23 Uhr fahren stündlich Shuttles zurück zum Bahnhof.</p></li>
+    <li data-folge><h3>Übernachten</h3>
+      <p>Wir haben Zimmer vorgemerkt — bitte bis zum 1. März abrufen:</p>
+      <ul class="haeuser">
+        <li><b>Hotel Rheinblick</b><i>1,5 km · Kontingent „Rosa &amp; Nikolas“</i></li>
+        <li><b>Gasthaus Am Turm</b><i>3 km · klein, gut, laut am Morgen</i></li>
+        <li><b>Zimmer in der Villa</b><i>vor Ort · acht Zimmer, wer zuerst kommt</i></li>
+      </ul></li>
+  </ul>
+</section>
+
+<!-- ---------- 07 ---------- -->
+<section class="lage lage--tief" data-auftritt>
+  <p class="marke" data-folge>VII</p>
+  <h2 class="titel" data-spiegel="Kleidung" data-folge>Kleidung</h2>
+  <p class="satz" data-folge>
+    Sommerlich festlich. Der Innenhof ist gepflastert, die Terrasse
+    aus Kies — bringt Schuhe mit, in denen ihr auch tanzen könnt.
+    Nach Sonnenuntergang wird es am Wasser empfindlich kühl.
+  </p>
+  <p class="farben" data-folge aria-hidden="true">
+    <i style="--f:#d98d86"></i><i style="--f:#b08b52"></i><i style="--f:#1d3b38"></i><i style="--f:#efe3d8"></i>
+  </p>
+  <p class="hand" data-folge>Weiß gehört an diesem Tag der Braut.</p>
+</section>
+
+<!-- ---------- 08 ---------- -->
+<section class="lage" id="rueckmeldung" data-auftritt>
+  <p class="marke" data-folge>VIII</p>
+  <h2 class="titel" data-spiegel="Antwort" data-folge>Antwort</h2>
+  <p class="satz satz--kurz" data-folge>Bitte bis zum <b>15. März 2027</b>.</p>
+
+  <form class="formular" data-rueckmeldung novalidate>
+    <label class="feld"><span class="feld-name">Dein Name</span>
+      <input type="text" name="name" autocomplete="name" required></label>
+    <label class="feld"><span class="feld-name">E-Mail</span>
+      <input type="email" name="email" autocomplete="email" required></label>
+
+    <fieldset class="wahl">
+      <legend class="feld-name">Kommst du?</legend>
+      <label><input type="radio" name="antwort" value="zusage" checked><span>Ja, sehr gern</span></label>
+      <label><input type="radio" name="antwort" value="absage"><span>Leider nicht</span></label>
+    </fieldset>
+
+    <div data-nur-zusage>
+      <label class="feld"><span class="feld-name">Was isst du?</span>
+        <select name="essen0" required>
+          <option value="">Bitte wählen</option>
+          <option>Fleisch</option><option>Fisch</option>
+          <option>Vegetarisch</option><option>Vegan</option>
+        </select></label>
+
+      <div class="begleitung">
+        <p class="feld-name">Begleitung <span class="begleitung-zahl" data-begleitung-zahl></span></p>
+        <div data-begleitung></div>
+        <button class="taste taste--klein" type="button" data-begleitung-mehr>+ Begleitung</button>
+      </div>
+
+      <label class="feld"><span class="feld-name">Allergien</span>
+        <input type="text" name="allergien" placeholder="z. B. Nüsse, Laktose"></label>
+    </div>
+
+    <label class="feld"><span class="feld-name">Ein Wort an uns?</span>
+      <textarea name="gruss" rows="3"></textarea></label>
+
+    <button class="taste taste--voll" type="submit">Abschicken</button>
+    <p class="klein">Öffnet eine fertige E-Mail an uns — abschicken müsst ihr sie selbst.</p>
+  </form>
+
+  <div class="danke" data-danke hidden>
+    <h3>Danke, <span data-danke-name></span>.</h3>
+    <p>Die E-Mail sollte offen sein. Falls nicht:
+       <a data-danke-post href="#">hier entlang</a>.</p>
+  </div>
+</section>
+
+<!-- ---------- 09 ---------- -->
+<section class="lage lage--tief" data-auftritt>
+  <p class="marke" data-folge>IX</p>
+  <h2 class="titel" data-spiegel="Geschenke" data-folge>Geschenke</h2>
+  <p class="satz" data-folge>
+    Der Haushalt ist voll und die Regale sind es auch. Wer etwas
+    dalassen möchte: Wir legen für eine Reise zusammen, die schon
+    dreimal verschoben wurde.
+  </p>
+  <button class="taste taste--klein" type="button" data-iban-zeigen>Bankverbindung zeigen</button>
+  <div class="iban" data-iban hidden>
+    <p><b>Rosa Winter &amp; Nikolas Alberti</b><br>
+       <span class="iban-nr">DE00 0000 0000 0000 0000 00</span></p>
+    <button class="taste taste--klein" type="button" data-iban-kopieren>IBAN kopieren</button>
+  </div>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="lage" data-auftritt>
+  <p class="marke" data-folge>X</p>
+  <h2 class="titel" data-spiegel="Fragen" data-folge>Fragen</h2>
+  <div class="fragen">
+    <details data-frage data-folge><summary>Darf ich jemanden mitbringen?</summary>
+      <div class="frage-antwort"><div><p>Wenn auf der Einladung eine Begleitung steht: ja, und tragt
+        sie bitte oben ein. Sonst ist der Hof leider zu klein.</p></div></div></details>
+    <details data-frage data-folge><summary>Kommen Kinder mit?</summary>
+      <div class="frage-antwort"><div><p>Bis 22 Uhr sehr gern. Es gibt eine Betreuung im Gartenhaus
+        und Essen, das auch Kinder mögen.</p></div></div></details>
+    <details data-frage data-folge><summary>Fotos während der Trauung?</summary>
+      <div class="frage-antwort"><div><p>Bitte nicht. Zwanzig Minuten ohne Telefone — danach so
+        viel ihr wollt.</p></div></div></details>
+    <details data-frage data-folge><summary>Es regnet. Und dann?</summary>
+      <div class="frage-antwort"><div><p>Dann heiraten wir in der Orangerie. Sie ist überdacht,
+        beheizt und ehrlich gesagt fast schöner.</p></div></div></details>
+    <details data-frage data-folge><summary>Ich schaffe es doch nicht.</summary>
+      <div class="frage-antwort"><div><p>Sagt es uns früh, dann ist alles gut. Wir trinken
+        trotzdem einen auf euch.</p></div></div></details>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="fuss">
+  <p class="fuss-namen">Rosa <i>und</i> Nikolas</p>
+  <p class="fuss-datum">22. Mai 2027 · Villa Rosenau</p>
+  <p class="fuss-klein">Rosa und Nikolas, Termin, Ort und Bankverbindung sind frei erfunden.</p>
+</footer>
+
+<script src="../gemeinsam/kern.js?v=202608212157"></script>
+<script src="js/brunnen.js?v=202608212157"></script>
+</body>
+</html>

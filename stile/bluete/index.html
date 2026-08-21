@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clara &amp; Felix — 8. Mai 2027</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2a1f14">
+<meta name="description" content="Einladung zur Hochzeit von Clara und Felix am 8. Mai 2027 im Glashaus Marienburg.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clara &amp; Felix — 8. Mai 2027">
+<meta property="og:description" content="Wir heiraten im Glashaus. Marienburg, Jüchen.">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/bluete/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/bluete/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../gemeinsam/kern.css?v=202608212157">
+<link rel="stylesheet" href="css/bluete.css?v=202608212157">
+<link rel="preload" as="image" href="bilder/auftakt.webp?v=202608212157" fetchpriority="high">
+</head>
+
+<body>
+
+<div class="fortschritt"><i data-fortschritt></i></div>
+
+<button class="musik" type="button" data-musik aria-pressed="false">
+  <span class="nur-fuer-schirmleser">Musik an oder aus</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3">
+    <path d="M9 9v7.2a2.4 2.4 0 1 1-1.6-2.26"/><path d="M9 9l7-2v7.2a2.4 2.4 0 1 1-1.6-2.26"/>
+  </svg>
+</button>
+
+
+<!-- =========================================================
+     AUFTAKT — die Knospe
+     Sie geht nicht auf Knopfdruck auf, sondern solange
+     jemand haelt. Loslassen laesst sie zurueckfallen.
+     ========================================================= -->
+<section class="auftakt" id="auftakt" aria-label="Knospe">
+  <!-- Zwei Aufnahmen derselben Bluete: geschlossen und offen.
+       Gehalten wird zwischen ihnen ueberblendet, und zwar ueber
+       eine Maske, die von der Knospe nach aussen aufgeht - eine
+       reine Ueberblendung saehe aus wie ein Schnitt, nicht wie
+       ein Aufgehen. -->
+  <img class="auftakt-bild auftakt-bild--zu" src="bilder/auftakt.webp?v=202608212157" alt="" width="1200" height="2150" fetchpriority="high" decoding="async">
+  <img class="auftakt-bild auftakt-bild--auf" src="bilder/offen.webp?v=202608212157" alt="" width="1200" height="2150" decoding="async">
+  <div class="auftakt-grund" aria-hidden="true"></div>
+
+  <div class="auftakt-satz">
+    <p class="auftakt-ueber">Wir heiraten</p>
+    <h1 class="auftakt-namen">Clara<i>und</i>Felix</h1>
+    <p class="auftakt-datum">8. Mai 2027</p>
+  </div>
+
+  <button class="halten" id="halten" type="button">
+    <span class="nur-fuer-schirmleser">Gedrückt halten, um die Blüte zu öffnen</span>
+  </button>
+
+  <p class="auftakt-hinweis" id="hinweis">Gedrückt halten</p>
+</section>
+
+
+<main class="garten">
+
+<!-- ---------- 01 ---------- -->
+<section class="beet" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Im Mai</h2>
+  <p class="satz" data-folge>
+    Wir heiraten in einem alten Glashaus, weil dort im Mai alles
+    gleichzeitig blüht und weil es drinnen warm ist, wenn draußen
+    das Wetter macht, was es will. Kommt und bringt Zeit mit.
+  </p>
+
+  <div class="uhr" data-folge aria-label="Countdown">
+    <div class="uhr-teil"><b data-zaehler="tage">–</b><i>Tage</i></div>
+    <div class="uhr-teil"><b data-zaehler="stunden">–</b><i>Stunden</i></div>
+    <div class="uhr-teil"><b data-zaehler="minuten">–</b><i>Minuten</i></div>
+    <div class="uhr-teil"><b data-zaehler="sekunden">–</b><i>Sekunden</i></div>
+  </div>
+  <p class="uhr-vorbei" data-countdown-vorbei hidden>Heute ist der Tag.</p>
+</section>
+
+<!-- ---------- 02 ---------- -->
+<section class="beet beet--dunkel" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Gewachsen</h2>
+  <ol class="ranke">
+    <li data-folge><b>2016</b><h3>Ein Blumenladen</h3>
+      <p>Clara arbeitete dort, Felix kaufte elf Wochen lang jeden
+         Freitag einen Strauß für eine Tante, die es nicht gibt.</p></li>
+    <li data-folge><b>2019</b><h3>Der erste Garten</h3>
+      <p>Vier Quadratmeter Schrebergarten, drei tote Tomatenpflanzen
+         und ein Rosenstock, der bis heute steht.</p></li>
+    <li data-folge><b>2022</b><h3>Das Gewächshaus</h3>
+      <p>Selbst gebaut, zweimal umgestürzt, beim dritten Mal
+         verschraubt. Es steht immer noch.</p></li>
+    <li data-folge><b>2026</b><h3>Zwischen den Pfingstrosen</h3>
+      <p>Gefragt wurde im Knien, aber nur, weil gerade gejätet
+         wurde. Die Antwort kam mit Erde an den Händen.</p></li>
+  </ol>
+</section>
+
+<!-- ---------- 03 ---------- -->
+<section class="beet beet--weit" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Gesehen</h2>
+  <div class="strauss">
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m1.webp?v=202608212157" alt="Vollständig geöffnete cremeweiße Pfingstrose" width="900" height="1205" loading="lazy" decoding="async"></div></figure>
+    <figure data-folge><div class="px-rahmen" data-px="6">
+      <img src="bilder/m2.webp?v=202608212157" alt="Werkbank einer Floristin mit Stielen und Bindegarn" width="900" height="1205" loading="lazy" decoding="async"></div></figure>
+    <figure class="strauss--breit" data-folge><div class="px-rahmen" data-px="4">
+      <img src="bilder/tafel.webp?v=202608212157" alt="Tafel voller Pfingstrosen im Honiglicht" width="1400" height="939" loading="lazy" decoding="async"></div></figure>
+  </div>
+</section>
+
+<!-- ---------- 04 ---------- -->
+<section class="beet" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Der Tag</h2>
+  <ol class="ablauf">
+    <li data-folge><b>14:00</b><span><h3>Ankommen</h3><p>Im Glashaus. Es riecht wie im Juni.</p></span></li>
+    <li data-folge><b>15:00</b><span><h3>Trauung</h3><p>Unter den Palmen, ganz hinten.</p></span></li>
+    <li data-folge><b>16:00</b><span><h3>Kuchen</h3><p>Von Claras Mutter, alle sieben Sorten.</p></span></li>
+    <li data-folge><b>18:30</b><span><h3>Abendessen</h3><p>An einer Tafel mitten zwischen den Beeten.</p></span></li>
+    <li data-folge><b>21:00</b><span><h3>Erster Tanz</h3><p>Barfuß, der Boden ist Ziegel.</p></span></li>
+    <li data-folge><b>00:30</b><span><h3>Suppe</h3><p>Und wer will, geht in den Park.</p></span></li>
+    <li data-folge><b>03:00</b><span><h3>Schluss</h3><p>Das Tor schließt, die Blumen bleiben.</p></span></li>
+  </ol>
+</section>
+
+<!-- ---------- 05 ---------- -->
+<section class="beet beet--dunkel beet--weit" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Glashaus Marienburg</h2>
+  <figure class="ort-bild px-rahmen" data-px="8">
+    <img src="bilder/ort.webp?v=202608212157" alt="Viktorianisches Gewächshaus voller blühender Pflanzen" width="1400" height="939" loading="lazy" decoding="async">
+  </figure>
+  <p class="adresse" data-folge>Am Glashaus 2 · 41363 Jüchen</p>
+  <p class="hand" data-folge>Durch das kleine Tor, nicht durch die Auffahrt</p>
+  <div class="tasten" data-folge>
+    <a class="taste" data-route="google" href="#">Route bei Google</a>
+    <a class="taste" data-route="apple" href="#">Route bei Apple</a>
+    <button class="taste taste--voll" type="button" data-kalender>In den Kalender</button>
+  </div>
+</section>
+
+<!-- ---------- 06 ---------- -->
+<section class="beet" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Anreise</h2>
+  <ul class="liste">
+    <li data-folge><h3>Auto</h3><p>A46 bis Jüchen, dann fünf Minuten. Geparkt wird auf der
+      Wiese am Parkeingang; von dort sind es 300 Meter zu Fuß über Kies.</p></li>
+    <li data-folge><h3>Bahn</h3><p>Bis Grevenbroich, danach zehn Minuten mit dem Taxi.
+      Ab 23 Uhr fahren stündlich Kleinbusse zum Bahnhof zurück.</p></li>
+    <li data-folge><h3>Übernachten</h3><p>Vorgemerkt bis zum 1. März:</p>
+      <ul class="haeuser">
+        <li><b>Gutshof Marienburg</b><i>vor Ort · sieben Zimmer</i></li>
+        <li><b>Hotel Park Jüchen</b><i>4 km · Kontingent „Clara &amp; Felix“</i></li>
+        <li><b>Landgasthaus Bell</b><i>9 km · gutes Frühstück</i></li>
+      </ul></li>
+  </ul>
+</section>
+
+<!-- ---------- 07 ---------- -->
+<section class="beet beet--dunkel" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Kleidung</h2>
+  <p class="satz" data-folge>
+    Sommerlich festlich, gern mit Farbe. Im Glashaus ist es warm und
+    feucht — Leinen ist eine bessere Idee als Wolle. Der Boden ist
+    Ziegel und Kies, denkt an flache Schuhe.
+  </p>
+  <p class="farben" data-folge aria-hidden="true">
+    <i style="--f:#e0a99a"></i><i style="--f:#c98a3c"></i><i style="--f:#38503a"></i><i style="--f:#f2e7d3"></i>
+  </p>
+  <p class="hand" data-folge>Weiß bleibt für einen Tag reserviert</p>
+</section>
+
+<!-- ---------- 08 ---------- -->
+<section class="beet" id="rueckmeldung" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Sagt uns Bescheid</h2>
+  <p class="satz satz--eng" data-folge>Bitte bis zum <b>1. März 2027</b>.</p>
+
+  <form class="formular" data-rueckmeldung novalidate>
+    <label class="feld-block"><span class="feld-name">Dein Name</span>
+      <input type="text" name="name" autocomplete="name" required></label>
+    <label class="feld-block"><span class="feld-name">E-Mail</span>
+      <input type="email" name="email" autocomplete="email" required></label>
+
+    <fieldset class="wahl">
+      <legend class="feld-name">Kommst du?</legend>
+      <label><input type="radio" name="antwort" value="zusage" checked><span>Ja, sehr gern</span></label>
+      <label><input type="radio" name="antwort" value="absage"><span>Leider nicht</span></label>
+    </fieldset>
+
+    <div data-nur-zusage>
+      <label class="feld-block"><span class="feld-name">Was isst du?</span>
+        <select name="essen0" required>
+          <option value="">Bitte wählen</option>
+          <option>Fleisch</option><option>Fisch</option>
+          <option>Vegetarisch</option><option>Vegan</option>
+        </select></label>
+      <div class="begleitung">
+        <p class="feld-name">Begleitung <span class="begleitung-zahl" data-begleitung-zahl></span></p>
+        <div data-begleitung></div>
+        <button class="taste taste--klein" type="button" data-begleitung-mehr>+ Begleitung</button>
+      </div>
+      <label class="feld-block"><span class="feld-name">Allergien</span>
+        <input type="text" name="allergien" placeholder="z. B. Nüsse, Laktose"></label>
+    </div>
+
+    <label class="feld-block"><span class="feld-name">Ein Wort an uns?</span>
+      <textarea name="gruss" rows="3"></textarea></label>
+
+    <button class="taste taste--voll" type="submit">Abschicken</button>
+    <p class="klein">Öffnet eine fertige E-Mail an uns — abschicken müsst ihr sie selbst.</p>
+  </form>
+
+  <div class="danke" data-danke hidden>
+    <h3>Danke, <span data-danke-name></span>.</h3>
+    <p>Die E-Mail sollte offen sein. Falls nicht: <a data-danke-post href="#">hier</a>.</p>
+  </div>
+</section>
+
+<!-- ---------- 09 ---------- -->
+<section class="beet beet--dunkel" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Geschenke</h2>
+  <p class="satz" data-folge>
+    Bringt bitte nichts mit, was in Papier eingewickelt ist. Wenn ihr
+    etwas beitragen wollt: Das Gewächshaus im Garten braucht neue
+    Scheiben, und zwar alle.
+  </p>
+  <button class="taste taste--klein" type="button" data-iban-zeigen>Bankverbindung zeigen</button>
+  <div class="iban" data-iban hidden>
+    <p><b>Clara Wendt &amp; Felix Bergmann</b><br>
+       <span class="iban-nr">DE00 0000 0000 0000 0000 00</span></p>
+    <button class="taste taste--klein" type="button" data-iban-kopieren>IBAN kopieren</button>
+  </div>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="beet" data-auftritt>
+  <p class="blatt-marke" data-folge aria-hidden="true"></p>
+  <h2 class="titel" data-folge>Fragen</h2>
+  <div class="fragen">
+    <details data-frage data-folge><summary>Darf ich jemanden mitbringen?</summary>
+      <div class="frage-antwort"><div><p>Wenn auf eurer Karte eine Begleitung steht: sehr gern,
+        bitte oben eintragen. Sonst wird das Glashaus zu eng.</p></div></div></details>
+    <details data-frage data-folge><summary>Kinder?</summary>
+      <div class="frage-antwort"><div><p>Sehr gern. Es gibt einen Park, eine Betreuung ab 16 Uhr
+        und Beete, in denen ausdrücklich gebuddelt werden darf.</p></div></div></details>
+    <details data-frage data-folge><summary>Ich habe Heuschnupfen.</summary>
+      <div class="frage-antwort"><div><p>Das ist ernst gemeint eine gute Frage. Die Trauung ist
+        drinnen, aber alles blüht. Nehmt eure Tabletten mit.</p></div></div></details>
+    <details data-frage data-folge><summary>Und bei Regen?</summary>
+      <div class="frage-antwort"><div><p>Dann ist es im Glashaus besonders schön. Nur der Weg
+        vom Parkplatz wird matschig — feste Schuhe.</p></div></div></details>
+    <details data-frage data-folge><summary>Ich schaffe es nicht.</summary>
+      <div class="frage-antwort"><div><p>Sagt früh Bescheid, dann ist alles gut. Wir schicken
+        euch Blumen.</p></div></div></details>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="fuss">
+  <p class="blatt-marke blatt-marke--gross" aria-hidden="true"></p>
+  <p class="fuss-namen">Clara <i>und</i> Felix</p>
+  <p class="fuss-datum">8. Mai 2027 · Glashaus Marienburg</p>
+  <p class="fuss-klein">Clara und Felix, Termin, Ort und Bankverbindung sind frei erfunden.</p>
+</footer>
+
+<script src="../gemeinsam/kern.js?v=202608212157"></script>
+<script src="js/bluete.js?v=202608212157"></script>
+</body>
+</html>

@@ -29,6 +29,119 @@
   const sanft = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* =========================================================
+     0. Sprache
+     Deutsch steht im HTML und wird von dort einmal eingesammelt -
+     so ist es nur an einer Stelle gepflegt. In dieser Tabelle
+     steht ausschliesslich, was uebersetzt wird.
+     ========================================================= */
+  const SPRACHEN = {
+    de: { htmlLang: 'de', name: 'Deutsch', t: null },   // wird aus dem HTML gefuellt
+    tr: {
+      htmlLang: 'tr', name: 'Türkçe',
+      t: {
+        'umschlag.hinweis': 'Mühüre dokunun',
+        'herz.text': 'Büyük günümüzü<br>kutluyoruz',
+        'herz.wink': 'Kalbi kazıyın',
+        'kalender.knopf': 'Takvime ekle',
+        'hero.mehr': 'Devamı',
+
+        'anfang.kicker': 'Başlangıç',
+        'anfang.titel': 'Evet dedik',
+        'anfang.text': 'Sekiz yıl, iki taşınma ve bir köpekten sonra, bunu sizinle '
+                     + 'kutlamanın zamanı geldi. Tarih belli — gerisini zamanı gelince '
+                     + 'size ileteceğiz.',
+        'anrede.gruss': 'Dilara ve Furkan',
+
+        'cd.kicker': 'Geri sayım',
+        'cd.tage': 'Gün', 'cd.stunden': 'Saat', 'cd.minuten': 'Dakika', 'cd.sekunden': 'Saniye',
+        'cd.fuss': '1 Ocak 2027 tarihine', 'cd.heute': 'Bugün o gün!',
+
+        'termin.kicker': 'Tarih',
+        'datum.lang': '1 Ocak 2027', 'datum.zeit': 'Cuma · saat 14:30\'dan itibaren',
+
+        'ort.kicker': 'Nerede kutluyoruz',
+        'weg.google': 'Google Haritalar ile yol tarifi',
+        'weg.apple': 'Apple Haritalar ile yol tarifi',
+        'weg.kopieren': 'Adresi kopyala', 'weg.kopiert': 'Kopyalandı', 'weg.hand': 'Elle kopyalayın',
+
+        'anreise.titel': 'Ulaşım',
+        'anreise.auto': 'Arabayla',
+        'anreise.autoText': 'A59 otoyolundan Düsseldorf-Benrath çıkışı, ardından saraya giden '
+                          + 'tabelaları izleyin. Otoyoldan yaklaşık beş dakika.',
+        'anreise.bahn': 'Trenle',
+        'anreise.bahnText': 'S6 ile Düsseldorf-Benrath durağına. Oradan saray parkı içinden '
+                          + 'sekiz dakika yürüyüş — yol tabelalıdır.',
+        'anreise.parken': 'Otopark',
+        'anreise.parkenText': 'Park girişinin hemen yanındaki güney ziyaretçi otoparkı '
+                            + 'ücretsizdir. Yer boldur.',
+        'anreise.taxi': 'Taksiyle',
+        'anreise.taxiText': 'Sadece „Schloss Benrath, Haupteingang" demeniz yeterli. '
+                          + 'Şehir merkezinden yaklaşık 20 dakika.',
+
+        'wissen.titel': 'Bilmekte fayda var',
+        'wissen.wochenende': 'Hafta sonunu boş tutun',
+        'wissen.wochenendeText': 'Cuma öğleden sonra başlıyoruz, gece geç saatlere kadar '
+                               + 'devam ediyoruz. İsteyen cumartesi kahvaltıya da kalabilir.',
+        'wissen.einladung': 'Davetiye sonra geliyor',
+        'wissen.einladungText': '2026 baharında bütün ayrıntıları alacaksınız: günün akışı, '
+                              + 'kıyafet, ulaşım ve katılım bildirimi.',
+        'wissen.hotel': 'Konaklama',
+        'wissen.hotelText': 'Saray parkının çevresinde yeterince oda var. Tanıdığımız birkaç '
+                          + 'yeri davetiyeyle birlikte size ileteceğiz.',
+
+        'merken.kicker': 'Unutulmasın diye',
+        'merken.titel': 'Günü takviminize ekleyin',
+
+        'fuss.gruss': 'Görüşmek üzere', 'fuss.datum': '1 OCAK · 2027',
+        'fuss.fragen': 'Sorularınız için',
+      },
+    },
+  };
+  const SPRACHFOLGE = ['de', 'tr'];
+
+  /* Reihenfolge: ausdrueckliche Wahl > Adresszeile > Browser > Standard */
+  function spracheErmitteln() {
+    const ausUrl = new URLSearchParams(location.search).get('lang');
+    if (SPRACHFOLGE.includes(ausUrl)) return ausUrl;
+    try {
+      const gemerkt = localStorage.getItem('stil-sprache');
+      if (SPRACHFOLGE.includes(gemerkt)) return gemerkt;
+    } catch { /* privater Modus */ }
+    const browser = (navigator.language || '').slice(0, 2).toLowerCase();
+    if (SPRACHFOLGE.includes(browser)) return browser;
+    return 'de';
+  }
+
+  SPRACHEN.de.t = {};
+  for (const n of document.querySelectorAll('[data-t]')) SPRACHEN.de.t[n.dataset.t] = n.innerHTML;
+  Object.assign(SPRACHEN.de.t, {
+    'cd.heute': 'Heute ist es so weit.',
+    'weg.kopiert': 'Kopiert', 'weg.hand': 'Bitte von Hand',
+  });
+
+  let sprache = spracheErmitteln();
+  const T = schluessel => (SPRACHEN[sprache].t[schluessel] ?? SPRACHEN.de.t[schluessel] ?? '');
+
+  function spracheAnwenden() {
+    document.documentElement.lang = SPRACHEN[sprache].htmlLang;
+    for (const n of document.querySelectorAll('[data-t]')) {
+      const wert = T(n.dataset.t);
+      if (typeof wert === 'string') n.innerHTML = wert;
+    }
+    for (const f of document.querySelectorAll('.flagge')) {
+      f.classList.toggle('aktiv', f.dataset.lang === sprache);
+      f.title = SPRACHEN[f.dataset.lang].name;
+    }
+  }
+
+  $('sprachwahl').addEventListener('click', () => {
+    sprache = SPRACHFOLGE.find(x => x !== sprache) || 'de';
+    try { localStorage.setItem('stil-sprache', sprache); } catch { /* egal */ }
+    spracheAnwenden();
+  });
+  spracheAnwenden();
+
+  /* =========================================================
      1. Umschlag
      ========================================================= */
   const umschlag = $('umschlag');
@@ -374,7 +487,7 @@
     const rest = ziel - Date.now();
     if (rest <= 0) {
       $('zaehler').hidden = true;
-      $('cd-fuss').textContent = 'Heute ist es so weit.';
+      $('cd-fuss').textContent = T('cd.heute');
       return false;
     }
     const t = Math.floor(rest / 1000);
@@ -422,8 +535,8 @@
       try { gut = document.execCommand('copy'); } catch { gut = false; }
       t.remove();
     }
-    kopierText.textContent = gut ? 'Kopiert' : 'Bitte von Hand';
-    setTimeout(() => { kopierText.textContent = 'Adresse kopieren'; }, 2400);
+    kopierText.textContent = T(gut ? 'weg.kopiert' : 'weg.hand');
+    setTimeout(() => { kopierText.textContent = T('weg.kopieren'); }, 2400);
   });
 
   /* =========================================================

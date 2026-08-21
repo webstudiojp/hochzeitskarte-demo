@@ -1,0 +1,134 @@
+/* =========================================================
+   KERN — Bauteile, kein Aussehen
+
+   Hier steht nur, was auf allen neun Karten technisch gleich
+   funktionieren muss: Grundeinstellungen, Bedienbarkeit, der
+   Vertrag fuer Parallaxe und Fortschritt, das Aufklappen der
+   Fragen.
+
+   Bewusst nicht hier: Farben, Schriften, Abstaende, Raender,
+   Auftritte. Jede Karte bringt ihr eigenes Aussehen mit. Eine
+   gemeinsame Optik waere bequem und wuerde neun Entwuerfe zu
+   einem mit neun Anstrichen machen.
+   ========================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  /* Ein Prozentwert wuerde beim Ein- und Ausblenden der
+     Adressleiste springen; svh misst die kleinere Fassung
+     und bleibt deshalb stehen. */
+  min-height: 100svh;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; }
+input, select, textarea, button { font: inherit; color: inherit; }
+textarea { resize: vertical; }
+
+/* Der Fokusring wird nie entfernt, nur uebermalt. Wer mit der
+   Tastatur geht, muss sehen koennen, wo er steht. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+.nur-fuer-schirmleser {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+
+/* =========================================================
+   FORTSCHRITT
+   Wo der Browser es kann, haengt die Linie ohne Skript am
+   Bildlauf - dann trifft sie den Daumen genau. Sonst rechnet
+   der Kern denselben Wert im rAF-Takt.
+   ========================================================= */
+[data-fortschritt] {
+  transform-origin: 0 50%;
+  transform: scaleX(var(--fort, 0));
+  will-change: transform;
+}
+@supports (animation-timeline: scroll()) {
+  [data-fortschritt][data-selbst] {
+    animation: kern-fortschritt linear both;
+    animation-timeline: scroll();
+  }
+}
+@keyframes kern-fortschritt { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* =========================================================
+   PARALLAXE
+   Das Bild ist oben und unten um genau den Weg groesser als
+   sein Rahmen, den es faehrt. Beide Werte kommen aus derselben
+   Zahl - sonst faehrt das Bild weiter, als seine Reserve
+   reicht, und am Rand klafft eine Luecke.
+   ========================================================= */
+.px-rahmen { position: relative; overflow: hidden; }
+.px-rahmen > img,
+.px-rahmen > picture > img {
+  position: absolute;
+  /* max-width aus der Grundeinstellung wuerde die Ueberbreite
+     wieder auf 100% kappen - und dann faehrt das Bild weiter,
+     als seine Reserve reicht. */
+  max-width: none;
+  left: 0; width: 100%;
+  top: calc(-1 * var(--px-weg, 0%));
+  height: calc(100% + 2 * var(--px-weg, 0%));
+  object-fit: cover;
+  /* Bewusst zweidimensional. Der Weg wird ohnehin im rAF-Takt
+     gesetzt, ein Compositor-Hinweis bringt hier nichts - er
+     zwingt nur eine eigene Ebene je Bild, und die haengt dann
+     unter einem gedrehten, beschnittenen Elternteil. */
+  transform: translateY(calc(var(--px, 0) * var(--px-weg, 0%)));
+}
+
+/* =========================================================
+   FRAGEN
+   Auf 'height: auto' laesst sich kein Uebergang legen, auf
+   eine Rasterzeile schon.
+   ========================================================= */
+[data-frage] > summary { list-style: none; cursor: pointer; }
+[data-frage] > summary::-webkit-details-marker { display: none; }
+[data-frage] .frage-antwort {
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+}
+[data-frage] .frage-antwort > * { min-height: 0; }
+
+/* =========================================================
+   FORMULAR
+   Nur die Struktur. Wie ein Feld aussieht, entscheidet die
+   einzelne Karte - auf Papier gibt es keine Eingabefelder,
+   und manche dieser neun Karten wollen genau das zeigen.
+   ========================================================= */
+.feld { display: block; }
+.feld input, .feld select, .feld textarea { width: 100%; }
+.begleitung-zeile { display: grid; gap: .6rem; }
+[data-danke][hidden], [hidden] { display: none !important; }
