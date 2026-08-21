@@ -157,7 +157,15 @@
     if (!Object.values(felder).some(l => l.length) || !DATEN.beginnISO) return;
     const ziel = new Date(DATEN.beginnISO).getTime();
     const vorbei = $('[data-countdown-vorbei]');
-    const setz = (liste, wert) => liste.forEach(el => { if (el.textContent !== wert) el.textContent = wert; });
+    const setz = (liste, wert) => liste.forEach(el => {
+      if (el.textContent === wert) return;
+      el.textContent = wert;
+      // Neustart erzwingen: ohne das laeuft der Ablauf beim
+      // zweiten Wechsel derselben Ziffer nicht noch einmal.
+      el.classList.remove('rollt');
+      void el.offsetWidth;
+      if (!sanft) el.classList.add('rollt');
+    });
     (function tick() {
       const rest = ziel - Date.now();
       if (rest <= 0) {
@@ -374,7 +382,86 @@
     } };
   })();
 
+  /* =========================================================
+     8. WAS UEBER DER SZENE TREIBT
+     Blueten, Funken oder Dunst - je nach Karte. Erzeugt statt
+     gezeichnet, weil jedes Stueck seinen eigenen Weg, sein
+     eigenes Tempo und seinen eigenen Einsatz braucht. Im
+     Gleichschritt sieht man ihnen sofort an, dass sie gerechnet
+     sind.
+     ========================================================= */
+  function flug() {
+    const art = DATEN.flug;
+    if (!art || sanft) return;
+    const buehne = $('.auftakt');
+    if (!buehne) return;
+
+    // Auf schmalen Schirmen weniger Stuecke: jedes ist eine
+    // eigene Ebene, und davon vertraegt ein Telefon nicht beliebig
+    // viele.
+    const eng = innerWidth < 600;
+    const ZAHL = { blatt: eng ? 14 : 22, korn: eng ? 16 : 26, dunst: eng ? 5 : 8 }[art.form] || 14;
+
+    const feld = document.createElement('div');
+    feld.className = 'flug';
+    feld.setAttribute('aria-hidden', 'true');
+
+    let s = '';
+    for (let i = 0; i < ZAHL; i++) {
+      const t = art.toene[(Math.random() * art.toene.length) | 0];
+      s += '<i class="' + art.form + '" style="' +
+           'left:' + (Math.random() * 104 - 2).toFixed(1) + '%;' +
+           '--gross:' + (art.gross[0] + Math.random() * (art.gross[1] - art.gross[0])).toFixed(1) + 'px;' +
+           '--ton:' + t + ';' +
+           '--wehen:' + ((Math.random() - .5) * art.wehen).toFixed(0) + 'px;' +
+           '--klar:' + (art.klar[0] + Math.random() * (art.klar[1] - art.klar[0])).toFixed(2) + ';' +
+           '--dauer:' + (art.dauer[0] + Math.random() * (art.dauer[1] - art.dauer[0])).toFixed(1) + 's;' +
+           // Negativer Einsatz: die Stuecke sind schon unterwegs,
+           // wenn die Seite aufgeht, statt gemeinsam loszufliegen.
+           '--start:-' + (Math.random() * art.dauer[1]).toFixed(1) + 's"></i>';
+    }
+    feld.innerHTML = s;
+    buehne.appendChild(feld);
+
+    if (!('IntersectionObserver' in window)) return;
+    new IntersectionObserver(e => {
+      const drin = e[0].isIntersecting;
+      feld.toggleAttribute('data-ruht', !drin);
+      buehne.toggleAttribute('data-ruht', !drin);
+      // Das Video ebenfalls: ein unsichtbarer Film ist reine
+      // Rechenzeit.
+      const film = $('.auftakt-szene video');
+      if (film) drin ? film.play().catch(() => {}) : film.pause();
+    }, { threshold: 0.02 }).observe(buehne);
+  }
+
+  /* =========================================================
+     9. DER AUFTAKT ZIEHT NACH
+     Die Szene wandert beim Scrollen langsamer als die Seite.
+     --weg ist der Anteil, um den der Auftakt schon oben heraus
+     ist; Bild, Schrift und Massstab haengen alle daran.
+     ========================================================= */
+  function nachziehen() {
+    const buehne = $('.auftakt');
+    if (!buehne || sanft) return;
+    let wartet = false;
+    const rechnen = () => {
+      wartet = false;
+      const h = buehne.offsetHeight || innerHeight;
+      buehne.style.setProperty('--weg', Math.min(1, Math.max(0, scrollY / h)).toFixed(4));
+    };
+    addEventListener('scroll', () => {
+      if (wartet) return;
+      wartet = true;
+      requestAnimationFrame(rechnen);
+    }, { passive: true });
+    addEventListener('resize', rechnen, { passive: true });
+    rechnen();
+  }
+
   umschlag();
+  flug();
+  nachziehen();
   auftritt();
   countdown();
   kalenderUndWeg();

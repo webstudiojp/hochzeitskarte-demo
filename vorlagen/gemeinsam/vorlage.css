@@ -70,6 +70,44 @@ button{cursor:pointer;background:none;border:0}
 @keyframes auftritt{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 .auftritt{animation:auftritt .8s ease-out both}
 
+/* Der laengere Auftritt: nicht nur Deckung und Weg, sondern auch
+   Schaerfe. Etwas, das aus der Unschaerfe kommt, wirkt, als haette
+   es sich gesammelt - deshalb tragen ihn die Ueberschriften und
+   die Namen, waehrend Kleinkram beim einfachen Auftritt bleibt. */
+@keyframes sammeln{
+  from{opacity:0;transform:translateY(30px);filter:blur(8px)}
+  to{opacity:1;transform:none;filter:blur(0)}
+}
+/* Eine Linie waechst aus ihrer Mitte, sie blendet nicht ein. */
+@keyframes strecken{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
+/* Der Stern dreht sich herein und schiesst dabei kurz ueber sein
+   Ziel hinaus - das ist der Unterschied zwischen erscheinen und
+   gesetzt werden. */
+@keyframes sternchen{from{opacity:0;transform:scale(0) rotate(-180deg)}to{opacity:1;transform:none}}
+/* Der Schimmer laeuft ueber die Schrift, nicht darunter: das
+   Verlaufsbild wird auf die Buchstaben beschnitten. */
+@keyframes schimmern{0%,100%{background-position:200% 50%}50%{background-position:0% 50%}}
+/* Blueten fallen nie senkrecht. --wehen gibt jedem Blatt eine
+   eigene Abdrift, sonst regnet es im Gleichschritt. */
+@keyframes fallen{
+  0%{transform:translateY(-8vh) translateX(0) rotate(0);opacity:0}
+  8%{opacity:var(--klar,.8)}
+  92%{opacity:var(--klar,.8)}
+  100%{transform:translateY(108vh) translateX(var(--wehen,30px)) rotate(540deg);opacity:0}
+}
+/* Ziehen statt fallen: fuer Wolken, Funken und Staub. */
+@keyframes treiben{
+  0%{transform:translate3d(0,0,0) scale(1);opacity:0}
+  12%{opacity:var(--klar,.5)}
+  88%{opacity:var(--klar,.5)}
+  100%{transform:translate3d(var(--wehen,40px),-60vh,0) scale(1.3);opacity:0}
+}
+/* Die Szene selbst atmet ganz langsam. Das ist der Trick gegen
+   die Naht: eine Schleife von fuenf Sekunden faellt auf, wenn
+   sonst nichts passiert - unter einer zwanzig Sekunden langen
+   Bewegung verschwindet sie. */
+@keyframes atmen{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
@@ -201,6 +239,74 @@ html[data-zu],html[data-zu] body{overflow:hidden}
 .auftakt-schleier{position:absolute;inset:0;background:var(--auftakt-schleier,rgba(250,246,236,.2))}
 
 .auftakt-satz{position:relative;z-index:10;text-align:center;padding:0 24px;margin-bottom:12vh}
+
+/* Der Auftakt kommt in fuenf Schritten, nicht in einem. Die
+   Reihenfolge ist die Aussage: erst die Ankuendigung, dann die
+   Namen, dann der Schmuck, zuletzt der Termin. Wer alles
+   gleichzeitig einblendet, sagt nichts zuerst. */
+.auftakt .auftakt-ueber{animation:auftritt .9s ease-out .15s both}
+.auftakt .auftakt-namen{animation:sammeln 1.2s cubic-bezier(.25,.46,.45,.94) .35s both}
+.auftakt .auftakt-teiler i{
+  transform-origin:center;
+  animation:strecken .8s cubic-bezier(.25,.46,.45,.94) .95s both;
+}
+.auftakt .auftakt-teiler b{animation:sternchen .6s cubic-bezier(.34,1.56,.64,1) 1.05s both}
+.auftakt .auftakt-datum{animation:auftritt .9s ease-out 1.25s both}
+.auftakt-unten{animation:auftritt 1s ease-out 1.7s both}
+
+/* Der Schimmer laeuft nur dort, wo die Namen aus Gold sind.
+   Auf dunkler Schrift waere er ein Fehler im Bild. */
+.auftakt-namen--schimmer{
+  background:linear-gradient(100deg,
+    var(--auftakt-namen,#fff) 20%,
+    var(--auftakt-glanz,rgba(255,255,255,.95)) 42%,
+    var(--auftakt-namen,#fff) 62%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:sammeln 1.2s cubic-bezier(.25,.46,.45,.94) .35s both,
+            schimmern 5s ease-in-out 1.8s infinite;
+}
+
+/* Die Szene atmet und zieht beim Scrollen nach. --weg kommt aus
+   dem Skript und ist der Anteil, um den der Auftakt schon
+   hinausgescrollt ist. */
+.auftakt-szene video,.auftakt-szene img{
+  animation:atmen 22s ease-in-out infinite;
+}
+.auftakt-szene{
+  transform:translateY(calc(var(--weg,0) * 14vh)) scale(calc(1 + var(--weg,0) * .06));
+  will-change:transform;
+}
+.auftakt-satz,.auftakt-unten{
+  opacity:calc(1 - var(--weg,0) * 1.5);
+}
+
+/* Was ueber der Szene treibt: Blueten, Funken, Wolken. Erzeugt
+   vom Skript, weil Zahl und Streuung vom Schirm abhaengen. */
+.flug{position:absolute;inset:0;z-index:5;overflow:hidden;pointer-events:none}
+.flug i{position:absolute;display:block;will-change:transform}
+/* Ausserhalb des Bildes wird nicht gerechnet. Zwei Dutzend
+   laufende Ablaeufe kosten auf einem Telefon spuerbar Strom,
+   und zu sehen sind sie dann ohnehin nicht. */
+.flug[data-ruht] i,.auftakt[data-ruht] .auftakt-szene video{animation-play-state:paused}
+.flug i.blatt{
+  width:var(--gross,11px);height:calc(var(--gross,11px) * .74);
+  background:var(--ton,#f6cad6);
+  border-radius:60% 20% 60% 20%/70% 30% 70% 30%;
+  animation:fallen var(--dauer,11s) linear var(--start,0s) infinite;
+}
+.flug i.korn{
+  width:var(--gross,4px);height:var(--gross,4px);border-radius:50%;
+  background:var(--ton,#ffe9b8);
+  box-shadow:0 0 calc(var(--gross,4px) * 2) calc(var(--gross,4px) * .5) var(--ton,#ffe9b8);
+  animation:treiben var(--dauer,14s) linear var(--start,0s) infinite;
+}
+.flug i.dunst{
+  width:var(--gross,120px);height:calc(var(--gross,120px) * .5);border-radius:50%;
+  background:radial-gradient(closest-side,var(--ton,rgba(255,255,255,.5)),transparent 75%);
+  animation:treiben var(--dauer,26s) linear var(--start,0s) infinite;
+}
 .auftakt-ueber{
   font-family:var(--schrift-sans);font-size:12px;font-weight:400;
   letter-spacing:.3em;text-transform:uppercase;
@@ -271,6 +377,12 @@ html[data-zu],html[data-zu] body{overflow:hidden}
 .huelle--weit{max-width:1024px}
 
 .kopf{text-align:center;margin-bottom:64px}
+.kopf.auftritt h2{animation:sammeln 1.2s cubic-bezier(.25,.46,.45,.94) .1s both}
+.kopf.auftritt .kopf-ueber{animation:auftritt .9s ease-out both}
+.kopf.auftritt .zierlinie i{transform-origin:center;
+  animation:strecken .8s cubic-bezier(.25,.46,.45,.94) .55s both}
+.kopf.auftritt .zierlinie svg{animation:sternchen .6s cubic-bezier(.34,1.56,.64,1) .65s both}
+.kopf.auftritt .kopf-unter{animation:auftritt .9s ease-out .8s both}
 /* Die Zeile ueber der Ueberschrift steht in den Vorbildern in
    der Schreibschrift, nicht in Versalien - das ist der Grund,
    warum die Seiten weich wirken und nicht wie ein Prospekt. */
@@ -335,6 +447,10 @@ html[data-zu],html[data-zu] body{overflow:hidden}
   display:block;font-family:var(--schrift-script);font-weight:400;
   font-size:44px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;
 }
+/* Eine Ziffer, die sich lautlos austauscht, sieht man nicht
+   wechseln. Ein kurzer Sprung macht aus der Zahl eine Uhr. */
+.uhr-teil b.rollt{animation:ziffer .5s cubic-bezier(.34,1.4,.64,1)}
+@keyframes ziffer{from{opacity:.15;transform:translateY(-.14em) scale(.9)}to{opacity:1;transform:none}}
 .abschnitt--oliv .uhr-teil b{color:var(--gold)}
 .uhr-teil i{
   display:block;margin-top:10px;font-style:normal;font-family:var(--schrift-sans);

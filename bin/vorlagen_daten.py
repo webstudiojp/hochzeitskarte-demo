@@ -33,6 +33,7 @@ THEMEN = []
 
 # ---------------------------------------------------------------- 1
 t = grund('heritage'); t.update(
+    flug=dict(form='korn', toene=['#fff0cf','#ffe2b0','#fffaf0'], gross=(2.5,6), wehen=120, klar=(.25,.6), dauer=(16,30)),
     umschlag_farben=dict(grund='#8a9a80', ring='rgba(255,247,235,.7)', schrift='#fff', blitz='rgba(255,238,214,.95)'),
     auftakt=dict(namen='#3d4c2f', schrift='#3d4c2f', linie='#3d4c2f', ruf='#6b5b4a', stern='#e0a94b', schleier='rgba(250,246,233,.16)'),
     namen='Amelie & David', vornamen=('Amelie', 'David'),
@@ -79,6 +80,7 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 2
 t = grund('rosenbrunnen'); t.update(
+    flug=dict(form='blatt', toene=['#f8cfd9','#f4b9c9','#fde7ee','#efa9bd'], gross=(9,17), wehen=170, klar=(.55,.95), dauer=(9,17)),
     umschlag_farben=dict(grund='#e8c6cf', ring='rgba(90,50,60,.5)', schrift='#5a323c', blitz='rgba(255,235,240,.95)', schatten='0 1px 12px rgba(255,255,255,.85)'),
     auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#ffd9e4'),
     namen='Rosa & Nikolas', vornamen=('Rosa', 'Nikolas'),
@@ -125,8 +127,10 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 3
 t = grund('goldstunde'); t.update(
+    flug=dict(form='korn', toene=['#f0d79a','#e8c47a','#fff3d6'], gross=(2.5,6), wehen=110, klar=(.3,.7), dauer=(15,28)),
+    schimmer=True,
     umschlag_farben=dict(grund='#e8dcc2', ring='rgba(120,90,40,.55)', schrift='#6b5228', blitz='rgba(255,240,205,.95)', schatten='0 1px 12px rgba(255,255,255,.85)'),
-    auftakt=dict(namen='#96702f', schrift='#96702f', linie='#b8944e', ruf='#8a7355', stern='#c9922f', schleier='rgba(242,234,216,.12)'),
+    auftakt=dict(namen='#96702f', schrift='#96702f', linie='#b8944e', ruf='#8a7355', stern='#c9922f', schleier='rgba(242,234,216,.12)', glanz='#fff6dd'),
     namen='Charlotte & Anton', vornamen=('Charlotte', 'Anton'),
     datum_text='25. September 2027', datum_lang='25. September 2027 · Schloss Eichenau',
     beschreibung='Einladung zur Hochzeit von Charlotte und Anton am 25. September 2027 auf Schloss Eichenau.',
@@ -171,6 +175,7 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 4
 t = grund('mitternacht'); t.update(
+    flug=dict(form='korn', toene=['#e8e3d6','#cfcabb'], gross=(2,4.5), wehen=90, klar=(.14,.34), dauer=(20,36)),
     umschlag_farben=dict(grund='#1c1c1a', ring='rgba(240,235,225,.5)', schrift='#f0ebe1', blitz='rgba(245,240,228,.9)'),
     auftakt=dict(namen='#2f2f2d', schrift='#3f3f3c', linie='#6b6b66', ruf='#6b6b66', stern='#8a8a80', schleier='rgba(247,245,240,.1)'),
     namen='Alexandra & Jonathan', vornamen=('Alexandra', 'Jonathan'),
@@ -217,6 +222,7 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 5
 t = grund('azur'); t.update(
+    flug=dict(form='blatt', toene=['#ffffff','#f6f1e4','#eae3d2'], gross=(7,13), wehen=140, klar=(.4,.8), dauer=(11,20)),
     umschlag_farben=dict(grund='#e6ded0', ring='rgba(30,60,100,.5)', schrift='#20406b', blitz='rgba(235,244,255,.95)', schatten='0 1px 12px rgba(255,255,255,.85)'),
     auftakt=dict(namen='#20406b', schrift='#20406b', linie='#20406b', ruf='#4a5f78', stern='#c9a24a', schleier='rgba(250,248,242,.1)'),
     namen='Lina & Matteo', vornamen=('Lina', 'Matteo'),
@@ -263,6 +269,7 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 6
 t = grund('zuckerguss'); t.update(
+    flug=dict(form='korn', toene=['#ffffff','#f8dde3','#f2d7b8'], gross=(2.5,6), wehen=130, klar=(.3,.7), dauer=(13,24)),
     umschlag_farben=dict(grund='#f2e4dc', ring='rgba(150,60,75,.5)', schrift='#8a4050', blitz='rgba(255,238,238,.95)', schatten='0 1px 12px rgba(255,255,255,.85)'),
     auftakt=dict(namen='#4a3a33', schrift='#6b5a50', linie='#8a7268', ruf='#8a7268', stern='#cf7f8e', schleier='rgba(251,248,244,.14)'),
     namen='Emma & Ben', vornamen=('Emma', 'Ben'),
@@ -309,8 +316,10 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 7
 t = grund('fernweh'); t.update(
+    flug=dict(form='dunst', toene=['rgba(255,232,200,.45)','rgba(255,215,190,.4)','rgba(240,225,255,.35)'], gross=(90,220), wehen=200, klar=(.3,.6), dauer=(26,46)),
+    schimmer=True,
     umschlag_farben=dict(grund='#d8c8a8', ring='rgba(90,70,35,.55)', schrift='#5a4a28', blitz='rgba(255,242,210,.95)', schatten='0 1px 12px rgba(255,255,255,.85)'),
-    auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#f2d489', und='#f2d489'),
+    auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#f2d489', und='#f2d489', glanz='#fff0c6'),
     namen='Nora & Julius', vornamen=('Nora', 'Julius'),
     datum_text='4. September 2027', datum_lang='4. September 2027 · Alte Werft, Hamburg',
     beschreibung='Einladung zur Hochzeit von Nora und Julius am 4. September 2027 in der Alten Werft, Hamburg.',
@@ -355,8 +364,10 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 8
 t = grund('bluete'); t.update(
+    flug=dict(form='blatt', toene=['#e6c9f0','#f2d489','#cbb0e8','#ffffff'], gross=(7,14), wehen=150, klar=(.4,.85), dauer=(10,19)),
+    schimmer=True,
     umschlag_farben=dict(grund='#4a3a6b', ring='rgba(245,225,160,.65)', schrift='#f2e8d8', blitz='rgba(255,240,200,.95)'),
-    auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#f2d489', und='#f2d489'),
+    auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#f2d489', und='#f2d489', glanz='#fff4c8'),
     namen='Clara & Felix', vornamen=('Clara', 'Felix'),
     datum_text='8. Mai 2027', datum_lang='8. Mai 2027 · Glashaus Marienburg',
     beschreibung='Einladung zur Hochzeit von Clara und Felix am 8. Mai 2027 im Glashaus Marienburg.',
@@ -401,8 +412,10 @@ THEMEN.append(t)
 
 # ---------------------------------------------------------------- 9
 t = grund('rein'); t.update(
+    flug=dict(form='dunst', toene=['rgba(255,255,255,.5)','rgba(240,235,255,.4)'], gross=(110,250), wehen=180, klar=(.25,.5), dauer=(30,52)),
+    schimmer=True,
     umschlag_farben=dict(grund='#f2f0ea', ring='rgba(120,110,80,.45)', schrift='#5f5a4a', blitz='rgba(255,252,240,.95)', schatten='0 1px 12px rgba(255,255,255,.85)'),
-    auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#f2d489', und='#f2d489'),
+    auftakt=dict(namen='#ffffff', schrift='#ffffff', linie='rgba(255,255,255,.75)', ruf='rgba(255,255,255,.9)', schatten='0 2px 18px rgba(20,20,30,.55)', schleier='rgba(20,20,30,.18)', stern='#f2d489', und='#f2d489', glanz='#fffbe8'),
     namen='Sophie & Elias', vornamen=('Sophie', 'Elias'),
     datum_text='20. März 2027', datum_lang='20. März 2027 · Kapelle am Hang, Königswinter',
     beschreibung='Einladung zur Hochzeit von Sophie und Elias am 20. März 2027 in der Kapelle am Hang.',

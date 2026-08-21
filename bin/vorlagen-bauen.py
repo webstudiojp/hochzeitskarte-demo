@@ -200,6 +200,17 @@ PFEIL_SVG = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
              'stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')
 
 
+def flug_json(f):
+    """Die Flugstuecke als JSON. Ohne Angabe treibt nichts."""
+    if not f:
+        return 'null'
+    return ('{"form":"%s","toene":[%s],"gross":[%s,%s],"wehen":%s,'
+            '"klar":[%s,%s],"dauer":[%s,%s]}'
+            % (f['form'], ','.join('"%s"' % x for x in f['toene']),
+               f['gross'][0], f['gross'][1], f['wehen'],
+               f['klar'][0], f['klar'][1], f['dauer'][0], f['dauer'][1]))
+
+
 def seite(t):
     alle = dict(t['farben'])
     # Die Auftakt-Farben haengen an der Szene, nicht an der Palette:
@@ -322,7 +333,8 @@ def seite(t):
         szene=e(t['szene']), poster=e(t['poster']),
         ueberschrift=e(t.get('ueberschrift', 'Wir heiraten')),
         v1=e(v1), v2=e(v2), marke=e(t.get('marke', '')),
-        gestapelt=(' auftakt-namen--gestapelt' if len(v1) + len(v2) > 15 else ''),
+        gestapelt=(' auftakt-namen--gestapelt' if len(v1) + len(v2) > 15 else '')
+                   + (' auftakt-namen--schimmer' if t.get('schimmer') else ''),
         countdown=abschnitt_countdown(t), geschichte=abschnitt_geschichte(t),
         band=abschnitt_band(t), programm=abschnitt_programm(t), ort=abschnitt_ort(t),
         kleider=abschnitt_kleider(t), rsvp=abschnitt_rsvp(t),
@@ -330,12 +342,13 @@ def seite(t):
         fragen=abschnitt_fragen(t),
         karte=('{"kennung":"%s","namen":"%s","beginnISO":"%s","endeISO":"%s","ort":"%s",'
                '"anlass":"%s","kalendertext":"%s","email":"%s","iban":"%s","musik":%s,'
-               '"speisen":[%s],"begleiterMax":6}'
+               '"speisen":[%s],"begleiterMax":6,"flug":%s}'
                % (t['kennung'], t['namen'], t['beginnISO'], t['endeISO'],
                   t['ort']['name'] + ', ' + t['ort']['strasse'] + ', ' + t['ort']['stadt'],
                   t['anlass'], t['kalendertext'], t['email'], t['iban'],
                   ('"%s"' % t['musik']) if t.get('musik') else 'null',
-                  ','.join('"%s"' % s for s in t['speisen']))),
+                  ','.join('"%s"' % s for s in t['speisen']),
+                  flug_json(t.get('flug')))),
     )
 
 
