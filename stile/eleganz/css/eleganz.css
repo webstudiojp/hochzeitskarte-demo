@@ -1,0 +1,868 @@
+/* =========================================================
+   STIL "ELEGANZ" — Praegedruck, Satinschleife, Papier
+   Eigenstaendige Demo. Teilt sich mit der Hauptkarte nur
+   die lokalen Schriften, sonst nichts.
+   ========================================================= */
+
+@font-face{font-family:'Great Vibes';src:url('../../../assets/fonts/GreatVibes-latin.woff2') format('woff2');
+  font-weight:400;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Great Vibes';src:url('../../../assets/fonts/GreatVibes-latinext.woff2') format('woff2');
+  font-weight:400;font-display:swap;
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Cormorant';src:url('../../../assets/fonts/Cormorant-latin.woff2') format('woff2');
+  font-weight:300 500;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Cormorant';src:url('../../../assets/fonts/Cormorant-latinext.woff2') format('woff2');
+  font-weight:300 500;font-display:swap;
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Manrope';src:url('../../../assets/fonts/Manrope-latin.woff2') format('woff2');
+  font-weight:200 800;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';src:url('../../../assets/fonts/Manrope-latinext.woff2') format('woff2');
+  font-weight:200 800;font-display:swap;
+  unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+
+:root{
+  --marine:#4c5878;        /* Kopf- und Fussleiste, Knoepfe */
+  --marine-tief:#3b455f;
+  --papier:#f8f2ea;        /* Grundton der Karte */
+  --papier-warm:#f3ead9;
+  --tinte:#413b33;
+  --tinte-blass:#8d8271;
+  --gold:#b9a179;
+  --kopfhoehe:56px;
+  --reiterhoehe:calc(52px + env(safe-area-inset-bottom, 0px));
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--kopfhoehe) + 12px)}
+body{
+  margin:0;background:var(--papier);color:var(--tinte);
+  font-family:'Cormorant',Georgia,serif;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
+}
+body.zu{overflow:hidden}                     /* solange das Cover liegt */
+.depot{position:absolute;width:0;height:0;overflow:hidden}
+
+/* ---------- wiederkehrende Textbausteine ---------- */
+.kicker{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+  font-weight:500;color:#cfc0a4;margin:0 0 10px;
+}
+.kicker.dunkel{color:var(--tinte-blass)}
+.script{
+  font-family:'Great Vibes',cursive;font-weight:400;
+  font-size:clamp(30px,8vw,42px);line-height:1.25;
+  margin:0 0 26px;color:var(--tinte);
+}
+.gross{font-size:clamp(30px,8vw,40px);font-weight:300;margin:0 0 6px;letter-spacing:.01em}
+.klein-gross{font-size:clamp(23px,6vw,28px)}
+.klein{font-size:15px;letter-spacing:.1em;color:var(--tinte-blass);margin:0}
+.zeile{font-size:17px;line-height:1.6;color:#6d6355;margin:0 0 12px}
+.fliess{font-size:17px;line-height:1.75;color:#6d6355;margin:0 0 22px;max-width:34em}
+.mitte{text-align:center}
+.mitte-t{text-align:center}
+.mitte .fliess{margin-inline:auto}
+
+/* Kleine Raute als Trenner, wie die Zierpunkte auf gedrucktem Papier. */
+.raute{
+  display:block;width:7px;height:7px;margin:26px auto;
+  border:1px solid var(--gold);transform:rotate(45deg);
+}
+
+/* =========================================================
+   1. PRAEGEDRUCK-COVER
+   ========================================================= */
+.cover{
+  position:fixed;inset:0;z-index:60;
+  background:#e9dfcd;
+  perspective:1800px;perspective-origin:50% 45%;
+  transition:opacity .7s ease .55s,visibility .7s .55s;
+}
+.cover.weg{opacity:0;visibility:hidden;pointer-events:none}
+.cover-buehne{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+}
+
+/* Die beiden Fluegel. Jeder haelt das Muster in voller Hoehe und
+   klappt um seine Aussenkante nach hinten weg. */
+.fluegel{
+  position:absolute;top:0;bottom:0;width:50%;
+  backface-visibility:hidden;
+  transition:transform 1.15s cubic-bezier(.62,.02,.24,1),
+             box-shadow 1.15s ease;
+  box-shadow:0 0 0 rgba(0,0,0,0);
+}
+.fluegel-svg{width:100%;height:100%;display:block}
+.fluegel-links{left:0;transform-origin:left center}
+.fluegel-rechts{right:0;transform-origin:right center}
+.cover.offen .fluegel-links{transform:rotateY(-78deg);box-shadow:26px 0 60px rgba(80,60,30,.35)}
+.cover.offen .fluegel-rechts{transform:rotateY(78deg);box-shadow:-26px 0 60px rgba(80,60,30,.35)}
+
+/* Goldene Naht in der Mitte, an der die Fluegel aufeinandertreffen. */
+.naht{
+  position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;
+  background:linear-gradient(180deg,
+    rgba(185,161,121,0) 0%, rgba(185,161,121,.75) 12%,
+    rgba(214,193,155,.95) 50%, rgba(185,161,121,.75) 88%,
+    rgba(185,161,121,0) 100%);
+  transition:opacity .35s ease;
+}
+.cover.offen .naht{opacity:0}
+
+.cover-namen{
+  position:absolute;left:50%;top:26%;transform:translate(-50%,-50%);
+  margin:0;white-space:nowrap;
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(28px,8.5vw,44px);
+  color:#8d7a58;
+  text-shadow:0 1px 0 rgba(255,253,246,.9), 0 -1px 1px rgba(150,125,90,.35);
+  transition:opacity .4s ease,transform .6s ease;
+}
+.cover.offen .cover-namen{opacity:0;transform:translate(-50%,-70%)}
+
+.schleife{
+  position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+  width:min(72vw,300px);
+  background:none;border:0;padding:0;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.schleife-svg{width:100%;height:auto;display:block;
+  filter:drop-shadow(0 14px 20px rgba(90,70,40,.28))}
+.schleife:focus-visible{outline:2px solid var(--gold);outline-offset:16px;border-radius:10px}
+.schleife:active{transform:translate(-50%,-50%) scale(.985)}
+
+/* Der Knoten loest sich: Schlaufen wandern nach aussen, Enden fallen. */
+.band,#knoten{transition:transform .85s cubic-bezier(.5,-.2,.3,1),opacity .8s ease}
+.cover.offen #band-links {transform:translate(-56px,-26px) rotate(-16deg);opacity:0}
+.cover.offen #band-rechts{transform:translate( 56px,-26px) rotate( 16deg);opacity:0}
+.cover.offen #ende-links {transform:translate(-16px, 54px) rotate(-11deg);opacity:0}
+.cover.offen #ende-rechts{transform:translate( 16px, 54px) rotate( 11deg);opacity:0}
+.cover.offen #knoten{transform:scale(.4);opacity:0}
+.schleife-svg g{transform-origin:150px 96px}
+
+.cover-hinweis{
+  position:absolute;left:0;right:0;bottom:15%;margin:0;text-align:center;
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#9a886a;
+  animation:atmen 2.8s ease-in-out infinite;
+  transition:opacity .35s ease;
+}
+.cover.offen .cover-hinweis{opacity:0;animation:none}
+@keyframes atmen{0%,100%{opacity:1}50%{opacity:.38}}
+
+/* =========================================================
+   2. KOPFLEISTE UND MENUE
+   ========================================================= */
+.kopf{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  height:calc(var(--kopfhoehe) + env(safe-area-inset-top, 0px));
+  padding-top:env(safe-area-inset-top, 0px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding-inline:14px;
+  background:var(--marine);
+  transform:translateY(-100%);
+  transition:transform .6s ease .5s;
+}
+body.offen .kopf{transform:none}
+.monogramm{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.4);
+  display:grid;place-items:center;
+  color:#f4efe4;text-decoration:none;
+  font-size:14px;letter-spacing:.04em;
+}
+.burger{
+  width:40px;height:34px;background:none;border:0;padding:7px 6px;
+  display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;
+}
+.burger span{display:block;height:2px;background:#f4efe4;border-radius:2px;
+  transition:transform .3s ease,opacity .25s ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+
+.menue{
+  position:fixed;z-index:39;left:0;right:0;
+  top:calc(var(--kopfhoehe) + env(safe-area-inset-top, 0px));
+  background:var(--marine-tief);
+  display:flex;flex-direction:column;padding:6px 0 14px;
+}
+.menue[hidden]{display:none}
+.menue a{
+  display:flex;align-items:baseline;gap:16px;
+  color:#e7e1d4;text-decoration:none;
+  font-size:19px;font-weight:300;
+  padding:13px 24px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.menue a:last-child{border-bottom:0}
+/* Die Nummern stehen auch im Menue - so weiss der Gast, wo im Heft er ist. */
+.menue i{
+  font-style:italic;font-size:11px;letter-spacing:.14em;
+  color:rgba(231,225,212,.5);min-width:20px;
+}
+
+/* =========================================================
+   3. HIMMEL
+   ========================================================= */
+.karte{opacity:0;transition:opacity .8s ease .35s}
+body.offen .karte{opacity:1}
+
+.himmel{
+  position:relative;overflow:hidden;
+  min-height:100svh;
+  padding:calc(var(--kopfhoehe) + 34px) 30px 118px;
+  display:grid;place-items:center;
+  background:linear-gradient(176deg,#c3c9dd 0%,#d5cfd6 26%,#e7d8d0 52%,#f3e2d2 74%,#f8f2ea 100%);
+}
+.wolken{
+  position:absolute;inset:-16% -22%;
+  background:
+    radial-gradient(50% 32% at 20% 26%, rgba(255,252,246,.95), rgba(255,252,246,0) 62%),
+    radial-gradient(44% 28% at 72% 18%, rgba(255,246,234,.85), rgba(255,246,234,0) 64%),
+    radial-gradient(58% 34% at 46% 52%, rgba(250,226,204,.7),  rgba(250,226,204,0) 66%),
+    radial-gradient(66% 30% at 60% 74%, rgba(255,250,242,.8),  rgba(255,250,242,0) 68%);
+  animation:treiben 52s ease-in-out infinite alternate;
+}
+@keyframes treiben{from{transform:translate3d(-2%,0,0) scale(1)}to{transform:translate3d(2%,-2%,0) scale(1.07)}}
+
+/* Rankenwerk laeuft an beiden Seiten durch, nicht nur in den Ecken -
+   so steht der Satz wie in einem gestochenen Rahmen. */
+.seitenzier{
+  position:absolute;top:0;bottom:0;width:44%;max-width:230px;
+  fill:none;stroke-width:3.4;opacity:.78;pointer-events:none;
+  filter:drop-shadow(0 1px 2px rgba(120,100,70,.18));
+}
+.seitenzier.links{left:-4%}
+.seitenzier.rechts{right:-4%}
+
+.himmel-satz{position:relative;z-index:2;text-align:center;max-width:22rem}
+.kicker{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  font-weight:500;color:var(--tinte-blass);margin:0 0 12px;line-height:2;
+}
+.kicker.hell{color:#7d7263;margin-bottom:22px}
+
+.namen{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.vorname{
+  font-family:'Great Vibes',cursive;font-weight:400;
+  font-size:clamp(46px,15vw,74px);line-height:1.02;color:#463d33;
+  text-shadow:0 2px 16px rgba(255,250,240,.7);
+}
+.und{
+  font-family:'Cormorant',serif;font-size:clamp(17px,4.6vw,22px);
+  color:var(--gold);line-height:1;margin:2px 0;
+}
+.strich{
+  display:block;width:64px;height:1px;background:rgba(90,78,62,.4);
+  margin:24px auto 20px;
+}
+.himmel-datum{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:12px;letter-spacing:.4em;color:#5f5547;margin:0 0 14px;
+}
+.himmel-ort{
+  font-style:italic;font-size:19px;line-height:1.4;color:#6b5f4f;margin:0;
+}
+.himmel-taube{
+  display:block;width:78px;height:78px;margin:26px auto 0;
+  filter:drop-shadow(0 6px 10px rgba(120,95,60,.24));
+  animation:schweben 5.5s ease-in-out infinite;
+}
+@keyframes schweben{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.scrollwink{
+  position:absolute;left:0;right:0;bottom:52px;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-decoration:none;color:#7d7060;
+  animation:winken 2.6s ease-in-out infinite;
+}
+.scrollwink span{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.36em;text-transform:uppercase;
+}
+.scrollwink svg{width:14px;height:18px;fill:none;stroke:currentColor;
+  stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+@keyframes winken{0%,100%{opacity:.9;transform:translateY(0)}50%{opacity:.45;transform:translateY(5px)}}
+
+/* =========================================================
+   4. ABSCHNITTE
+   Jeder Bogen traegt seinen eigenen Papierton und endet in
+   einem Riss - so blaettert man durch ein Heft statt zu scrollen.
+   ========================================================= */
+.bogen{position:relative;padding:64px 0 78px}
+.bogen.creme  {background:linear-gradient(180deg,#faf3e6 0%,#f6ecdb 100%)}
+.bogen.papier {background:linear-gradient(180deg,#f8f4ee 0%,#f4eee6 100%)}
+.bogen.blush  {background:linear-gradient(180deg,#f9efe9 0%,#f6e6df 100%)}
+.bogen-satz{padding:0 34px;max-width:34rem;margin:0 auto}
+
+/* Der Riss liegt auf dem naechsten Bogen und ist in der Farbe
+   des eigenen gefuellt - so sieht es aus, als laege dieses Blatt
+   auf dem darunter. */
+.riss{position:absolute;left:0;right:0;width:100%;height:15px;display:block}
+.riss-unten{bottom:-1px;transform:scaleY(-1)}
+.himmel   .riss-unten use{fill:#faf3e6}
+.creme    .riss-unten use{fill:#f8f4ee}
+.papier   .riss-unten use{fill:#f9efe9}
+.blush    .riss-unten use{fill:#faf3e6}
+#geschenke.papier .riss-unten use{fill:#f9efe9}
+#rsvp.blush .riss-unten use{fill:#f7efe3}
+
+/* Gesteppte Randlinien wie bei einer gestanzten Karte. */
+.gesteppt::before,.gesteppt::after{
+  content:'';position:absolute;top:30px;bottom:34px;width:1px;
+  background-image:linear-gradient(180deg,var(--gold) 42%,transparent 42%);
+  background-size:1px 7px;opacity:.45;
+}
+.gesteppt::before{left:17px}
+.gesteppt::after{right:17px}
+
+.mitte{text-align:center}
+.mitte .fliess,.mitte .anschlag{margin-inline:auto}
+
+/* ---------- Ueberschriften ---------- */
+.nummer{
+  font-style:italic;font-size:14px;letter-spacing:.22em;
+  color:var(--gold);text-align:center;margin:0 0 10px;
+}
+/* Folgt eine Nummer auf einen anderen Block, beginnt ein neuer
+   Abschnitt - der braucht mehr Luft als eine Zeile Abstand. */
+:not(.bogen-satz) + .nummer,.mitte + .nummer,.girlande + .nummer{margin-top:64px}
+.abschnitt{
+  font-weight:300;font-size:clamp(26px,7vw,32px);line-height:1.2;
+  text-align:center;margin:0 0 38px;color:var(--tinte);letter-spacing:.01em;
+}
+.unterabschnitt{
+  font-weight:300;font-size:clamp(23px,6vw,28px);
+  text-align:center;margin:0 0 30px;color:var(--tinte);
+}
+.kursiv{
+  font-style:italic;font-weight:400;
+  font-size:clamp(27px,7.4vw,34px);line-height:1.25;
+  margin:0 0 34px;color:var(--tinte);
+}
+.script-zeile{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(30px,8vw,38px);line-height:1.2;
+  margin:6px 0 18px;color:var(--tinte);
+}
+.script-zeile.klein{font-size:clamp(24px,6.4vw,30px);margin:14px 0 6px}
+
+/* Der grosse Satz steht linksbuendig gegen die zentrierte Ueberschrift -
+   das gibt der Seite ihren Halt. */
+.anschlag{
+  font-weight:300;font-size:clamp(29px,8vw,38px);line-height:1.15;
+  margin:0 0 10px;color:var(--tinte);letter-spacing:.005em;
+}
+.anschlag.gross{font-size:clamp(34px,10vw,46px);margin-bottom:20px}
+.unterzeile{font-size:15px;letter-spacing:.09em;color:var(--tinte-blass);margin:0}
+.fliess{font-size:17.5px;line-height:1.72;color:#6d6355;margin:0 0 24px;max-width:32em}
+.haarstrich{display:block;width:74px;height:1px;background:rgba(185,161,121,.5);margin:6px auto 30px}
+
+/* ---------- Countdown ---------- */
+.zaehler{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:400px;margin:0 auto}
+.einheit{display:flex;flex-direction:column;align-items:center;gap:11px}
+.kachel{
+  width:100%;background:#fffdf8;border:1px solid #ece0ca;border-radius:3px;
+  padding:19px 2px 17px;
+  box-shadow:0 3px 12px rgba(150,125,90,.09);
+}
+.kachel b{
+  display:block;font-weight:300;font-variant-numeric:oldstyle-nums;
+  font-size:clamp(25px,7.2vw,32px);line-height:1;color:var(--tinte);
+}
+.einheit span{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinte-blass);
+}
+.zaehler-fuss{margin:26px 0 0;font-style:italic;font-size:16px;color:var(--tinte-blass)}
+
+/* ---------- Girlande und Schnoerkel ---------- */
+.girlande svg{display:block;width:min(100%,320px);margin:0 auto 4px;height:auto}
+.schnoerkel-trenner{display:block;width:min(58%,190px);height:auto;margin:34px auto;fill:none}
+
+/* ---------- Posten ---------- */
+.posten{padding:22px 0 24px;border-bottom:1px solid rgba(185,161,121,.26)}
+.posten:last-of-type{border-bottom:0}
+.posten.schmal{padding:18px 0 19px}
+.postenname{font-weight:300;font-size:clamp(23px,6vw,27px);line-height:1.25;margin:0 0 8px;color:var(--tinte)}
+.postenzeile{font-size:16.5px;line-height:1.62;color:#6d6355;margin:0 0 12px}
+.postenzeile b{font-weight:400;color:var(--tinte);font-size:18px}
+.posten.schmal .postenzeile{margin-bottom:0}
+.linkpfeil{
+  display:inline-block;text-decoration:none;color:var(--marine);
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  border-bottom:1px solid rgba(76,88,120,.3);padding-bottom:4px;
+}
+
+/* ---------- Zeitleiste ---------- */
+.zeitleiste{list-style:none;margin:0;padding:0;position:relative}
+.zeitleiste::before{
+  content:'';position:absolute;left:66px;top:10px;bottom:14px;width:1px;
+  background:rgba(185,161,121,.42);
+}
+.zeitleiste li{display:grid;grid-template-columns:66px 1fr;gap:0 24px;padding:0 0 30px;position:relative}
+.zeitleiste li:last-child{padding-bottom:0}
+.zeitleiste li::after{
+  content:'';position:absolute;left:63px;top:9px;width:7px;height:7px;
+  background:var(--gold);transform:rotate(45deg);
+}
+.zeitleiste b{
+  font-family:'Manrope',system-ui,sans-serif;font-weight:500;
+  font-size:10px;letter-spacing:.16em;color:var(--tinte-blass);padding-top:5px;
+}
+.zeitleiste p{margin:0 0 6px;font-size:clamp(21px,5.6vw,24px);font-weight:300;line-height:1.2}
+.zeitleiste span{font-size:15.5px;line-height:1.6;color:#7b7062}
+
+/* ---------- Dresscode ---------- */
+.paar-skizze{width:min(48vw,190px);height:auto;display:block;margin:0 auto 30px;opacity:.92}
+
+/* ---------- Geschenke ---------- */
+.umriss-knopf{
+  display:inline-block;background:none;cursor:pointer;
+  border:1px solid rgba(185,161,121,.6);border-radius:2px;
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--tinte);
+  padding:15px 26px;
+  transition:background .25s ease,border-color .25s ease;
+}
+.umriss-knopf:hover{background:rgba(185,161,121,.1);border-color:var(--gold)}
+.iban-feld{
+  margin:22px 0 0;background:#fffdf8;border:1px solid #ece0ca;padding:24px 22px;
+  box-shadow:0 3px 14px rgba(150,125,90,.09);
+}
+.iban-feld[hidden]{display:none}
+.iban-feld .kicker{margin-bottom:6px}
+.iban-feld .postenzeile{margin-bottom:14px}
+.iban{
+  font-family:'Manrope',system-ui,sans-serif;font-size:15px;letter-spacing:.06em;
+  margin:0 0 20px;color:var(--tinte);word-break:break-all;
+}
+.knopf{
+  background:var(--marine);color:#f4efe4;border:0;cursor:pointer;
+  font-family:'Manrope',system-ui,sans-serif;font-weight:500;
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  padding:15px 28px;border-radius:2px;
+  transition:background .25s ease,transform .15s ease;
+}
+.knopf:hover{background:var(--marine-tief)}
+.knopf:active{transform:translateY(1px)}
+.knopf.breit{width:100%;padding:17px}
+
+/* ---------- Formular ---------- */
+/* Linien statt Kaesten: auf Papier gibt es keine Eingabefelder,
+   nur Zeilen, auf die man schreibt. */
+.formular{display:flex;flex-direction:column;gap:26px;margin-top:8px}
+.feld{display:flex;flex-direction:column;gap:9px}
+.feld > span,.wahl legend{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--tinte-blass);
+  padding:0;
+}
+.feld input,.feld textarea{
+  font-family:'Cormorant',Georgia,serif;font-size:19px;color:var(--tinte);
+  background:none;border:0;border-bottom:1px solid rgba(185,161,121,.55);
+  padding:6px 2px 9px;width:100%;border-radius:0;
+}
+.feld textarea{resize:none;line-height:1.5}
+.feld input::placeholder,.feld textarea::placeholder{color:#b5a894;font-style:italic}
+.feld :is(input,textarea):focus{outline:0;border-bottom-color:var(--marine)}
+
+.wahl{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
+.wahlpaar{display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(185,161,121,.55)}
+.wahlpaar label{position:relative;cursor:pointer}
+.wahlpaar label + label{border-left:1px solid rgba(185,161,121,.55)}
+.wahlpaar input{position:absolute;opacity:0;width:0;height:0}
+.wahlpaar span{
+  display:grid;place-items:center;text-align:center;min-height:58px;padding:12px 10px;
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinte-blass);
+  transition:background .25s ease,color .25s ease;
+}
+.wahlpaar input:checked + span{background:var(--marine);color:#f4efe4}
+.wahlpaar input:focus-visible + span{outline:2px solid var(--marine);outline-offset:-4px}
+
+.formular-echo{
+  margin:0;min-height:1.4em;font-style:italic;
+  font-size:16px;color:var(--marine);
+}
+
+/* =========================================================
+   5. ABSCHIED
+   ========================================================= */
+.fuss{
+  position:relative;
+  background:linear-gradient(180deg,#f7efe3 0%,#f2e6d4 100%);
+  padding:70px 0 calc(var(--reiterhoehe) + 46px);
+}
+.fuss-monogramm{
+  font-size:26px;letter-spacing:.14em;color:var(--tinte);margin:0 0 6px;
+}
+.fuss-namen{
+  font-weight:300;font-size:clamp(28px,7.6vw,34px);margin:0 0 12px;color:var(--tinte);
+}
+.fuss-datum{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--tinte-blass);margin:0;
+}
+.fuss-mail{margin:0;font-size:17px}
+.fuss-mail a{color:var(--marine);text-decoration:none;border-bottom:1px solid rgba(76,88,120,.3);padding-bottom:2px}
+
+/* =========================================================
+   6. Einblenden und aktiver Reiter
+   ========================================================= */
+.bogen-satz > *,.fuss .bogen-satz > *{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.3,1);
+}
+.bogen.da .bogen-satz > *,.fuss.da .bogen-satz > *{opacity:1;transform:none}
+/* Gestaffelt: die Zeilen kommen nacheinander, nicht als Block. */
+.bogen.da .bogen-satz > :nth-child(1){transition-delay:0s}
+.bogen.da .bogen-satz > :nth-child(2){transition-delay:.07s}
+.bogen.da .bogen-satz > :nth-child(3){transition-delay:.14s}
+.bogen.da .bogen-satz > :nth-child(4){transition-delay:.2s}
+.bogen.da .bogen-satz > :nth-child(5){transition-delay:.26s}
+.bogen.da .bogen-satz > :nth-child(n+6){transition-delay:.3s}
+
+.reiter{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  height:var(--reiterhoehe);
+  padding-bottom:env(safe-area-inset-bottom, 0px);
+  display:grid;grid-template-columns:repeat(4,1fr);align-items:center;
+  background:rgba(249,243,235,.93);
+  backdrop-filter:blur(10px);
+  border-top:1px solid rgba(185,161,121,.3);
+  transform:translateY(100%);
+  transition:transform .6s ease .5s;
+}
+body.offen .reiter{transform:none}
+.reiter a{
+  text-align:center;text-decoration:none;color:var(--tinte-blass);
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  padding:6px 2px;position:relative;
+  transition:color .25s ease;
+}
+.reiter a.aktiv{color:var(--tinte)}
+.reiter a.aktiv::after{
+  content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:26px;height:1px;background:var(--gold);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .bogen-satz > *{opacity:1;transform:none;transition:none}
+  .wolken,.himmel-taube,.scrollwink,.cover-hinweis{animation:none}
+  html{scroll-behavior:auto}
+}
+
+/* =========================================================
+   7. Breite Schirme — die Karte bleibt ein Hochformat
+   ========================================================= */
+@media (min-width:760px){
+  body{background:#ded3c2}
+  .kopf,.reiter,.menue{
+    left:50%;width:min(560px,100%);margin-left:calc(min(560px,100%) / -2);
+  }
+  body.offen .kopf{transform:none}
+  .karte{width:min(560px,100%);margin:0 auto;box-shadow:0 0 60px rgba(70,55,35,.22)}
+  .cover-buehne{width:min(560px,100%);left:50%;transform:translateX(-50%)}
+  .cover{background:#ded3c2}
+  .bogen-satz{padding-inline:46px}
+}
+
+/* =========================================================
+   8. BEWEGUNG
+   Nichts steht still: die Taube schlaegt, die Baender wiegen,
+   Blaetter treiben, Zierrat zeichnet sich beim Erreichen.
+   Alles haengt am Ende an einer einzigen Abschaltung fuer
+   Gaeste, die Bewegung reduziert haben.
+   ========================================================= */
+
+/* ---------- Taube ---------- */
+.schwinge{
+  transform-origin:40px 40px;
+  animation:schlagen 1.1s cubic-bezier(.4,0,.3,1) infinite;
+}
+/* Der Abschlag ist kurz und kraeftig, der Aufschlag lang - so
+   sieht ein Fluegel aus, der Luft fasst. */
+@keyframes schlagen{
+  0%   {transform:rotate(-16deg) scaleY(1)}
+  22%  {transform:rotate(34deg)  scaleY(.78)}
+  60%  {transform:rotate(-10deg) scaleY(1.04)}
+  100% {transform:rotate(-16deg) scaleY(1)}
+}
+.taube.spiegel .schwinge{animation-delay:-.42s}
+.girlande .taube .schwinge{animation-duration:1.5s}
+
+/* Die Himmelstaube zieht in einem weiten Bogen ueber die Wolken. */
+.himmel-taube{
+  animation:flugbahn 17s cubic-bezier(.42,0,.58,1) infinite;
+}
+@keyframes flugbahn{
+  0%   {transform:translate(-58vw,26px) rotate(-7deg) scale(.72);opacity:0}
+  9%   {opacity:1}
+  30%  {transform:translate(-20vw,-18px) rotate(-3deg) scale(.88)}
+  55%  {transform:translate(4vw,4px) rotate(2deg) scale(1)}
+  78%  {transform:translate(30vw,-22px) rotate(-2deg) scale(.92)}
+  92%  {opacity:1}
+  100% {transform:translate(62vw,-46px) rotate(-6deg) scale(.74);opacity:0}
+}
+
+/* ---------- Girlande ---------- */
+.girlande .blueten circle{
+  transform-box:fill-box;transform-origin:50% 50%;
+  animation:atmenBluete 3.6s ease-in-out infinite;
+}
+.girlande .blueten circle:nth-child(2){animation-delay:-.5s}
+.girlande .blueten circle:nth-child(3){animation-delay:-1.1s}
+.girlande .blueten circle:nth-child(4){animation-delay:-1.7s}
+.girlande .blueten circle:nth-child(5){animation-delay:-2.3s}
+@keyframes atmenBluete{0%,100%{transform:scale(1)}50%{transform:scale(1.16)}}
+
+.girlande svg{animation:wiegen 6.5s ease-in-out infinite;transform-origin:50% 20%}
+@keyframes wiegen{0%,100%{transform:rotate(-.7deg)}50%{transform:rotate(.7deg)}}
+
+/* ---------- Rankenwerk im Himmel ---------- */
+/* Ein sehr langsamer Zug, damit die Seiten nicht wie eine Tapete
+   festkleben. Zwei Lagen laufen gegeneinander. */
+.seitenzier.links {animation:zierZug 26s ease-in-out infinite}
+.seitenzier.rechts{animation:zierZug 26s ease-in-out infinite reverse}
+@keyframes zierZug{
+  0%,100%{transform:translateY(0) scale(1);opacity:.72}
+  50%    {transform:translateY(-16px) scale(1.03);opacity:.86}
+}
+
+/* ---------- Cover: Baender wiegen vor dem Oeffnen ---------- */
+.schleife-svg #band-links {animation:bandLinks 4.4s ease-in-out infinite}
+.schleife-svg #band-rechts{animation:bandRechts 4.4s ease-in-out infinite}
+.schleife-svg #ende-links {animation:endeLinks 3.6s ease-in-out infinite}
+.schleife-svg #ende-rechts{animation:endeRechts 3.6s ease-in-out infinite}
+@keyframes bandLinks  {0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.3deg)}}
+@keyframes bandRechts {0%,100%{transform:rotate(1.1deg)}50%{transform:rotate(-1.3deg)}}
+@keyframes endeLinks  {0%,100%{transform:rotate(1.6deg) translateY(0)}50%{transform:rotate(-2deg) translateY(3px)}}
+@keyframes endeRechts {0%,100%{transform:rotate(-1.6deg) translateY(0)}50%{transform:rotate(2deg) translateY(3px)}}
+/* Beim Oeffnen uebernimmt der Uebergang - sonst kaempft die
+   Dauerschleife gegen das Aufgehen des Knotens. */
+.cover.offen .band{animation:none}
+
+/* Ein Lichtstreifen wandert ueber die Praegung. */
+.cover-buehne::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(104deg,
+    rgba(255,255,255,0) 44%, rgba(255,255,255,.3) 50%,
+    rgba(255,255,255,0) 56%);
+  animation:streifen 7s ease-in-out infinite;
+}
+@keyframes streifen{
+  0%,72%,100%{transform:translateX(-120%)}
+  36%        {transform:translateX(120%)}
+}
+.cover.offen .cover-buehne::after{opacity:0}
+
+/* ---------- Rosenblaetter ---------- */
+.blattfall{
+  position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden;
+  opacity:0;transition:opacity 1.4s ease;
+}
+body.offen .blattfall{opacity:1}
+.blatt{
+  position:absolute;top:0;left:0;
+  will-change:transform;
+  animation:treibenAb linear infinite;
+}
+.blatt i{display:block;animation:trudeln ease-in-out infinite;transform-origin:50% 45%}
+.blatt svg{display:block;width:100%;height:auto;
+  filter:drop-shadow(0 2px 3px rgba(140,100,80,.16))}
+/* Der seitliche Weg kommt aus --weg, gefaechert ueber die Fallhoehe -
+   ein Blatt faellt nicht auf einer Geraden. */
+@keyframes treibenAb{
+  0%  {transform:translate3d(0,-14vh,0)}
+  25% {transform:translate3d(calc(var(--weg) * .45),16vh,0)}
+  50% {transform:translate3d(calc(var(--weg) * -.25),44vh,0)}
+  75% {transform:translate3d(calc(var(--weg) * .8),74vh,0)}
+  100%{transform:translate3d(var(--weg),116vh,0)}
+}
+@keyframes trudeln{
+  0%  {transform:rotate(0deg) rotate3d(1,.6,0,0deg)}
+  50% {transform:rotate(190deg) rotate3d(1,.6,0,180deg)}
+  100%{transform:rotate(360deg) rotate3d(1,.6,0,360deg)}
+}
+
+/* ---------- Zierrat zeichnet sich ---------- */
+/* stroke-dasharray wird vererbt und reicht damit auch in den
+   Schattenbaum eines <use>. Mit pathLength="1" genuegt ein Wert
+   fuer alle Striche, egal wie lang sie wirklich sind. */
+.schnoerkel-trenner{stroke-dasharray:1;stroke-dashoffset:1}
+.bogen.da .schnoerkel-trenner,.fuss.da .schnoerkel-trenner{
+  animation:strichZiehen 1.9s cubic-bezier(.4,0,.2,1) .25s forwards;
+}
+@keyframes strichZiehen{to{stroke-dashoffset:0}}
+
+.paar-skizze path,.paar-skizze circle{stroke-dasharray:1;stroke-dashoffset:1}
+.bogen.da .paar-skizze path,.bogen.da .paar-skizze circle{
+  animation:strichZiehen 1.5s cubic-bezier(.4,0,.2,1) forwards;
+}
+/* Er zuerst, dann sie, zuletzt der Strauss - eine Zeichnung
+   entsteht in einer Reihenfolge, nicht auf einen Schlag. */
+.bogen.da .paar-skizze > g > :nth-child(-n+9){animation-delay:.1s}
+.bogen.da .paar-skizze > g > :nth-child(n+10){animation-delay:.6s}
+.bogen.da .paar-skizze > g > g > *{animation-delay:1.5s}
+
+/* ---------- Countdown ---------- */
+.kachel b{display:block;transform-origin:50% 50%}
+.kachel b.rollt{animation:ziffernrolle .5s cubic-bezier(.3,.8,.3,1)}
+@keyframes ziffernrolle{
+  0%  {transform:translateY(-58%) rotateX(72deg);opacity:0}
+  55% {opacity:1}
+  100%{transform:none;opacity:1}
+}
+.kachel{transition:transform .3s ease,box-shadow .3s ease}
+.bogen.da .einheit:nth-child(1) .kachel{animation:kachelAuf .6s .05s backwards}
+.bogen.da .einheit:nth-child(2) .kachel{animation:kachelAuf .6s .13s backwards}
+.bogen.da .einheit:nth-child(3) .kachel{animation:kachelAuf .6s .21s backwards}
+.bogen.da .einheit:nth-child(4) .kachel{animation:kachelAuf .6s .29s backwards}
+@keyframes kachelAuf{from{opacity:0;transform:translateY(14px) rotateX(28deg)}to{opacity:1;transform:none}}
+
+/* ---------- Zeitleiste ---------- */
+.zeitleiste{--leiste:0}
+.zeitleiste::before{display:none}
+.leiste-linie{
+  position:absolute;left:66px;top:10px;bottom:14px;width:1px;
+  background:rgba(185,161,121,.42);
+  transform:scaleY(0);transform-origin:top center;
+}
+.bogen.da .leiste-linie{animation:leisteWachsen 1.6s cubic-bezier(.35,0,.2,1) .15s forwards}
+@keyframes leisteWachsen{to{transform:scaleY(1)}}
+.zeitleiste li::after{transform:rotate(45deg) scale(0)}
+.bogen.da .zeitleiste li::after{animation:rauteAuf .5s cubic-bezier(.3,1.5,.5,1) forwards}
+.bogen.da .zeitleiste li:nth-child(2)::after{animation-delay:.3s}
+.bogen.da .zeitleiste li:nth-child(3)::after{animation-delay:.52s}
+.bogen.da .zeitleiste li:nth-child(4)::after{animation-delay:.74s}
+.bogen.da .zeitleiste li:nth-child(5)::after{animation-delay:.96s}
+.bogen.da .zeitleiste li:nth-child(6)::after{animation-delay:1.18s}
+.bogen.da .zeitleiste li:nth-child(7)::after{animation-delay:1.4s}
+@keyframes rauteAuf{to{transform:rotate(45deg) scale(1)}}
+
+/* ---------- Rauten und Haarstriche ---------- */
+.haarstrich{transform:scaleX(0);transform-origin:center}
+.bogen.da .haarstrich{animation:strichBreit 1.1s cubic-bezier(.3,0,.2,1) .2s forwards}
+@keyframes strichBreit{to{transform:scaleX(1)}}
+.strich{transform:scaleX(0);transform-origin:center;animation:strichBreit 1.2s ease 1.5s forwards}
+
+/* ---------- Knoepfe: ein Glanz laeuft durch ---------- */
+.knopf{position:relative;overflow:hidden}
+.knopf::after{
+  content:'';position:absolute;top:0;bottom:0;width:44%;
+  background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.28),rgba(255,255,255,0));
+  animation:knopfglanz 4.6s ease-in-out infinite;
+}
+@keyframes knopfglanz{
+  0%,66%,100%{transform:translateX(-180%)}
+  33%        {transform:translateX(360%)}
+}
+.umriss-knopf{transition:background .25s ease,border-color .25s ease,letter-spacing .3s ease}
+.umriss-knopf:hover{letter-spacing:.3em}
+.linkpfeil{transition:letter-spacing .3s ease,color .25s ease}
+.linkpfeil:hover{letter-spacing:.28em}
+
+/* ---------- Kopfleiste ---------- */
+.monogramm{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+.monogramm:hover{transform:rotate(-8deg) scale(1.06)}
+
+/* ---------- Scroll-Wink ---------- */
+.scrollwink svg{animation:pfeilTupfen 2.6s ease-in-out infinite}
+@keyframes pfeilTupfen{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+@media (prefers-reduced-motion:reduce){
+  .schwinge,.himmel-taube,.girlande svg,.girlande .blueten circle,
+  .seitenzier,.schleife-svg g,.cover-buehne::after,.blatt,.blatt i,
+  .kachel,.knopf::after,.scrollwink svg{animation:none !important}
+  .blattfall{display:none}
+  .schnoerkel-trenner,.paar-skizze path,.paar-skizze circle{stroke-dashoffset:0}
+  .leiste-linie{transform:none}
+  .zeitleiste li::after{transform:rotate(45deg) scale(1)}
+  .haarstrich,.strich{transform:none}
+}
+
+/* =========================================================
+   9. GESCHRIEBEN, NICHT EINGEBLENDET
+   Die Kalligrafie laeuft von links auf, als zoege jemand die
+   Feder. Bei verbundener Schreibschrift traegt schon der reine
+   Vorschub die Illusion - der Federpunkt an der Kante macht
+   den Rest.
+
+   Der Kasten muss dabei den Text umschliessen (inline-block),
+   sonst beginnt der Vorschub am Rand des Absatzes und die
+   Schrift setzt zu spaet ein. Unten und seitlich steht Luft im
+   Anschnitt, damit Unterlaengen nicht abgeschnitten werden.
+   ========================================================= */
+/* Der Anschnitt steht NICHT im Grundzustand, sondern im ersten
+   Schritt des Ablaufs. Laeuft der Ablauf nie - kein clip-path,
+   abgeschaltete Animationen, eingefrorene Zeitachse in einem
+   Hintergrundreiter -, steht die Zeile einfach da. Unsichtbarer
+   Text darf nie der Ruhezustand sein. */
+.schreiben{display:inline-block;position:relative}
+@keyframes federzug{
+  from{clip-path:inset(-8% 100% -18% -6%)}
+  to  {clip-path:inset(-8% -6% -18% -6%)}
+}
+
+.schreiben::after{
+  content:'';position:absolute;top:6%;bottom:16%;left:0;width:3px;
+  background:linear-gradient(180deg,transparent,rgba(70,61,51,.5),transparent);
+  filter:blur(1.6px);opacity:0;pointer-events:none;
+}
+@keyframes federpunkt{
+  0%  {left:-2%;opacity:0}
+  10% {opacity:.85}
+  88% {opacity:.85}
+  100%{left:102%;opacity:0}
+}
+
+/* ---------- Cover ---------- */
+.cover-namen.schreiben{animation:federzug 1.7s cubic-bezier(.32,.12,.28,1) .55s both}
+.cover-namen.schreiben::after{animation:federpunkt 1.7s cubic-bezier(.32,.12,.28,1) .55s}
+
+/* ---------- Himmel ----------
+   Erst er, dann das Und, dann sie. Danach setzt sich der Rest
+   des Satzes darunter. */
+body.offen .vorname.schreiben       {animation:federzug 1.25s cubic-bezier(.32,.12,.28,1) .35s both}
+body.offen .vorname.schreiben::after{animation:federpunkt 1.25s cubic-bezier(.32,.12,.28,1) .35s}
+body.offen .vorname.zweite          {animation:federzug 1.25s cubic-bezier(.32,.12,.28,1) 1.7s both}
+body.offen .vorname.zweite::after   {animation:federpunkt 1.25s cubic-bezier(.32,.12,.28,1) 1.7s}
+
+body.offen .und{animation:tuscheAuf .7s ease 1.45s both}
+@keyframes tuscheAuf{from{opacity:0;transform:translateY(5px) scale(.8)}to{opacity:1;transform:none}}
+
+body.offen .kicker.hell{animation:tuscheAuf .9s ease .1s both}
+.strich{animation:none}
+body.offen .strich{animation:strichBreit 1s cubic-bezier(.3,0,.2,1) 2.95s both}
+body.offen .himmel-datum{animation:tuscheAuf .8s ease 3.15s both}
+body.offen .himmel-ort  {animation:tuscheAuf .8s ease 3.35s both}
+body.offen .himmel-taube{
+  animation:flugbahn 17s cubic-bezier(.42,0,.58,1) 3.4s infinite backwards;
+}
+body.offen .scrollwink{animation:winkenAuf .8s ease 3.8s both,winken 2.6s ease-in-out 4.6s infinite}
+@keyframes winkenAuf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- In den Boegen ---------- */
+.bogen.da .kursiv .schreiben,.fuss.da .script-zeile .schreiben,
+.bogen.da .script-zeile .schreiben{
+  animation:federzug 1.5s cubic-bezier(.32,.12,.28,1) .35s both;
+}
+.bogen.da .kursiv .schreiben::after,.fuss.da .script-zeile .schreiben::after,
+.bogen.da .script-zeile .schreiben::after{
+  animation:federpunkt 1.5s cubic-bezier(.32,.12,.28,1) .35s;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .schreiben{clip-path:none !important;animation:none !important}
+  .schreiben::after{display:none}
+  .und,.kicker.hell,.himmel-datum,.himmel-ort,.himmel-taube,.scrollwink{opacity:1 !important;animation:none !important}
+}

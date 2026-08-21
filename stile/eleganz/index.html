@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Furkan &amp; Dilara — Einladung</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Digitale Hochzeitseinladung im Prägedruck-Stil: Umschlag öffnen, Countdown, Ort, Ablauf, Geschenke, Rückmeldung.">
+
+<!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
+     og:image braucht eine vollstaendige Adresse - relative Pfade
+     ignorieren die Messenger. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Furkan &amp; Dilara">
+<meta property="og:title" content="Furkan &amp; Dilara — Einladung">
+<meta property="og:description" content="Digitale Hochzeitseinladung im Prägedruck-Stil: Umschlag öffnen, Countdown, Ort, Ablauf, Geschenke, Rückmeldung.">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/eleganz/">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/eleganz/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Geprägte Karte mit Satinschleife und dem Schriftzug Furkan und Dilara">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4c5878">
+<script>
+/* Browser stellen beim Neuladen die alte Bildlaufposition wieder her.
+   Bei einer Karte mit Praegedruck-Cover hiesse das: der Gast landet mitten
+   im Ablauf statt am Anfang. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash) {
+  window.scrollTo(0, 0);
+  addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
+}
+</script>
+<link rel="stylesheet" href="css/eleganz.css?v=202608211453">
+</head>
+<body class="zu">
+
+<!-- =========================================================
+     Bausteine: Praegemuster, Praegefilter, Zierrat.
+     Einmal definiert, ueberall per <use> geholt.
+     ========================================================= -->
+<svg class="depot" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Rankenwerk. Nicht als Tapete gekachelt, sondern als halbes
+         Motiv mit der Achse am rechten Rand - der linke Fluegel nimmt es
+         so, der rechte gespiegelt. Ueber dem Falz stehen dann volle,
+         symmetrische Ornamente wie bei einer gepraegten Klappkarte. -->
+    <g id="ranke" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M300 198c-42-4-68-24-76-54-8-30-34-50-66-50" stroke-width="4.6"/>
+      <path d="M158 94c-30 0-46-22-38-44 6-17 30-20 38-4 6 12-6 24-16 16" stroke-width="4.1"/>
+      <path d="M224 144c8-34 36-54 72-54" stroke-width="3.5"/>
+      <path d="M296 90c-30-2-52-22-50-46 1-16 18-24 28-14" stroke-width="3.2"/>
+      <path d="M300 198c-32 14-64 10-80-10-14-18-4-38 12-32" stroke-width="3.5"/>
+      <path d="M224 144c-20 4-36-2-44-16" stroke-width="2.3"/>
+      <path d="M188 94c-6-18-2-34 10-42" stroke-width="2.3"/>
+      <path d="M262 116c-16 4-28 16-30 30" stroke-width="2.3"/>
+      <path d="M224 144c-14-8-18-26-8-38 12 8 18 28 8 38z" stroke-width="2.2"/>
+      <path d="M158 94c-10-12-8-30 4-38 10 10 8 30-4 38z" stroke-width="2.2"/>
+      <path d="M270 174c-12-6-18-20-12-32 12 6 18 22 12 32z" stroke-width="2.2"/>
+      <path d="M300 118c-8 0-14-5-14-11s6-11 14-11" stroke-width="2.3"/>
+    </g>
+
+    <!-- Fuer den Himmel doppelt gelegt: dieselbe Wand ein zweites Mal
+         um ein halbes Band versetzt und leicht verkleinert. Einlagig
+         wirkt das Rankenwerk auf den Wolken zu duenn. -->
+    <g id="rankenwand-dicht">
+      <use href="#rankenwand"/>
+      <use href="#rankenwand" transform="translate(-26,102) scale(.82,.9)" opacity=".7"/>
+    </g>
+
+    <!-- Sieben Baender Rankenwerk fuellen einen Fluegel. Die Hoehe der
+         Flaeche bestimmt, wie stark "slice" spaeter hineinzoomt - je mehr
+         Baender, desto feiner steht das Ornament auf dem Schirm. -->
+    <g id="rankenwand">
+      <use href="#ranke" transform="translate(0,-14)"/>
+      <use href="#ranke" transform="translate(0,190)"/>
+      <use href="#ranke" transform="translate(0,394)"/>
+      <use href="#ranke" transform="translate(0,598)"/>
+      <use href="#ranke" transform="translate(0,802)"/>
+      <use href="#ranke" transform="translate(0,1006)"/>
+      <use href="#ranke" transform="translate(0,1210)"/>
+    </g>
+
+    <!-- Blindpraegung: kein Farbauftrag, nur Licht und Schatten.
+         feSpecularLighting hebt die Kanten an, der versetzte dunkle
+         Abzug legt den Schatten daneben. Die gespiegelte Fassung
+         dreht den Lichteinfall mit, damit ueber beiden Fluegeln
+         dieselbe Lampe steht. -->
+    <filter id="praegung" x="-8%" y="-6%" width="116%" height="112%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" result="weich"/>
+      <feSpecularLighting in="weich" surfaceScale="5" specularConstant="1.05"
+                          specularExponent="17" lighting-color="#fffdf6" result="licht">
+        <feDistantLight azimuth="228" elevation="56"/>
+      </feSpecularLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="glanz"/>
+      <feOffset in="SourceAlpha" dx="2.2" dy="3.4" result="versatz"/>
+      <feGaussianBlur in="versatz" stdDeviation="2.2" result="schattenWeich"/>
+      <feFlood flood-color="#b8a17c" flood-opacity=".46" result="schattenFarbe"/>
+      <feComposite in="schattenFarbe" in2="schattenWeich" operator="in" result="schatten"/>
+      <feMerge><feMergeNode in="schatten"/><feMergeNode in="glanz"/></feMerge>
+    </filter>
+
+    <filter id="praegung-spiegel" x="-8%" y="-6%" width="116%" height="112%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4" result="weich"/>
+      <feSpecularLighting in="weich" surfaceScale="5" specularConstant="1.05"
+                          specularExponent="17" lighting-color="#fffdf6" result="licht">
+        <feDistantLight azimuth="312" elevation="56"/>
+      </feSpecularLighting>
+      <feComposite in="licht" in2="SourceAlpha" operator="in" result="glanz"/>
+      <feOffset in="SourceAlpha" dx="-2.2" dy="3.4" result="versatz"/>
+      <feGaussianBlur in="versatz" stdDeviation="2.2" result="schattenWeich"/>
+      <feFlood flood-color="#b8a17c" flood-opacity=".46" result="schattenFarbe"/>
+      <feComposite in="schattenFarbe" in2="schattenWeich" operator="in" result="schatten"/>
+      <feMerge><feMergeNode in="schatten"/><feMergeNode in="glanz"/></feMerge>
+    </filter>
+
+    <!-- Satin: heller Grat in der Mitte, abfallend zu beiden Seiten. -->
+    <linearGradient id="satin" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"   stop-color="#e3d6bd"/>
+      <stop offset=".28" stop-color="#fffdf7"/>
+      <stop offset=".55" stop-color="#f3e9d6"/>
+      <stop offset="1"   stop-color="#d9c9ad"/>
+    </linearGradient>
+    <linearGradient id="satinQuer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#fffdf7"/>
+      <stop offset=".6"  stop-color="#efe3cc"/>
+      <stop offset="1"   stop-color="#cfbc9c"/>
+    </linearGradient>
+
+    <!-- Eckzierrat, einmal gezeichnet und viermal gespiegelt gesetzt. -->
+    <g id="eckzier">
+      <!-- Zwei Zuege an den Kanten entlang, an den Enden je eine Schnecke.
+           Einmal gezeichnet, viermal gespiegelt in die Ecken gesetzt. -->
+      <path d="M4 4h58c30 2 48 16 54 42"/>
+      <path d="M4 4v58c2 30 16 48 42 54"/>
+      <path d="M116 46c8 22 2 38-14 40-13 2-20-8-14-16 5-6 14-3 13 5"/>
+      <path d="M46 116c22 8 38 2 40-14 2-13-8-20-16-14-6 5-3 14 5 13"/>
+      <path d="M16 16h34c22 2 34 14 38 32"/>
+      <path d="M16 16v34c2 22 14 34 32 38"/>
+      <path d="M70 14c14 2 24 8 30 16"/>
+      <path d="M14 70c2 14 8 24 16 30"/>
+      <path d="M88 48c6 6 8 14 6 20"/>
+      <path d="M48 88c6 6 14 8 20 6"/>
+    </g>
+    <!-- Taube im Flug. Koerper und Schwinge stehen getrennt: ein <use>
+         erzeugt einen Schattenbaum, in den kein Selektor hineinreicht -
+         die Schwinge muss darum ein eigenes Element im Dokument sein. -->
+    <g id="taube-koerper">
+      <path d="M6 42c9-7 20-9 31-7 3-10 11-17 22-19 5-1 10 0 14 4-5 1-8 4-9 8 5 0 9 3 11 8-5-2-10-1-14 2-3 11-12 18-24 18-14 0-25-5-31-14z"/>
+      <path d="M8 44 0 55l14-3z"/>
+    </g>
+    <path id="taube-schwinge" d="M35 36c-1-10 4-19 13-25 4 9 4 19-1 27-3 6-11 5-12-2z"/>    <!-- Papierrisse zwischen den Abschnitten. Drei Fassungen, damit
+         nicht dreimal derselbe Riss untereinander steht. -->
+    <path id="riss-a" d="M0 30.0 L0 18.0 Q12.5 15.0 25.0 18.5 Q37.5 17.0 50.0 19.2 Q62.5 20.7 75.0 12.8 Q87.5 7.2 100.0 22.0 Q112.5 19.3 125.0 14.8 Q137.5 20.5 150.0 17.6 Q162.5 21.5 175.0 17.7 Q187.5 19.3 200.0 13.8 Q212.5 15.3 225.0 22.4 Q237.5 22.7 250.0 20.9 Q262.5 22.8 275.0 12.8 Q287.5 15.7 300.0 19.1 Q312.5 16.8 325.0 12.4 Q337.5 16.5 350.0 17.7 Q362.5 20.2 375.0 22.5 Q387.5 25.0 400.0 23.1 Q412.5 21.9 425.0 21.6 Q437.5 21.0 450.0 23.2 Q462.5 27.5 475.0 13.2 Q487.5 9.0 500.0 14.6 Q512.5 19.9 525.0 17.2 Q537.5 18.7 550.0 15.6 Q562.5 15.7 575.0 16.6 Q587.5 14.9 600.0 19.0 Q612.5 20.0 625.0 22.9 Q637.5 24.9 650.0 23.1 Q662.5 27.2 675.0 23.9 Q687.5 25.8 700.0 14.0 Q712.5 18.1 725.0 23.6 Q737.5 28.0 750.0 18.8 Q762.5 21.3 775.0 14.5 Q787.5 18.3 800.0 18.9 Q812.5 16.4 825.0 12.8 Q837.5 16.8 850.0 23.9 Q862.5 19.2 875.0 21.6 Q887.5 20.6 900.0 13.8 Q912.5 11.5 925.0 21.2 Q937.5 25.5 950.0 12.5 Q962.5 13.8 975.0 12.5 Q987.5 15.0 1000.0 16.0 Q1012.5 20.3 1025.0 23.8 Q1037.5 23.8 1050.0 24.0 Q1062.5 21.8 1075.0 12.9 Q1087.5 14.1 1100.0 12.4 Q1112.5 8.9 1125.0 16.9 Q1137.5 18.2 1150.0 13.9 Q1162.5 8.7 1175.0 22.4 Q1187.5 20.3 1200.0 23.5 L1200 30.0 Z"/>
+    <path id="riss-b" d="M0 30.0 L0 18.0 Q12.5 17.5 25.0 18.7 Q37.5 23.6 50.0 17.6 Q62.5 17.7 75.0 19.0 Q87.5 15.5 100.0 18.1 Q112.5 19.6 125.0 21.5 Q137.5 16.9 150.0 15.6 Q162.5 11.0 175.0 21.7 Q187.5 23.9 200.0 12.5 Q212.5 18.0 225.0 23.6 Q237.5 25.3 250.0 19.4 Q262.5 15.5 275.0 12.2 Q287.5 12.5 300.0 12.7 Q312.5 9.2 325.0 14.9 Q337.5 9.5 350.0 17.6 Q362.5 16.9 375.0 22.1 Q387.5 22.3 400.0 19.7 Q412.5 19.7 425.0 19.9 Q437.5 19.5 450.0 15.3 Q462.5 21.0 475.0 23.9 Q487.5 27.8 500.0 20.5 Q512.5 18.4 525.0 14.8 Q537.5 12.4 550.0 12.8 Q562.5 15.9 575.0 16.8 Q587.5 20.8 600.0 16.6 Q612.5 21.9 625.0 22.2 Q637.5 16.5 650.0 14.5 Q662.5 19.2 675.0 17.6 Q687.5 23.1 700.0 16.8 Q712.5 11.9 725.0 19.6 Q737.5 22.7 750.0 15.2 Q762.5 10.5 775.0 16.0 Q787.5 21.3 800.0 21.1 Q812.5 16.7 825.0 15.0 Q837.5 10.4 850.0 12.7 Q862.5 16.1 875.0 14.1 Q887.5 14.8 900.0 17.4 Q912.5 13.8 925.0 20.8 Q937.5 16.6 950.0 19.7 Q962.5 15.4 975.0 17.0 Q987.5 13.8 1000.0 15.2 Q1012.5 20.6 1025.0 21.6 Q1037.5 19.4 1050.0 22.6 Q1062.5 19.3 1075.0 16.7 Q1087.5 20.8 1100.0 19.7 Q1112.5 15.1 1125.0 23.9 Q1137.5 20.6 1150.0 15.1 Q1162.5 18.2 1175.0 15.9 Q1187.5 13.6 1200.0 12.9 L1200 30.0 Z"/>
+    <path id="riss-c" d="M0 30.0 L0 18.0 Q12.5 20.0 25.0 21.4 Q37.5 21.7 50.0 18.1 Q62.5 16.9 75.0 24.0 Q87.5 21.6 100.0 13.8 Q112.5 11.1 125.0 15.1 Q137.5 13.2 150.0 15.2 Q162.5 10.7 175.0 15.9 Q187.5 13.8 200.0 18.8 Q212.5 15.4 225.0 12.8 Q237.5 9.5 250.0 18.5 Q262.5 17.2 275.0 20.8 Q287.5 24.3 300.0 17.0 Q312.5 12.4 325.0 20.7 Q337.5 23.7 350.0 16.8 Q362.5 18.6 375.0 15.6 Q387.5 20.3 400.0 22.0 Q412.5 25.3 425.0 23.4 Q437.5 20.4 450.0 18.5 Q462.5 21.2 475.0 21.6 Q487.5 20.4 500.0 13.7 Q512.5 15.1 525.0 13.3 Q537.5 15.6 550.0 12.1 Q562.5 11.6 575.0 17.8 Q587.5 13.4 600.0 17.8 Q612.5 17.8 625.0 16.4 Q637.5 20.9 650.0 22.4 Q662.5 26.8 675.0 14.9 Q687.5 9.5 700.0 16.5 Q712.5 12.1 725.0 20.5 Q737.5 17.8 750.0 13.5 Q762.5 11.1 775.0 16.8 Q787.5 19.5 800.0 17.5 Q812.5 15.3 825.0 20.1 Q837.5 14.9 850.0 14.5 Q862.5 16.6 875.0 21.0 Q887.5 16.5 900.0 12.8 Q912.5 12.9 925.0 19.9 Q937.5 14.4 950.0 17.2 Q962.5 14.7 975.0 13.0 Q987.5 9.3 1000.0 15.4 Q1012.5 15.1 1025.0 13.3 Q1037.5 14.7 1050.0 22.5 Q1062.5 24.6 1075.0 12.8 Q1087.5 14.5 1100.0 19.6 Q1112.5 14.0 1125.0 16.6 Q1137.5 18.4 1150.0 23.4 Q1162.5 28.0 1175.0 18.8 Q1187.5 19.8 1200.0 23.5 L1200 30.0 Z"/>
+
+    <!-- Schnoerkel als Trenner zwischen zwei Angaben. -->
+    <g id="schnoerkel" fill="none" stroke-linecap="round">
+      <path pathLength="1" d="M14 20c14-14 34-14 46 0 8 9 20 9 28 0" stroke-width="1.2"/>
+      <path pathLength="1" d="M186 20c-14-14-34-14-46 0-8 9-20 9-28 0" stroke-width="1.2"/>
+      <path pathLength="1" d="M14 20c-8 8-9 16-3 19 5 3 11-2 9-8" stroke-width="1.1"/>
+      <path pathLength="1" d="M186 20c8 8 9 16 3 19-5 3-11-2-9-8" stroke-width="1.1"/>
+      <circle pathLength="1" cx="100" cy="20" r="3.2" stroke-width="1.1"/>
+      <circle pathLength="1" cx="78" cy="24" r="1.8" stroke-width="1"/>
+      <circle pathLength="1" cx="122" cy="24" r="1.8" stroke-width="1"/>
+    </g>
+  </defs>
+</svg>
+
+
+<!-- =========================================================
+     1. PRAEGEDRUCK-COVER
+     Zwei Fluegel mit Blindpraegung, davor eine Satinschleife.
+     Beim Antippen loest sich der Knoten, dann schwingen die
+     Fluegel auf und geben die Karte frei.
+     ========================================================= -->
+<div class="cover" id="cover">
+  <div class="cover-buehne">
+
+    <div class="fluegel fluegel-links" id="fluegel-links">
+      <svg class="fluegel-svg" viewBox="0 0 300 1300" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+        <rect width="300" height="1300" fill="#f4ecdd"/>
+        <g filter="url(#praegung)" stroke="#ecdfc9"><use href="#rankenwand"/></g>
+      </svg>
+    </div>
+
+    <div class="fluegel fluegel-rechts" id="fluegel-rechts">
+      <svg class="fluegel-svg" viewBox="0 0 300 1300" preserveAspectRatio="xMinYMid slice" aria-hidden="true">
+        <rect width="300" height="1300" fill="#f4ecdd"/>
+        <g transform="translate(300,0) scale(-1,1)" filter="url(#praegung-spiegel)" stroke="#ecdfc9">
+          <use href="#rankenwand"/>
+        </g>
+      </svg>
+    </div>
+
+    <span class="naht" aria-hidden="true"></span>
+
+    <p class="cover-namen schreiben" id="cover-namen">Furkan &amp; Dilara</p>
+
+    <!-- Die Schleife ist der Knopf. Alles darin ist Zierrat. -->
+    <button class="schleife" id="schleife" type="button" aria-label="Einladung oeffnen">
+      <svg class="schleife-svg" viewBox="0 0 300 300" aria-hidden="true">
+        <!-- Erst die Enden, dann die Schlaufen, zuletzt der Knoten -
+             so liegt jedes Band dort, wo es bei echtem Satin laege. -->
+        <g id="ende-links" class="band">
+          <path d="M146 114c-4 46-24 92-56 130l18 16 10-24 16 26c30-42 48-96 50-152z"
+                fill="url(#satinQuer)"/>
+          <path d="M150 136c-6 42-24 82-50 114" fill="none" stroke="#c9b088" stroke-width="1.3" opacity=".45"/>
+        </g>
+        <g id="ende-rechts" class="band">
+          <path d="M154 114c4 46 24 92 56 130l-18 16-10-24-16 26c-30-42-48-96-50-152z"
+                fill="url(#satinQuer)"/>
+          <path d="M150 136c6 42 24 82 50 114" fill="none" stroke="#c9b088" stroke-width="1.3" opacity=".45"/>
+        </g>
+        <g id="band-links" class="band">
+          <path d="M148 96C118 46 44 34 20 66c-22 30 2 74 50 76 32 1 62-20 78-46z"
+                fill="url(#satin)"/>
+          <path d="M148 96C122 64 74 52 44 66" fill="none" stroke="#c9b088" stroke-width="1.4" opacity=".55"/>
+          <path d="M140 108c-30-14-70-16-92 2" fill="none" stroke="#c9b088" stroke-width="1.4" opacity=".4"/>
+          <path d="M126 118c-24-6-50-4-68 8" fill="none" stroke="#c9b088" stroke-width="1.2" opacity=".3"/>
+        </g>
+        <g id="band-rechts" class="band">
+          <path d="M152 96c30-50 104-62 128-30 22 30-2 74-50 76-32 1-62-20-78-46z"
+                fill="url(#satin)"/>
+          <path d="M152 96c26-32 74-44 104-30" fill="none" stroke="#c9b088" stroke-width="1.4" opacity=".55"/>
+          <path d="M160 108c30-14 70-16 92 2" fill="none" stroke="#c9b088" stroke-width="1.4" opacity=".4"/>
+          <path d="M174 118c24-6 50-4 68 8" fill="none" stroke="#c9b088" stroke-width="1.2" opacity=".3"/>
+        </g>
+        <g id="knoten">
+          <path d="M132 78c12-5 24-5 36 0 8 4 10 30 0 36-12 5-24 5-36 0-10-6-8-32 0-36z"
+                fill="url(#satin)"/>
+          <path d="M134 84c11 7 21 7 32 0" fill="none" stroke="#bda684" stroke-width="1.5" opacity=".65"/>
+          <path d="M134 108c11-7 21-7 32 0" fill="none" stroke="#bda684" stroke-width="1.5" opacity=".5"/>
+        </g>
+      </svg>
+    </button>
+
+    <p class="cover-hinweis" id="cover-hinweis">Zum Öffnen tippen</p>
+  </div>
+</div>
+
+
+<!-- =========================================================
+     2. KOPFLEISTE
+     ========================================================= -->
+<header class="kopf" id="kopf">
+  <a class="monogramm" href="#start" aria-label="Zum Anfang">F&amp;D</a>
+  <button class="burger" id="burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menue">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<nav class="menue" id="menue" hidden>
+  <a href="#start"><i>00</i>Start</a>
+  <a href="#ort"><i>01</i>Ort &amp; Anreise</a>
+  <a href="#ablauf"><i>02</i>Der Tag</a>
+  <a href="#dresscode"><i>03</i>Dresscode</a>
+  <a href="#geschenke"><i>04</i>Geschenke</a>
+  <a href="#rsvp"><i>05</i>Rückmeldung</a>
+</nav>
+
+
+<!-- Rosenblaetter treiben ueber die ganze Karte. Vom Skript gefuellt. -->
+<div class="blattfall" id="blattfall" aria-hidden="true"></div>
+
+<main class="karte" id="karte">
+
+  <!-- =========================================================
+       HIMMEL
+       ========================================================= -->
+  <section class="himmel" id="start">
+    <div class="wolken" aria-hidden="true"></div>
+
+    <svg class="seitenzier links" viewBox="0 0 300 1300" preserveAspectRatio="xMinYMid slice" aria-hidden="true">
+      <g stroke="#fffdf7"><use href="#rankenwand-dicht" transform="translate(300,0) scale(-1,1)"/></g>
+    </svg>
+    <svg class="seitenzier rechts" viewBox="0 0 300 1300" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <g stroke="#fffdf7"><use href="#rankenwand-dicht"/></g>
+    </svg>
+
+    <div class="himmel-satz">
+      <p class="kicker hell">Mit all unserer Liebe<br>laden wir euch ein</p>
+      <h1 class="namen">
+        <span class="vorname schreiben">Furkan</span>
+        <span class="und">&amp;</span>
+        <span class="vorname schreiben zweite">Dilara</span>
+      </h1>
+      <span class="strich" aria-hidden="true"></span>
+      <p class="himmel-datum">01 · 01 · 2027</p>
+      <p class="himmel-ort">Schloss Benrath ·<br>Düsseldorf</p>
+      <svg class="himmel-taube" viewBox="0 0 80 80" aria-hidden="true">
+        <g class="taube" fill="#fffdf7">
+          <use href="#taube-koerper"/>
+          <use class="schwinge" href="#taube-schwinge"/>
+        </g>
+      </svg>
+    </div>
+
+    <a class="scrollwink" href="#countdown" aria-label="Weiter zum Countdown">
+      <span>Scroll</span>
+      <svg viewBox="0 0 20 26" aria-hidden="true"><path d="M10 2v20m0 0-6-7m6 7 6-7"/></svg>
+    </a>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-a"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       COUNTDOWN
+       ========================================================= -->
+  <section class="bogen creme" id="countdown">
+    <div class="bogen-satz mitte">
+      <p class="kicker">Der Countdown</p>
+      <h2 class="kursiv"><span class="schreiben">Für immer beginnt in</span></h2>
+
+      <div class="zaehler" id="zaehler">
+        <div class="einheit"><div class="kachel"><b id="cd-t">—</b></div><span>Tage</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-s">—</b></div><span>Stunden</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-m">—</b></div><span>Minuten</span></div>
+        <div class="einheit"><div class="kachel"><b id="cd-k">—</b></div><span>Sekunden</span></div>
+      </div>
+      <p class="zaehler-fuss" id="cd-fuss">bis zum 1. Januar 2027</p>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-b"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       01 — ORT UND ANREISE
+       ========================================================= -->
+  <section class="bogen papier gesteppt" id="ort">
+    <div class="bogen-satz">
+
+      <div class="girlande" aria-hidden="true">
+        <svg viewBox="0 0 320 96">
+          <g class="taube" fill="#e3d2b2" transform="translate(26,26) scale(.62)">
+            <use href="#taube-koerper"/><use class="schwinge" href="#taube-schwinge"/>
+          </g>
+          <g class="taube spiegel" fill="#e3d2b2" transform="translate(294,26) scale(-.62,.62)">
+            <use href="#taube-koerper"/><use class="schwinge" href="#taube-schwinge"/>
+          </g>
+          <path d="M76 58c22 13 46 17 84 17s62-4 84-17" fill="none" stroke="#d5c19b" stroke-width="1.3"/>
+          <g class="blueten" fill="#e9d9b8">
+            <circle cx="112" cy="70" r="4.8"/><circle cx="136" cy="74" r="3.4"/>
+            <circle cx="160" cy="75.5" r="5.6"/><circle cx="184" cy="74" r="3.4"/>
+            <circle cx="208" cy="70" r="4.8"/>
+          </g>
+          <g fill="none" stroke="#cbb68e" stroke-width="1">
+            <path d="M100 64c-6 7-6 13-2 17"/><path d="M220 64c6 7 6 13 2 17"/>
+            <path d="M124 71c-4 6-3 11 1 14"/><path d="M196 71c4 6 3 11-1 14"/>
+            <path d="M148 74c-3 6-2 10 2 13"/><path d="M172 74c3 6 2 10-2 13"/>
+          </g>
+        </svg>
+      </div>
+
+      <span class="haarstrich" aria-hidden="true"></span>
+
+      <div class="mitte">
+        <p class="kicker">Datum</p>
+        <p class="anschlag">1. Januar 2027</p>
+        <p class="unterzeile">Freitag</p>
+      </div>
+
+      <p class="nummer">01</p>
+      <h2 class="abschnitt">Ort</h2>
+
+      <div class="posten">
+        <p class="kicker">Trauung</p>
+        <p class="postenname">Schloss Benrath</p>
+        <p class="postenzeile"><b>14:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
+        <a class="linkpfeil" id="karte-trauung" href="#" target="_blank" rel="noopener">In Karten öffnen →</a>
+      </div>
+
+      <div class="posten">
+        <p class="kicker">Empfang</p>
+        <p class="postenname">Orangerie im Schlosspark</p>
+        <p class="postenzeile"><b>19:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
+        <a class="linkpfeil" id="karte-empfang" href="#" target="_blank" rel="noopener">In Karten öffnen →</a>
+      </div>
+
+      <svg class="schnoerkel-trenner" viewBox="0 0 200 44" aria-hidden="true">
+        <use href="#schnoerkel" stroke="#c8b189"/>
+      </svg>
+
+      <h3 class="unterabschnitt">Anreise</h3>
+
+      <div class="posten schmal">
+        <p class="kicker">Mit dem Auto</p>
+        <p class="postenzeile">A59 bis Abfahrt Düsseldorf-Benrath, dann der Beschilderung
+          zum Schloss folgen.</p>
+      </div>
+      <div class="posten schmal">
+        <p class="kicker">Mit der Bahn</p>
+        <p class="postenzeile">S6 bis Düsseldorf-Benrath, von dort acht Minuten zu Fuß
+          durch den Schlosspark.</p>
+      </div>
+      <div class="posten schmal">
+        <p class="kicker">Parken</p>
+        <p class="postenzeile">Kostenfreie Plätze am Besucherparkplatz Süd, direkt
+          neben dem Parkeingang.</p>
+      </div>
+
+      <svg class="schnoerkel-trenner" viewBox="0 0 200 44" aria-hidden="true">
+        <use href="#schnoerkel" stroke="#c8b189"/>
+      </svg>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-c"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       02 — DER TAG
+       ========================================================= -->
+  <section class="bogen blush" id="ablauf">
+    <div class="bogen-satz">
+      <p class="nummer">02</p>
+      <h2 class="abschnitt">Der Tag</h2>
+
+      <ol class="zeitleiste"><span class="leiste-linie" aria-hidden="true"></span>
+        <li><b>14:30</b><div><p>Empfang</p><span>Sekt und ein erstes Wiedersehen im Hof.</span></div></li>
+        <li><b>15:30</b><div><p>Freie Trauung</p><span>Die Zeremonie findet im Spiegelsaal statt.</span></div></li>
+        <li><b>17:00</b><div><p>Kaffee &amp; Kuchen</p><span>Im Schlosspark, bei gutem Wetter draußen.</span></div></li>
+        <li><b>19:30</b><div><p>Dinner &amp; Feier</p><span>Abendessen in der Orangerie, danach Musik.</span></div></li>
+        <li><b>20:00</b><div><p>Eröffnungstanz</p><span>Und danach gehört die Fläche allen.</span></div></li>
+        <li><b>02:00</b><div><p>Ausklang</p><span>Letzter Tanz und Abschied am Tor.</span></div></li>
+      </ol>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-a"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       03 — DRESSCODE
+       ========================================================= -->
+  <section class="bogen creme" id="dresscode">
+    <div class="bogen-satz">
+      <svg class="paar-skizze" viewBox="0 0 210 250" aria-hidden="true">
+        <!-- Wenige, sichere Linien. Eine Skizze wird nicht besser,
+             wenn man mehr hineinzeichnet. -->
+        <g fill="none" stroke="#c2a87c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Er -->
+          <circle pathLength="1" cx="76" cy="54" r="13"/>
+          <path pathLength="1" d="M64 50c2-11 22-11 24 0"/>
+          <path pathLength="1" d="M76 67v5"/>
+          <path pathLength="1" d="M76 72c-12 0-18 8-19 20l-4 40"/>
+          <path pathLength="1" d="M76 72c12 0 18 8 19 20l4 38"/>
+          <path pathLength="1" d="M76 72v58"/>
+          <path pathLength="1" d="M60 132c-2 30-3 58-4 86M90 130c0 30-1 58-2 88"/>
+          <path pathLength="1" d="M49 219h13M82 220h13"/>
+          <path pathLength="1" d="M95 94c11 8 20 17 27 26"/>
+          <!-- Sie -->
+          <circle pathLength="1" cx="138" cy="50" r="12"/>
+          <path pathLength="1" d="M126 46c3-11 21-11 24 0"/>
+          <circle pathLength="1" cx="152" cy="42" r="5.5"/>
+          <path pathLength="1" d="M138 62v5"/>
+          <path pathLength="1" d="M138 67c-8 0-12 6-13 15l-3 24"/>
+          <path pathLength="1" d="M138 67c8 0 12 6 13 15l3 24"/>
+          <path pathLength="1" d="M122 106c-12 34-20 72-23 104 21 9 59 9 80 0-4-32-12-70-24-104"/>
+          <path pathLength="1" d="M130 112c-3 33-6 66-7 94M147 112c3 33 6 66 8 94" stroke-width="1.1" opacity=".7"/>
+          <path pathLength="1" d="M155 46c17 14 24 46 18 84-4 26-11 50-21 70" stroke-width="1.05" opacity=".55"/>
+          <path pathLength="1" d="M125 86c-13-6-24-9-31-8"/>
+          <!-- Strauss in ihrer Hand -->
+          <path pathLength="1" d="M152 90c6 11 10 21 11 30"/>
+          <g stroke-width="1.1" opacity=".85">
+            <circle pathLength="1" cx="168" cy="128" r="4.2"/><circle pathLength="1" cx="177" cy="122" r="3"/>
+            <circle pathLength="1" cx="176" cy="134" r="3.2"/><circle pathLength="1" cx="161" cy="121" r="2.8"/>
+            <path pathLength="1" d="M168 133c1 9 0 16-2 22"/>
+          </g>
+        </g>
+      </svg>
+
+      <p class="nummer">03</p>
+      <h2 class="abschnitt">Dresscode</h2>
+
+      <p class="anschlag gross">Festlich elegant</p>
+      <p class="fliess">Anzug und Abendkleid, gern in gedeckten Tönen.
+        Wir tragen Creme und Gold — reines Weiß bleibt bitte der Braut.</p>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-b"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       04 — GESCHENKE
+       ========================================================= -->
+  <section class="bogen papier gesteppt" id="geschenke">
+    <div class="bogen-satz">
+      <p class="nummer">04</p>
+      <h2 class="abschnitt">Geschenke</h2>
+
+      <p class="anschlag">Ein Geschenk für uns</p>
+      <p class="fliess">Ihr seid da — mehr braucht es nicht. Wer uns dennoch
+        etwas schenken möchte, hilft uns mit einem Beitrag zur Hochzeitsreise.</p>
+
+      <button class="umriss-knopf" id="iban-schalter" type="button"
+              aria-expanded="false" aria-controls="iban-feld">IBAN anzeigen</button>
+
+      <div class="iban-feld" id="iban-feld" hidden>
+        <p class="kicker">Kontoinhaberin</p>
+        <p class="postenzeile">Dilara Sarıca</p>
+        <p class="iban" id="iban">DE89 3704 0044 0532 0130 00</p>
+        <button class="knopf" id="iban-kopieren" type="button">Kopieren</button>
+      </div>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-c"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       05 — RUECKMELDUNG
+       ========================================================= -->
+  <section class="bogen blush" id="rsvp">
+    <div class="bogen-satz">
+      <p class="nummer">05</p>
+      <h2 class="abschnitt">Rückmeldung</h2>
+
+      <p class="kicker">Sagt uns Bescheid</p>
+      <p class="script-zeile"><span class="schreiben">Liebe Gäste</span></p>
+      <p class="fliess">Bitte gebt uns bis zum <b>1. November 2026</b> Bescheid,
+        ob ihr dabei seid.</p>
+
+      <form class="formular" id="formular" novalidate>
+        <label class="feld">
+          <span>Name</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Familie Yıldız" required>
+        </label>
+
+        <fieldset class="wahl">
+          <legend>Kommt ihr?</legend>
+          <div class="wahlpaar">
+            <label><input type="radio" name="zusage" value="ja"><span>Ja, wir sind dabei</span></label>
+            <label><input type="radio" name="zusage" value="nein"><span>Leider nicht</span></label>
+          </div>
+        </fieldset>
+
+        <label class="feld">
+          <span>Anzahl Personen</span>
+          <input type="number" name="anzahl" min="1" max="10" value="2">
+        </label>
+
+        <label class="feld">
+          <span>Essenswünsche</span>
+          <input type="text" name="essen" placeholder="Vegetarisch, glutenfrei, Allergien …">
+        </label>
+
+        <label class="feld">
+          <span>Nachricht an das Paar</span>
+          <textarea name="nachricht" rows="2" placeholder="Ein paar Zeilen an uns …"></textarea>
+        </label>
+
+        <button class="knopf breit" type="submit">Rückmeldung senden</button>
+        <p class="formular-echo" id="formular-echo" role="status"></p>
+      </form>
+    </div>
+
+    <svg class="riss riss-unten" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">
+      <use href="#riss-a"/>
+    </svg>
+  </section>
+
+
+  <!-- =========================================================
+       ABSCHIED
+       ========================================================= -->
+  <footer class="fuss">
+    <div class="bogen-satz mitte">
+      <p class="fuss-monogramm">F&amp;D</p>
+      <p class="script-zeile klein"><span class="schreiben">Mit Liebe</span></p>
+      <p class="fuss-namen">Furkan &amp; Dilara</p>
+      <p class="fuss-datum">1. Januar · 2027</p>
+
+      <svg class="schnoerkel-trenner" viewBox="0 0 200 44" aria-hidden="true">
+        <use href="#schnoerkel" stroke="#cbb59a"/>
+      </svg>
+
+      <p class="kicker">Bei Fragen</p>
+      <p class="fuss-mail"><a href="mailto:hallo@furkan-und-dilara.de">hallo@furkan-und-dilara.de</a></p>
+    </div>
+  </footer>
+
+</main>
+
+<!-- =========================================================
+     3. FUSSLEISTE
+     ========================================================= -->
+<nav class="reiter" id="reiter" aria-label="Abschnitte">
+  <a href="#start" data-ziel="start">Start</a>
+  <a href="#ort" data-ziel="ort">Ort</a>
+  <a href="#geschenke" data-ziel="geschenke">Geschenke</a>
+  <a href="#rsvp" data-ziel="rsvp">RSVP</a>
+</nav>
+
+<script src="js/eleganz.js?v=202608211453"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zwei Kartenstile</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Zwei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife und Wachssiegel zum Freirubbeln.">
+
+<!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
+     og:image braucht eine vollstaendige Adresse - relative Pfade
+     ignorieren die Messenger. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Furkan &amp; Dilara">
+<meta property="og:title" content="Zwei Kartenstile">
+<meta property="og:description" content="Zwei digitale Hochzeitskarten zum Ausprobieren: Prägedruck mit Satinschleife und Wachssiegel zum Freirubbeln.">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Zwei Kartenstile nebeneinander: Prägedruck und Wachssiegel">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+@font-face{font-family:'Cormorant';src:url('../assets/fonts/Cormorant-latin.woff2') format('woff2');
+  font-weight:300 500;font-display:swap}
+@font-face{font-family:'Manrope';src:url('../assets/fonts/Manrope-latin.woff2') format('woff2');
+  font-weight:200 800;font-display:swap}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;padding:56px 22px;
+  background:#f4efe6;color:#3b352d;
+  font-family:'Cormorant',Georgia,serif;
+  display:flex;flex-direction:column;align-items:center;gap:34px;
+}
+h1{font-weight:300;font-size:clamp(28px,7vw,38px);margin:0;text-align:center}
+.unter{
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#8d8271;
+  margin:0 0 8px;text-align:center;
+}
+.reihe{display:grid;gap:22px;width:100%;max-width:760px;grid-template-columns:1fr}
+@media (min-width:640px){.reihe{grid-template-columns:1fr 1fr}}
+.kachel{
+  display:block;text-decoration:none;color:inherit;
+  border:1px solid #ded1b8;border-radius:3px;overflow:hidden;
+  background:#fffdf8;
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.kachel:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(120,95,60,.18)}
+/* Die Kachel zeigt die Karte selbst, nicht eine Farbe, die sie
+   andeutet. Das Bild dient zugleich als Vorschau beim Teilen. */
+.probe{position:relative;aspect-ratio:1200/630;overflow:hidden;background:#efe7d8}
+.probe img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s cubic-bezier(.2,.7,.3,1)}
+.kachel:hover .probe img{transform:scale(1.04)}
+.marke{
+  position:absolute;left:14px;bottom:14px;
+  background:rgba(255,253,248,.9);
+  backdrop-filter:blur(6px);
+  padding:7px 13px;border-radius:2px;
+  font-family:'Manrope',system-ui,sans-serif;font-weight:600;
+  font-size:9px;letter-spacing:.28em;text-transform:uppercase;
+}
+.marke.a{color:#4c5878}
+.marke.b{color:#2b3aa8}
+.text{padding:20px 22px 24px}
+.text h2{margin:0 0 8px;font-weight:400;font-size:24px}
+.text p{margin:0;font-size:16px;line-height:1.6;color:#6d6355}
+.fuss{
+  font-family:'Manrope',system-ui,sans-serif;font-size:11px;letter-spacing:.16em;
+  color:#a1957f;text-align:center;max-width:44ch;line-height:1.8;margin:0;
+}
+</style>
+</head>
+<body>
+  <div>
+    <p class="unter">Digitale Hochzeitskarten</p>
+    <h1>Zwei Stile zur Auswahl</h1>
+  </div>
+
+  <div class="reihe">
+    <a class="kachel" href="eleganz/">
+      <div class="probe"><img src="eleganz/vorschau.jpg" alt="Geprägte Karte mit Satinschleife" width="1200" height="630" loading="lazy" decoding="async"><span class="marke a">Prägedruck</span></div>
+      <div class="text">
+        <h2>Eleganz</h2>
+        <p>Geprägte Flügel mit Satinschleife, dahinter die Einladung als Heft:
+           fünf nummerierte Bogen mit eigenem Papierton, getrennt durch
+           gerissene Ränder.</p>
+      </div>
+    </a>
+
+    <a class="kachel" href="siegel/">
+      <div class="probe"><img src="siegel/vorschau.jpg" alt="Rosa Umschlag mit blauem Wachssiegel" width="1200" height="630" loading="lazy" decoding="async"><span class="marke b">Wachssiegel</span></div>
+      <div class="text">
+        <h2>Siegel</h2>
+        <p>Wachssiegel aufbrechen, das blaue Glitzerherz freirubbeln, mit
+           einem Tippen in den Kalender legen. Eine Karte, ein Zweck.</p>
+      </div>
+    </a>
+  </div>
+
+  <p class="fuss">Demo-Datensatz Furkan &amp; Dilara — Paar, Termin, Location
+     und Bankverbindung sind frei erfunden.</p>
+</body>
+</html>

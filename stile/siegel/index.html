@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Furkan &amp; Dilara — Save the Date</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Save the Date zum Freirubbeln: Wachssiegel aufbrechen, blaues Glitzerherz freirubbeln, Termin in den Kalender legen.">
+
+<!-- Vorschau beim Teilen in WhatsApp, Telegram, iMessage.
+     og:image braucht eine vollstaendige Adresse - relative Pfade
+     ignorieren die Messenger. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Furkan &amp; Dilara">
+<meta property="og:title" content="Furkan &amp; Dilara — Save the Date">
+<meta property="og:description" content="Save the Date zum Freirubbeln: Wachssiegel aufbrechen, blaues Glitzerherz freirubbeln, Termin in den Kalender legen.">
+<meta property="og:url" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/siegel/">
+<meta property="og:image" content="https://webstudiojp.github.io/hochzeitskarte-demo/stile/siegel/vorschau.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rosa Umschlag mit blauem Wachssiegel und dem Monogramm F und D">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f0d7d3">
+<link rel="stylesheet" href="css/siegel.css?v=202608211453">
+</head>
+<body class="zu">
+
+<svg class="depot" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Rauputz. Grobes Rauschen wird als Oberflaeche beleuchtet, daraus
+         entstehen die weichen Kellenspuren des Untergrunds. -->
+    <filter id="putz" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".0085" numOctaves="3" seed="21" result="wolke"/>
+      <!-- Das Rauschen kommt flau aus dem Generator. Erst gespreizt gibt
+           es dem Licht genug Gefaelle, sonst bleibt die Wand glatt. -->
+      <feComponentTransfer in="wolke" result="hart">
+        <feFuncA type="linear" slope="2" intercept="-.5"/>
+      </feComponentTransfer>
+      <feDiffuseLighting in="hart" surfaceScale="17" diffuseConstant="1"
+                         lighting-color="#ffffff" result="relief">
+        <feDistantLight azimuth="232" elevation="54"/>
+      </feDiffuseLighting>
+    </filter>
+
+    <!-- Feines Korn darueber, damit die Flaeche nicht glatt wirkt. -->
+    <filter id="korn" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="5" result="k"/>
+      <feColorMatrix in="k" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".34"/></feComponentTransfer>
+    </filter>
+
+    <radialGradient id="wachs" cx=".34" cy=".3" r=".82">
+      <stop offset="0"   stop-color="#5f74d8"/>
+      <stop offset=".42" stop-color="#33459f"/>
+      <stop offset=".82" stop-color="#1e2a6d"/>
+      <stop offset="1"   stop-color="#141c4c"/>
+    </radialGradient>
+    <linearGradient id="wachsRand" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#7387e6"/>
+      <stop offset="1" stop-color="#101744"/>
+    </linearGradient>
+    <path id="wachsform" d="M100 16c17-6 33 4 45 12 13 9 30 11 36 24 6 13-4 27-4 42 0 14 11 27 5 40-6 13-24 15-36 24-13 9-27 22-44 18-17-4-25-21-38-29-13-9-32-9-38-23-6-14 6-28 6-43 0-15-11-30-4-43 7-13 25-14 38-22 12-8 17-3 34 0z"/>
+    <clipPath id="wachsklipp"><use href="#wachsform"/></clipPath>
+    <linearGradient id="glanzverlauf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0"  stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity=".62"/>
+      <stop offset="1"  stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+
+<!-- =========================================================
+     1. UMSCHLAG — Wachssiegel antippen
+     ========================================================= -->
+<div class="umschlag" id="umschlag">
+  <div class="putz" aria-hidden="true"></div>
+  <div class="feinkorn" aria-hidden="true"></div>
+
+  <div class="brief">
+    <div class="brief-flaeche" aria-hidden="true"><i class="putzlage"></i></div>
+    <div class="klappe" id="klappe" aria-hidden="true"><i class="putzlage"></i></div>
+
+    <button class="siegel" id="siegel" type="button" aria-label="Save the Date öffnen">
+      <svg class="siegel-svg" viewBox="0 0 200 200" aria-hidden="true">
+        <use href="#wachsform" fill="url(#wachsRand)" transform="translate(100,102) scale(1.06) translate(-100,-100)"/>
+        <use href="#wachsform" fill="url(#wachs)"/>
+        <circle cx="100" cy="100" r="56" fill="none" stroke="#0f1642" stroke-width="2.4" opacity=".5"/>
+        <circle cx="100" cy="100" r="56" fill="none" stroke="#8195ee" stroke-width="1.2" opacity=".4"
+                transform="translate(0,-1.6)"/>
+        <text class="siegel-schrift" x="100" y="116" text-anchor="middle">F&amp;D</text>
+        <g clip-path="url(#wachsklipp)">
+          <rect class="wachsglanz" x="-70" y="-20" width="66" height="240" fill="url(#glanzverlauf)"
+                transform="rotate(12 100 100)"/>
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <p class="umschlag-hinweis">Siegel antippen</p>
+</div>
+
+
+<!-- =========================================================
+     2. SAVE THE DATE
+     Der Putz traegt die ganze Seite, kein Kaertchen darauf.
+     ========================================================= -->
+<!-- Rosenblaetter treiben ueber Umschlag und Karte. Vom Skript gefuellt. -->
+<div class="blattfall" id="blattfall" aria-hidden="true"></div>
+
+<main class="seite" id="seite">
+  <div class="putz" aria-hidden="true"></div>
+  <div class="feinkorn" aria-hidden="true"></div>
+
+  <div class="satz">
+    <h1 class="titel">Save <em>the</em> Date</h1>
+
+    <!-- Das Herz ist die Rubbelflaeche. Darunter liegt der Umriss mit
+         dem Termin, darueber das blaue Glitzerherz auf der Leinwand. -->
+    <div class="herzfeld" id="herzfeld">
+      <svg class="umriss" id="umriss" viewBox="0 0 260 244" aria-hidden="true">
+        <!-- Von Hand gezogen: die Haelften sind nicht deckungsgleich, und
+             am Ende laeuft der Strich ein Stueck ueber den Anfang hinaus. -->
+        <path id="umrisslinie"
+              d="M129 219C85 185 30 150 22 104 16 68 42 36 75 38 99 39 120 55 131 75
+                 143 54 163 37 187 40 219 43 243 73 235 109 226 154 173 186 129 219
+                 123 214 117 209 112 203"/>
+      </svg>
+
+      <div class="umriss-text">
+        <p class="hand">Wir feiern<br>unseren großen Tag</p>
+        <p class="datum">01.01.27</p>
+      </div>
+
+      <canvas class="glitzer" id="glitzer"></canvas>
+      <!-- Funken auf dem Glitzer. Sie verschwinden, sobald gerubbelt wird -
+           auf einer schon abgetragenen Stelle haette nichts mehr zu blitzen. -->
+      <div class="funkeln" id="funkeln" aria-hidden="true"></div>
+    </div>
+
+    <p class="namen">Furkan &amp; Dilara</p>
+
+    <!-- Vor dem Rubbeln steht hier der Hinweis, danach der Knopf.
+         Beides an derselben Stelle, damit die Seite nicht springt. -->
+    <div class="fussfeld">
+      <p class="wink" id="wink"><span>✦</span> Herz freirubbeln <span>✦</span></p>
+
+      <button class="kalender" id="kalender" type="button" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="16" rx="2.5"/>
+          <path d="M3 10h18M8 3v4M16 3v4"/>
+        </svg>
+        Zum Kalender hinzufügen
+      </button>
+    </div>
+  </div>
+</main>
+
+<script src="js/siegel.js?v=202608211453"></script>
+</body>
+</html>
