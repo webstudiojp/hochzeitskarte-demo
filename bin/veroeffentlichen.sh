@@ -28,9 +28,13 @@ done
 
 # Dieselbe Version fuer die neun Vorlagen. Ihre Medien liegen in
 # medien/, ihr gemeinsamer Bau eine Ebene darueber.
-for SEITE in vorlagen/*/index.html; do
-  perl -0777 -i -pe 's!("\.\./gemeinsam/vorlage\.(?:css|js))(\?v=\d+)?"!$1?v='"$V"'"!g' "$SEITE"
-  perl -0777 -i -pe 's!((?:src|href|poster)="medien/[a-z0-9-]+\.(?:webp|mp4|jpg))(\?v=\d+)?"!$1?v='"$V"'"!g' "$SEITE"
+# Die englischen Fassungen liegen eine Ebene tiefer und tragen
+# deshalb einen laengeren Weg - beide Tiefen muessen mit, sonst
+# haelt ein Browser die englische Seite auf altem Stand.
+for SEITE in vorlagen/*/index.html vorlagen/*/en/index.html; do
+  [ -f "$SEITE" ] || continue
+  perl -0777 -i -pe 's!("(?:\.\./)+gemeinsam/vorlage\.(?:css|js))(\?v=\d+)?"!$1?v='"$V"'"!g' "$SEITE"
+  perl -0777 -i -pe 's!((?:src|href|poster)="(?:\.\./)?medien/[a-z0-9-]+\.(?:webp|mp4|jpg))(\?v=\d+)?"!$1?v='"$V"'"!g' "$SEITE"
 done
 for U in vorlagen/index.html vorlagen/en/index.html; do
   perl -0777 -i -pe 's!((?:src|href)="(?:\.\./)?[a-z]+/vorschau\.jpg)(\?v=\d+)?"!$1?v='"$V"'"!g' "$U"

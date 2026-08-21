@@ -459,6 +459,24 @@
     rechnen();
   }
 
+  /* =========================================================
+     BILDER DER GAESTE
+     Ohne Server gibt es kein gemeinsames Album. Der Knopf legt
+     statt dessen eine fertige Mail an - anhaengen muss der Gast
+     selbst. Dafuer landen die Bilder dort, wo sie hingehoeren:
+     beim Paar und nicht bei einem fremden Dienst.
+     ========================================================= */
+  function fotopost() {
+    const a = $('[data-fotomail]');
+    if (!a || !DATEN.email) return;
+    const en = document.documentElement.lang === 'en';
+    a.href = 'mailto:' + DATEN.email +
+      '?subject=' + encodeURIComponent((en ? 'Pictures — ' : 'Bilder — ') + DATEN.namen) +
+      '&body=' + encodeURIComponent(en
+        ? 'Here are my pictures from your day.\n\n(Simply attach them to this email.)'
+        : 'Hier sind meine Bilder von eurem Tag.\n\n(Einfach an diese Mail anhängen.)');
+  }
+
   umschlag();
   flug();
   nachziehen();
@@ -467,5 +485,6 @@
   kalenderUndWeg();
   rueckmeldung();
   kleinkram();
+  fotopost();
   document.documentElement.setAttribute('data-bereit', '');
 })();

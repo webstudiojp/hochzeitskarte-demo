@@ -625,3 +625,83 @@ html[data-zu],html[data-zu] body{overflow:hidden}
 .fuss-klein{font-family:var(--schrift-sans);font-size:11px;line-height:1.9;
   color:rgba(255,255,255,.4);margin:32px auto 0;max-width:44ch}
 .fuss-marke{font-family:var(--schrift-script);font-size:22px;color:rgba(255,255,255,.5);margin-top:20px}
+
+/* =========================================================
+   EINLADUNG — der Zuruf unter dem Auftakt
+   Ein Satz in der Kursiven, mehr nicht. Die Vorbilder
+   setzen ihn als Ueberschrift; als Fliesstext gelesen
+   traegt er besser und schreit den Auftakt nicht nieder.
+   ========================================================= */
+.einladung{text-align:center}
+.einladung-satz{
+  font-family:var(--schrift-serif);font-style:italic;
+  font-size:23px;line-height:1.55;color:var(--olive);
+  max-width:32ch;margin:0 auto 28px;
+}
+@media (min-width:768px){.einladung-satz{font-size:29px}}
+.abschnitt--oliv .einladung-satz{color:var(--gold)}
+.einladung .zierlinie{margin-bottom:8px}
+.einladung-zweit{
+  font-family:var(--schrift-script);font-size:22px;
+  color:var(--accent);margin:40px 0 20px;
+}
+
+/* =========================================================
+   MENUE — die Speisenfolge
+   ========================================================= */
+.menue{display:grid;gap:44px}
+@media (min-width:768px){.menue{grid-template-columns:1fr 1fr;gap:56px 48px}}
+.gang{text-align:center}
+.gang h3{
+  font-family:var(--schrift-sans);font-size:12px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:18px;
+}
+.abschnitt--oliv .gang h3{color:var(--gold)}
+.gang ul{display:flex;flex-direction:column;gap:14px}
+.gang li{
+  font-family:var(--schrift-serif);font-style:italic;
+  font-size:18px;line-height:1.5;color:var(--olive);
+}
+.abschnitt--oliv .gang li{color:rgba(255,255,255,.78)}
+
+/* =========================================================
+   VORAB — was schon vor dem Tag stattfindet
+   ========================================================= */
+.vorabliste{display:flex;flex-direction:column;gap:20px}
+.vorab-punkt{
+  padding:24px 26px;background:#fff;
+  border:1px solid color-mix(in srgb,var(--accent) 16%,transparent);
+}
+.abschnitt--oliv .vorab-punkt{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.vorab-punkt h3{
+  font-family:var(--schrift-script);font-weight:400;font-size:26px;
+  line-height:1.2;color:var(--olive);margin-bottom:8px;
+}
+.abschnitt--oliv .vorab-punkt h3{color:var(--gold)}
+.vorab-punkt p{font-family:var(--schrift-serif);font-size:17px;line-height:1.65;color:var(--muted)}
+.abschnitt--oliv .vorab-punkt p{color:rgba(255,255,255,.75)}
+
+/* =========================================================
+   ZIERBAND — das schmale Bild zwischen zwei Abschnitten.
+   Die Vorbilder setzen dort einen Kerzenleuchter, eine
+   Muschel, eine Torte. Es traegt keinen Text und keine
+   Aufgabe, es laesst die Seite nur atmen.
+   ========================================================= */
+.abschnitt--zierband{padding:40px 0;display:flex;justify-content:center}
+@media (min-width:768px){.abschnitt--zierband{padding:56px 0}}
+.zierbild{width:150px;height:auto;max-width:58vw}
+@media (min-width:768px){.zierbild{width:200px}}
+
+/* =========================================================
+   PAARBILD — das grosse Bild zum Schluss
+   ========================================================= */
+.abschnitt--paarbild{padding:0}
+.paarbild{position:relative;margin:0}
+.paarbild img{display:block;width:100%;height:auto;max-height:78vh;object-fit:cover}
+.paarbild figcaption{
+  position:absolute;left:0;right:0;bottom:36px;text-align:center;
+  font-family:var(--schrift-script);font-size:32px;color:#fff;
+  text-shadow:0 2px 24px rgba(0,0,0,.55);
+}
+@media (min-width:768px){.paarbild figcaption{font-size:44px}}

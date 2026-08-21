@@ -86,14 +86,7 @@ WORT = {
     'ton':         ('Musik an oder aus', 'Music on or off'),
     'oeffnen':     ('Siegel drücken und die Einladung öffnen',
                     'Press the seal to open the invitation'),
-    'fotos_knopf': ('Bilder an uns schicken', 'Send us your pictures'),
-    'fotos_klein': ('Öffnet eine fertige E-Mail — hängt eure Bilder einfach an.',
-                    'Opens a prepared email — simply attach your pictures.'),
 }
-
-
-STERN_SVG = ('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-             '<path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>')
 
 
 def kopf(ueber, titel, unter=None, zierlinie=True):
@@ -102,7 +95,10 @@ def kopf(ueber, titel, unter=None, zierlinie=True):
         s.append('<p class="kopf-ueber">%s</p>' % e(ueber))
     s.append('<h2>%s</h2>' % e(titel))
     if zierlinie:
-        s.append('<div class="zierlinie"><i></i>%s<i></i></div>' % STERN_SVG)
+        s.append('<div class="zierlinie"><i></i>'
+                 '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+                 '<path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/></svg>'
+                 '<i></i></div>')
     if unter:
         s.append('<p class="kopf-unter">%s</p>' % e(unter))
     s.append('</div>')
@@ -119,7 +115,7 @@ def abschnitt_geschichte(t):
             '<span class="station-jahr">%s</span>'
             '<h3>%s</h3><p>%s</p></div></li>' % (e(jahr), e(titel), e(text)))
     return (
-        '<section class="abschnitt abschnitt--@TON@">\n<div class="huelle">\n%s\n'
+        '<section class="abschnitt abschnitt--creme">\n<div class="huelle">\n%s\n'
         '<div class="geschichte"><div class="geschichte-achse"></div>'
         '<ol class="stationen">%s</ol></div>\n</div>\n</section>'
         % (kopf(t['geschichte_ueber'], t['geschichte_titel']), '\n'.join(st)))
@@ -129,7 +125,7 @@ def abschnitt_countdown(t):
     teile = [(k, WORT[k]) for k in ('tage', 'stunden', 'minuten', 'sekunden')]
     u = ''.join('<div class="uhr-teil"><b data-zaehler="%s">–</b><i>%s</i></div>' % (k, e(n))
                 for k, n in teile)
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle">\n%s\n'
+    return ('<section class="abschnitt abschnitt--papier">\n<div class="huelle">\n%s\n'
             '<div class="uhr" data-auftritt>%s</div>\n'
             '<p class="kopf-unter" style="text-align:center;margin-top:24px" '
             'data-countdown-vorbei hidden>%s</p>\n</div>\n</section>'
@@ -149,7 +145,7 @@ def abschnitt_programm(t):
                  '<div class="programm-text"><div class="programm-zeile">'
                  '<span class="programm-zeit">%s</span><h3>%s</h3></div>'
                  '<p>%s</p></div></li>' % (UHR_SVG, e(zeit), e(titel), e(text)))
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
+    return ('<section class="abschnitt abschnitt--oliv">\n<div class="huelle huelle--eng">\n%s\n'
             '<div class="programm"><div class="programm-achse"></div>'
             '<ol class="programm-liste">%s</ol></div>\n</div>\n</section>'
             % (kopf(None, t['programm_titel'], t['programm_unter']), '\n'.join(p)))
@@ -161,14 +157,14 @@ def abschnitt_band(t):
     bilder = ''.join('<figure class="band-bild"><img src="%s%s" alt="" width="600" height="800" '
                      'loading="lazy" decoding="async"></figure>' % (med(), e(b))
                      for b in t['band'] * 2)
-    return ('<section class="abschnitt abschnitt--@TON@">\n%s\n'
+    return ('<section class="abschnitt abschnitt--creme">\n%s\n'
             '<div class="band" data-auftritt><div class="band-lauf">%s</div></div>\n</section>'
             % ('<div class="huelle">%s</div>' % kopf(t['band_ueber'], t['band_titel']), bilder))
 
 
 def abschnitt_ort(t):
     o = t['ort']
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
+    return ('<section class="abschnitt abschnitt--weiss">\n<div class="huelle huelle--eng">\n%s\n'
             '<div class="karte" data-auftritt>'
             '<h3>%s</h3><p class="zeit">%s</p><p>%s</p>'
             '<p class="adresse">%s<br>%s</p>'
@@ -184,7 +180,7 @@ def abschnitt_ort(t):
 
 def abschnitt_kleider(t):
     f = ''.join('<i style="--f:%s"></i>' % c for c in t['kleider_farben'])
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
+    return ('<section class="abschnitt abschnitt--papier">\n<div class="huelle huelle--eng">\n%s\n'
             '<div class="karte" data-auftritt><p>%s</p>'
             '<div class="farbfelder">%s</div></div>\n</div>\n</section>'
             % (kopf(t['kleider_ueber'], t['kleider_titel']), e(t['kleider_text']), f))
@@ -192,7 +188,7 @@ def abschnitt_kleider(t):
 
 def abschnitt_rsvp(t):
     speisen = ''.join('<option>%s</option>' % e(s) for s in t['speisen'])
-    return ('<section class="abschnitt abschnitt--@TON@" id="rueckmeldung">\n'
+    return ('<section class="abschnitt abschnitt--creme" id="rueckmeldung">\n'
             '<div class="huelle huelle--eng">\n%s\n'
             '<form class="formular" data-rsvp novalidate data-auftritt>'
             '<label class="feld"><span>%s</span>'
@@ -233,7 +229,7 @@ def abschnitt_rsvp(t):
 
 
 def abschnitt_geschenke(t):
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
+    return ('<section class="abschnitt abschnitt--papier">\n<div class="huelle huelle--eng">\n%s\n'
             '<div class="karte" data-auftritt><p>%s</p>'
             '<div class="tasten"><button class="taste" type="button" data-iban-zeigen>'
             '%s</button></div>'
@@ -249,7 +245,7 @@ def abschnitt_anreise(t):
     h = ''.join('<div class="haus"><h4>%s</h4><p class="stern">%s</p><p>%s</p><p>%s</p></div>'
                 % (e(n), e(s), e(w), e(x)) for n, s, w, x in t['haeuser'])
     m = ''.join('<li>%s</li>' % e(x) for x in t['merk'])
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle">\n%s\n'
+    return ('<section class="abschnitt abschnitt--creme">\n<div class="huelle">\n%s\n'
             '<div class="raster raster--drei" data-auftritt>%s</div>\n'
             '<p class="kopf-unter" style="text-align:center;margin-top:48px" data-auftritt>%s</p>'
             '<ul class="merkliste" data-auftritt>%s</ul>\n</div>\n</section>'
@@ -261,148 +257,9 @@ def abschnitt_fragen(t):
     f = ''.join('<details data-frage><summary>%s</summary>'
                 '<div class="fragen-antwort"><div><p>%s</p></div></div></details>'
                 % (e(q), e(a)) for q, a in t['fragen'])
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
+    return ('<section class="abschnitt abschnitt--papier">\n<div class="huelle huelle--eng">\n%s\n'
             '<div class="fragen" data-auftritt>%s</div>\n</div>\n</section>'
             % (kopf(t['fragen_ueber'], WORT['fragen']), f))
-
-
-# =========================================================
-#  ABSCHNITTE, DIE NUR EINZELNE KARTEN TRAGEN
-# =========================================================
-
-def abschnitt_einladung(t, mit_uhr=False):
-    """Der Zuruf unter dem Auftakt. Azur traegt die Uhr gleich mit."""
-    uhr = ''
-    if mit_uhr:
-        teile = [(k, WORT[k]) for k in ('tage', 'stunden', 'minuten', 'sekunden')]
-        uhr = ('<p class="einladung-zweit">%s</p><div class="uhr" data-auftritt>%s</div>'
-               '<p class="kopf-unter" style="text-align:center;margin-top:24px" '
-               'data-countdown-vorbei hidden>%s</p>'
-               % (e(t['countdown_ueber']),
-                  ''.join('<div class="uhr-teil"><b data-zaehler="%s">–</b><i>%s</i></div>'
-                          % (k, e(n)) for k, n in teile),
-                  e(WORT['heuteist'])))
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n'
-            '<div class="einladung" data-auftritt>'
-            '<p class="kopf-ueber">%s</p>'
-            '<p class="einladung-satz">%s</p>'
-            '<div class="zierlinie"><i></i>%s<i></i></div>'
-            '%s</div>\n</div>\n</section>'
-            % (e(t['einladung_ueber']), e(t['einladung_text']), STERN_SVG, uhr))
-
-
-def abschnitt_menue(t):
-    """Die Speisenfolge. Nur Mitternacht hat eine."""
-    g = []
-    for gang, gerichte in t['menue']:
-        z = ''.join('<li>%s</li>' % e(x) for x in gerichte)
-        g.append('<div class="gang" data-auftritt><h3>%s</h3><ul>%s</ul></div>' % (e(gang), z))
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle">\n%s\n'
-            '<div class="menue">%s</div>\n</div>\n</section>'
-            % (kopf(t['menue_ueber'], t['menue_titel'], t.get('menue_unter')), '\n'.join(g)))
-
-
-def abschnitt_fotos(t):
-    """Bitte um Bilder der Gaeste. Ohne Server laeuft das ueber eine Mail."""
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
-            '<div class="karte" data-auftritt><p>%s</p>'
-            '<div class="tasten"><a class="taste taste--voll" data-fotomail href="#">%s</a></div>'
-            '<p class="klein">%s</p></div>\n</div>\n</section>'
-            % (kopf(t['fotos_ueber'], t['fotos_titel']), e(t['fotos_text']),
-               e(WORT['fotos_knopf']), e(WORT['fotos_klein'])))
-
-
-def abschnitt_vorab(t):
-    """Was vor dem Tag schon stattfindet."""
-    p = ''.join('<li class="vorab-punkt" data-auftritt><h3>%s</h3><p>%s</p></li>'
-                % (e(titel), e(text)) for titel, text in t['vorab'])
-    return ('<section class="abschnitt abschnitt--@TON@">\n<div class="huelle huelle--eng">\n%s\n'
-            '<ul class="vorabliste">%s</ul>\n</div>\n</section>'
-            % (kopf(t['vorab_ueber'], t['vorab_titel'], t.get('vorab_unter')), p))
-
-
-def abschnitt_zierbild(t, i=0):
-    """Ein schmales Zierband zwischen zwei Abschnitten, wie in den Vorbildern."""
-    bilder = t.get('zierbilder') or []
-    if i >= len(bilder):
-        return ''
-    return ('<section class="abschnitt abschnitt--@TON@ abschnitt--zierband">'
-            '<img class="zierbild" src="%s%s" alt="" width="260" height="260" '
-            'loading="lazy" decoding="async" data-auftritt></section>'
-            % (med(), e(bilder[i])))
-
-
-def abschnitt_paarbild(t):
-    """Das grosse Bild zum Schluss."""
-    if not t.get('paarbild'):
-        return ''
-    return ('<section class="abschnitt abschnitt--@TON@ abschnitt--paarbild">\n'
-            '<figure class="paarbild" data-auftritt>'
-            '<img src="%s%s" alt="" width="900" height="1200" loading="lazy" decoding="async">'
-            '<figcaption>%s</figcaption></figure>\n</section>'
-            % (med(), e(t['paarbild']), e(t['paarbild_text'])))
-
-
-# =========================================================
-#  REIHENFOLGE UND FARBTON
-# =========================================================
-
-BAUER = {
-    'countdown':     abschnitt_countdown,
-    'einladung':     abschnitt_einladung,
-    'einladung_uhr': lambda t: abschnitt_einladung(t, mit_uhr=True),
-    'geschichte':    abschnitt_geschichte,
-    'band':          abschnitt_band,
-    'programm':      abschnitt_programm,
-    'ort':           abschnitt_ort,
-    'kleider':       abschnitt_kleider,
-    'vorab':         abschnitt_vorab,
-    'menue':         abschnitt_menue,
-    'rsvp':          abschnitt_rsvp,
-    'geschenke':     abschnitt_geschenke,
-    'anreise':       abschnitt_anreise,
-    'fragen':        abschnitt_fragen,
-    'fotos':         abschnitt_fotos,
-    'zierbild1':     lambda t: abschnitt_zierbild(t, 0),
-    'zierbild2':     lambda t: abschnitt_zierbild(t, 1),
-    'paarbild':      abschnitt_paarbild,
-}
-
-# Grundton je Abschnitt. Der Tagesablauf traegt wie in den Vorbildern
-# den dunklen Akzent; stossen zwei gleiche Toene aneinander, weicht der
-# zweite aus, damit die Naht sichtbar bleibt.
-TON = {
-    'countdown': 'papier', 'einladung': 'creme', 'einladung_uhr': 'creme',
-    'geschichte': 'creme', 'band': 'creme', 'programm': 'oliv', 'ort': 'weiss',
-    'kleider': 'papier', 'vorab': 'papier', 'menue': 'creme', 'rsvp': 'creme',
-    'geschenke': 'papier', 'anreise': 'creme', 'fragen': 'papier',
-    'fotos': 'papier', 'zierbild1': 'oliv', 'zierbild2': 'oliv',
-    'paarbild': 'creme',
-}
-HELL = ('creme', 'papier', 'weiss')
-
-# Faellt die Liste in den Daten aus, bleibt es beim alten Einheitssatz.
-STANDARD = ('countdown', 'geschichte', 'band', 'programm', 'ort', 'kleider',
-            'rsvp', 'geschenke', 'anreise', 'fragen')
-
-
-def abschnitte(t):
-    """Baut die Abschnitte in der Reihenfolge, die der Datensatz vorgibt."""
-    raus, vorher = [], None
-    for schluessel in t.get('abschnitte') or STANDARD:
-        stueck = BAUER[schluessel](t)
-        if not stueck:
-            continue
-        ton = TON.get(schluessel, 'creme')
-        # Das Zierband liegt im Vorbild mal hell, mal dunkel - das entscheidet
-        # die Karte selbst, nicht die Reihenfolge.
-        if schluessel.startswith('zierbild'):
-            ton = t.get('zierton', ton)
-        if ton == vorher:
-            ton = 'creme' if ton == 'oliv' else HELL[(HELL.index(ton) + 1) % len(HELL)]
-        raus.append(stueck.replace('@TON@', ton))
-        vorher = ton
-    return '\n\n'.join(raus)
 
 
 # =========================================================
@@ -516,7 +373,25 @@ def seite(t):
   </div>
 </section>
 
-{abschnitte}
+{countdown}
+
+{geschichte}
+
+{band}
+
+{programm}
+
+{ort}
+
+{kleider}
+
+{rsvp}
+
+{geschenke}
+
+{anreise}
+
+{fragen}
 
 <footer class="fuss">
   <p class="fuss-namen">{v1} &amp; {v2}</p>
@@ -548,7 +423,11 @@ def seite(t):
         v1=e(v1), v2=e(v2), marke=e(t.get('marke', '')),
         gestapelt=(' auftakt-namen--gestapelt' if len(v1) + len(v2) > 15 else '')
                    + (' auftakt-namen--schimmer' if t.get('schimmer') else ''),
-        abschnitte=abschnitte(t),
+        countdown=abschnitt_countdown(t), geschichte=abschnitt_geschichte(t),
+        band=abschnitt_band(t), programm=abschnitt_programm(t), ort=abschnitt_ort(t),
+        kleider=abschnitt_kleider(t), rsvp=abschnitt_rsvp(t),
+        geschenke=abschnitt_geschenke(t), anreise=abschnitt_anreise(t),
+        fragen=abschnitt_fragen(t),
         karte=('{"kennung":"%s","namen":"%s","beginnISO":"%s","endeISO":"%s","ort":"%s",'
                '"anlass":"%s","kalendertext":"%s","email":"%s","iban":"%s","musik":%s,'
                '"speisen":[%s],"begleiterMax":6,"flug":%s}'
