@@ -58,7 +58,7 @@ Termin nach neun Sekunden trotzdem — der Kniff ist huebsch, aber er darf
 niemanden aussperren.
 
 Unter der Save-the-Date folgen nur die Angaben, die man *jetzt schon*
-braucht: Countdown, Termin, Ort und drei Hinweise. Der ganze Ablauf gehoert
+braucht: Countdown, Termin, Ort mit Weg dorthin, Anreise und drei Hinweise. Der ganze Ablauf gehoert
 nicht auf eine Save-the-Date — der kommt mit der Einladung. Der Kalenderknopf
 steht zweimal auf der Seite, oben nach dem Aufrubbeln und unten am Ende: wer
 bis dorthin gelesen hat, soll nicht zurueckblaettern muessen.
@@ -66,6 +66,21 @@ bis dorthin gelesen hat, soll nicht zurueckblaettern muessen.
 Der Rauputz im Hintergrund kommt aus `feTurbulence` plus `feDiffuseLighting`.
 Das Rauschen muss vorher ueber `feComponentTransfer` gespreizt werden, sonst
 hat das Licht kein Gefaelle und die Wand bleibt glatt.
+
+### Der Weg dorthin
+
+Beide Karten verlinken auf **Google Maps und Apple Karten** — nicht auf eines
+von beiden. Wer ein iPhone hat, will Apple Karten; alle anderen Google. Auf
+einem Apple-Geraet stellt das Skript Apple Karten nach vorn.
+
+Verlinkt, nicht eingebettet: eine Karte im Rahmen laedt schon beim Oeffnen der
+Seite Daten zum Anbieter, ein Link erst, wenn jemand ihn antippt. Ohne
+Einwilligung ist das der einzige saubere Weg.
+
+Die Adressen stehen einmal im `DATEN`-Block und werden dort zusammengesetzt.
+Anfangs stand der Ortsname zweimal im Routenziel, weil Name und Adresse doppelt
+verkettet wurden — deshalb liegen sie jetzt getrennt (`ortName`, `adresse`) und
+die vollstaendige Angabe entsteht an genau einer Stelle.
 
 ### Bewegung
 
@@ -75,6 +90,10 @@ Beide Stile stehen nie still. Wo etwas gezeichnet ist, bewegt es sich auch:
 |---|---|
 | Tauben | Koerper und Schwinge sind getrennte Elemente, die Schwinge schlaegt in Dauerschleife; die Himmelstaube zieht dazu in einem Bogen ueber die Wolken |
 | Rosenblaetter | 16 Stueck, jedes mit eigenem Weg, Tempo und Anfang — sonst fallen sie im Gleichschritt und das sieht sofort gemacht aus |
+| Glitzerspaene | Springen beim Rubbeln weg und fallen weiter, bis sie unter dem Bildrand sind; danach werden sie entfernt. In der Luft stehenzubleiben waere der eine Moment, in dem man der Karte ansieht, dass sie gerechnet ist |
+| Anreise-Posten | Kommen abwechselnd von links und rechts — ein Wechsel im Takt haelt die Aufmerksamkeit besser als fuenfmal dieselbe Bewegung |
+| Schloss | Zeichnet sich Strich fuer Strich, wenn der Abschnitt ins Bild kommt |
+| Fortschrittslinie | Duenne Linie am oberen Rand, haengt am Bildlauf selbst |
 | Schleife | Die Baender wiegen, bis jemand tippt; danach uebernimmt der Uebergang des Knotens |
 | Praegung | Ein Lichtstreifen wandert alle sieben Sekunden ueber die Fluegel |
 | Zierrat | Schnoerkel und Paar-Skizze zeichnen sich Strich fuer Strich, sobald der Bogen ins Bild kommt |
@@ -105,6 +124,12 @@ anteilig aus der gemessenen Flaeche umgerechnet statt fest ueber das
 Pixelverhaeltnis — sonst laege die Spur neben dem Finger. Sobald jemand
 rubbelt, hoert der Schlag ausserdem auf: ein Ziel, das unter dem Finger
 wegatmet, ist kein gutes Ziel.
+
+Wo der Browser **scroll-getriebene Animationen** kann (`animation-timeline`),
+haengen Fortschrittslinie und Federzug direkt am Bildlauf: die Schrift entsteht
+genau so schnell, wie der Gast weiterliest. Kann er es nicht, laeuft derselbe
+Auftritt beim Erreichen des Abschnitts ab. Beides sieht richtig aus — nur eines
+davon folgt dem Daumen.
 
 Alles zusammen haengt an `prefers-reduced-motion`. Wer Bewegung reduziert hat,
 bekommt beide Karten vollstaendig, aber ruhig.

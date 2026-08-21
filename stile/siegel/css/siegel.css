@@ -500,3 +500,102 @@ body.offen .satz{opacity:1;transform:none}
 @media (min-width:760px){
   .bogen-satz{padding-inline:44px}
 }
+
+/* =========================================================
+   DER WEG DORTHIN
+   ========================================================= */
+.haus{
+  display:block;width:min(62vw,240px);height:auto;margin:6px auto 22px;opacity:.85;
+}
+/* Das Schloss zeichnet sich, wenn der Abschnitt ins Bild kommt. */
+.haus path,.haus circle{stroke-dasharray:1;stroke-dashoffset:1}
+.bogen.da .haus path,.bogen.da .haus circle{
+  animation:strichZiehen 1.6s cubic-bezier(.4,0,.2,1) both;
+}
+.bogen.da .haus g > :nth-child(n+8){animation-delay:.35s}
+.bogen.da .haus g > :nth-child(n+14){animation-delay:.7s}
+@keyframes strichZiehen{to{stroke-dashoffset:0}}
+
+.wegweiser{
+  display:flex;flex-direction:column;gap:10px;
+  max-width:340px;margin:26px auto 0;
+}
+.wegknopf{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(180deg,#2f43e0 0%,var(--blau) 52%,#1a29a8 100%);
+  color:#eef0ff;border:0;cursor:pointer;text-decoration:none;
+  font-family:'Manrope',system-ui,sans-serif;font-weight:600;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  padding:15px 20px;border-radius:999px;
+  box-shadow:0 7px 16px rgba(32,51,196,.3), 0 1px 0 rgba(255,255,255,.32) inset;
+  transition:transform .18s ease,box-shadow .25s ease;
+}
+.wegknopf:hover{transform:translateY(-2px);box-shadow:0 11px 22px rgba(32,51,196,.36)}
+.wegknopf:active{transform:translateY(1px)}
+.wegknopf svg{width:15px;height:15px;fill:none;stroke:currentColor;
+  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* Der dritte Knopf ist eine Nebenhandlung und sieht auch so aus. */
+.wegknopf.leise{
+  background:none;color:var(--blau);
+  border:1px solid rgba(32,51,196,.35);box-shadow:none;
+}
+.wegknopf.leise:hover{background:rgba(32,51,196,.06);transform:none;box-shadow:none}
+
+/* =========================================================
+   SEITLICH HEREIN
+   Die Posten kommen abwechselnd von links und rechts. Ein
+   Wechsel im Takt haelt die Aufmerksamkeit besser als
+   fuenfmal dieselbe Bewegung.
+   ========================================================= */
+.bogen.da .posten.seitlich{animation:seitlichAuf .9s cubic-bezier(.2,.8,.25,1) both}
+.bogen.da .posten.seitlich:nth-of-type(2){animation-delay:.12s}
+.bogen.da .posten.seitlich:nth-of-type(3){animation-delay:.24s}
+.bogen.da .posten.seitlich:nth-of-type(4){animation-delay:.36s}
+@keyframes seitlichAuf{
+  from{opacity:0;transform:translateX(var(--her,-34px))}
+  to  {opacity:1;transform:none}
+}
+.posten.links {--her:-34px}
+.posten.rechts{--her: 34px}
+
+/* Der Wegweiser kommt von unten nach, Knopf fuer Knopf. */
+.bogen.da .wegknopf{animation:satzAuf .7s cubic-bezier(.2,.8,.25,1) both}
+.bogen.da .wegknopf:nth-child(2){animation-delay:.1s}
+.bogen.da .wegknopf:nth-child(3){animation-delay:.2s}
+
+/* =========================================================
+   AM BILDLAUF STATT AN DER UHR
+   Wo der Browser es kann, haengen Fortschrittslinie und
+   Federzug direkt am Scrollen: die Schrift entsteht genau so
+   schnell, wie der Gast weiterliest. Kann er es nicht, bleibt
+   der Auftritt beim Erreichen - beides sieht richtig aus.
+   ========================================================= */
+.fortschritt{display:none}
+
+@supports (animation-timeline: scroll()){
+  .fortschritt{
+    display:block;position:fixed;top:0;left:0;right:0;height:2px;z-index:50;
+    transform-origin:left center;transform:scaleX(0);
+    background:linear-gradient(90deg,rgba(32,51,196,.35),var(--blau));
+    animation:fortschrittZug linear both;
+    animation-timeline:scroll(root block);
+  }
+  @keyframes fortschrittZug{to{transform:scaleX(1)}}
+
+  .bogen.da .schreiben,.fuss.da .schreiben{
+    animation:federzug linear both;
+    animation-timeline:view();
+    animation-range:entry 24% cover 42%;
+  }
+  .bogen.da .schreiben::after,.fuss.da .schreiben::after{
+    animation:federpunkt linear;
+    animation-timeline:view();
+    animation-range:entry 24% cover 42%;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .haus path,.haus circle{stroke-dashoffset:0;animation:none !important}
+  .bogen.da .posten.seitlich,.bogen.da .wegknopf{animation:none}
+  .fortschritt{display:none}
+}

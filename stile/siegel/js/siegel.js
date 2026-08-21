@@ -9,10 +9,13 @@
     namen:      'Furkan & Dilara',
     beginnISO:  '2027-01-01T14:30:00',
     endeISO:    '2027-01-02T02:00:00',
-    ort:        'Schloss Benrath, Benrather Schloßallee 104, 40597 Düsseldorf',
     ortName:    'Schloss Benrath',
+    adresse:    'Benrather Schloßallee 104, 40597 Düsseldorf',
     anlass:     'Save the Date · Furkan & Dilara',
   };
+  // Vollstaendige Angabe fuer Kalender und Route - an einer Stelle
+  // zusammengesetzt, damit der Name nicht zweimal im Ziel landet.
+  DATEN.ort = DATEN.ortName + ', ' + DATEN.adresse;
 
   /* Ab hier gilt das Herz als freigelegt und der Rest springt weg. */
   const SCHWELLE = .52;
@@ -174,14 +177,17 @@
     letzterPunkt = { x, y };
   }
 
-  /* Die Spaene springen weg und bleiben liegen - wie Rubbelfolie, die
-     man nicht wegpustet. Deshalb werden sie nicht wieder entfernt. */
+  /* Die Spaene springen weg und fallen danach weiter, bis sie unten aus
+     dem Bild sind. In der Luft stehenzubleiben waere der eine Moment, in
+     dem man der Karte ansieht, dass sie gerechnet ist. */
   function spaeneWerfen(sx, sy) {
     if (sanft || spaene >= SPAENE_MAX) return;
     const feldRahmen = feld.getBoundingClientRect();
     const seiteRahmen = seite.getBoundingClientRect();
     const x0 = feldRahmen.left - seiteRahmen.left + sx;
     const y0 = feldRahmen.top  - seiteRahmen.top  + sy;
+    // Wie weit ist es von hier bis unter den Bildrand?
+    const bisRaus = innerHeight - (feldRahmen.top + sy) + 90;
 
     for (let i = 0; i < 3 && spaene < SPAENE_MAX; i++) {
       spaene++;
@@ -190,10 +196,11 @@
       const lang = 3 + Math.random() * 7;
       const dick = 1.5 + Math.random() * 2.5;
       const t = Math.random();
+      const deck = (.6 + Math.random() * .4).toFixed(2);
       s.style.cssText =
         'width:' + lang + 'px;height:' + dick + 'px;left:' + x0 + 'px;top:' + y0 + 'px;' +
         'background:' + (t > .8 ? '#8ea0f5' : t > .45 ? '#3245c0' : '#1c2a8e') + ';' +
-        'opacity:' + (.6 + Math.random() * .4);
+        'opacity:' + deck;
       seite.appendChild(s);
 
       // Nach allen Seiten, nur mit leichtem Zug nach oben - sonst
@@ -203,12 +210,21 @@
       const zx = Math.cos(winkel) * weite * 1.15;
       const zy = Math.sin(winkel) * weite - 40;
       const dreh = Math.random() * 900 - 450;
-      s.animate(
-        [{ transform: 'translate(0,0) rotate(0deg)' },
-         { transform: 'translate(' + zx * .7 + 'px,' + zy + 'px) rotate(' + dreh * .6 + 'deg)', offset: .55 },
-         { transform: 'translate(' + zx + 'px,' + (zy + 26) + 'px) rotate(' + dreh + 'deg)' }],
-        { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(.15,.75,.4,1)', fill: 'forwards' }
-      );
+      const quer = (Math.random() - .5) * 130;
+      const dauer = 3000 + Math.random() * 2400;
+
+      // Der Sprung nimmt das erste Viertel, der Rest ist Fall.
+      const lauf = s.animate([
+        { transform: 'translate(0,0) rotate(0deg)', opacity: deck, offset: 0 },
+        { transform: 'translate(' + (zx * .7) + 'px,' + zy + 'px) rotate(' + (dreh * .5) + 'deg)', offset: .15 },
+        { transform: 'translate(' + zx + 'px,' + (zy + 28) + 'px) rotate(' + (dreh * .7) + 'deg)', offset: .25 },
+        { transform: 'translate(' + (zx + quer * .5) + 'px,' + (zy + bisRaus * .55) + 'px) rotate(' + (dreh + 220) + 'deg)', opacity: deck, offset: .72 },
+        { transform: 'translate(' + (zx + quer) + 'px,' + (zy + bisRaus) + 'px) rotate(' + (dreh + 430) + 'deg)', opacity: 0, offset: 1 },
+      ], { duration: dauer, easing: 'cubic-bezier(.16,.6,.5,1)' });
+
+      // Aufgeraeumt wird sofort: der Zaehler zaehlt, was gerade fliegt,
+      // nicht was jemals geworfen wurde.
+      lauf.onfinish = () => { s.remove(); spaene--; };
     }
   }
 
@@ -370,12 +386,45 @@
   }
 
   /* =========================================================
-     5. Kartenlink
-     Ein Suchlink statt fester Koordinaten - so oeffnet jedes
-     Geraet die App, die es ohnehin benutzt.
+     5. Der Weg dorthin
+     Zwei Ziele statt eines Kompromisses: wer ein iPhone hat, will
+     Apple Karten, alle anderen Google. Beides sind Links - eine
+     eingebettete Karte wuerde schon beim Oeffnen der Seite Daten
+     zum Anbieter schicken, ein Link erst beim Antippen.
      ========================================================= */
-  $('karte-link').href = 'https://www.google.com/maps/search/?api=1&query=' +
-    encodeURIComponent(DATEN.ortName + ', ' + DATEN.ort);
+  const ZIEL = DATEN.ort;
+  $('weg-google').href = 'https://www.google.com/maps/dir/?api=1&destination=' +
+    encodeURIComponent(ZIEL) + '&travelmode=driving';
+  $('weg-apple').href = 'https://maps.apple.com/?daddr=' +
+    encodeURIComponent(ZIEL) + '&dirflg=d';
+
+  // Auf einem Apple-Geraet steht Apple Karten zuerst.
+  if (/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)) {
+    const w = $('weg-apple');
+    w.parentNode.prepend(w);
+  }
+
+  const kopierKnopf = $('adresse-kopieren');
+  const kopierText  = $('kopier-text');
+  kopierKnopf.addEventListener('click', async () => {
+    let gut = false;
+    try {
+      await navigator.clipboard.writeText(DATEN.ort);
+      gut = true;
+    } catch {
+      const t = document.createElement('textarea');
+      t.value = DATEN.ort;
+      t.setAttribute('readonly', '');
+      t.style.position = 'fixed';
+      t.style.opacity = '0';
+      document.body.appendChild(t);
+      t.select();
+      try { gut = document.execCommand('copy'); } catch { gut = false; }
+      t.remove();
+    }
+    kopierText.textContent = gut ? 'Kopiert' : 'Bitte von Hand';
+    setTimeout(() => { kopierText.textContent = 'Adresse kopieren'; }, 2400);
+  });
 
   /* =========================================================
      6. Einblenden der Abschnitte

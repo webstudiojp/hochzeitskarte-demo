@@ -32,7 +32,7 @@ if (!location.hash) {
   addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
 }
 </script>
-<link rel="stylesheet" href="css/eleganz.css?v=202608211506">
+<link rel="stylesheet" href="css/eleganz.css?v=202608211518">
 </head>
 <body class="zu">
 
@@ -375,14 +375,20 @@ if (!location.hash) {
         <p class="kicker">Trauung</p>
         <p class="postenname">Schloss Benrath</p>
         <p class="postenzeile"><b>14:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
-        <a class="linkpfeil" id="karte-trauung" href="#" target="_blank" rel="noopener">In Karten öffnen →</a>
+        <div class="wegpaar">
+          <a class="linkpfeil" id="weg-google-trauung" href="#" target="_blank" rel="noopener">Google Maps →</a>
+          <a class="linkpfeil" id="weg-apple-trauung" href="#" target="_blank" rel="noopener">Apple Karten →</a>
+        </div>
       </div>
 
       <div class="posten">
         <p class="kicker">Empfang</p>
         <p class="postenname">Orangerie im Schlosspark</p>
         <p class="postenzeile"><b>19:30 Uhr</b> · Benrather Schloßallee 104, Düsseldorf</p>
-        <a class="linkpfeil" id="karte-empfang" href="#" target="_blank" rel="noopener">In Karten öffnen →</a>
+        <div class="wegpaar">
+          <a class="linkpfeil" id="weg-google-empfang" href="#" target="_blank" rel="noopener">Google Maps →</a>
+          <a class="linkpfeil" id="weg-apple-empfang" href="#" target="_blank" rel="noopener">Apple Karten →</a>
+        </div>
       </div>
 
       <svg class="schnoerkel-trenner" viewBox="0 0 200 44" aria-hidden="true">
@@ -609,6 +615,6 @@ if (!location.hash) {
   <a href="#rsvp" data-ziel="rsvp">RSVP</a>
 </nav>
 
-<script src="js/eleganz.js?v=202608211506"></script>
+<script src="js/eleganz.js?v=202608211518"></script>
 </body>
 </html>

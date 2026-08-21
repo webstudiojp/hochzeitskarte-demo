@@ -32,7 +32,7 @@ if (!location.hash) {
   addEventListener('DOMContentLoaded', () => window.scrollTo(0, 0));
 }
 </script>
-<link rel="stylesheet" href="css/siegel.css?v=202608211506">
+<link rel="stylesheet" href="css/siegel.css?v=202608211518">
 </head>
 <body class="zu">
 
@@ -115,6 +115,10 @@ if (!location.hash) {
      ========================================================= -->
 <!-- Der Putz liegt fest hinter allem: eine Wand laeuft nicht mit,
      wenn man am Blatt davor herunterliest. -->
+<!-- Duenne Linie am oberen Rand: zeigt, wie weit die Seite gelesen ist.
+     Haengt am Bildlauf selbst, nicht an einem Zeitgeber. -->
+<div class="fortschritt" aria-hidden="true"></div>
+
 <div class="wand" aria-hidden="true">
   <div class="putz"></div>
   <div class="feinkorn"></div>
@@ -208,20 +212,112 @@ if (!location.hash) {
 
 
 <!-- =========================================================
-     5. TERMIN UND ORT
+     5. DER TAG
      ========================================================= -->
 <section class="bogen" id="termin">
   <div class="bogen-satz mitte">
     <p class="kicker">Der Tag</p>
     <p class="anschlag">1. Januar 2027</p>
     <p class="unterzeile">Freitag · ab 14:30 Uhr</p>
-
     <span class="raute" aria-hidden="true"></span>
+  </div>
+</section>
 
+
+<!-- =========================================================
+     6. DER ORT — mit Weg dorthin
+     Verlinkt, nicht eingebettet: eine Karte im Rahmen laedt beim
+     Oeffnen Daten des Anbieters, ein Link erst beim Antippen.
+     ========================================================= -->
+<section class="bogen" id="ort">
+  <div class="bogen-satz mitte">
     <p class="kicker">Wo wir feiern</p>
+
+    <svg class="haus" viewBox="0 0 240 130" aria-hidden="true">
+      <g fill="none" stroke="#8d6f83" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M96 60h48v58H96z"/>
+        <path d="M92 60 120 34l28 26"/>
+        <path d="M120 34v-9m0-9v6"/>
+        <circle cx="120" cy="21" r="2.4"/>
+        <path d="M108 52a12 12 0 0 1 24 0"/>
+        <path d="M46 74h50v44H46zM144 74h50v44h-50z"/>
+        <path d="M42 74h58M140 74h58"/>
+        <path d="M110 92h20v26h-20z"/>
+        <path d="M120 92v26"/>
+        <g stroke-width="1.1">
+          <path d="M58 86h10v14H58zM76 86h10v14H76z"/>
+          <path d="M154 86h10v14h-10zM172 86h10v14h-10z"/>
+          <path d="M104 70h8v10h-8zM128 70h8v10h-8z"/>
+        </g>
+        <path d="M20 118h200" stroke-width="1.5"/>
+        <g stroke-width="1" opacity=".6">
+          <path d="M30 118v-10c0-6 5-10 10-10M210 118v-10c0-6-5-10-10-10"/>
+          <path d="M26 104c-4-3-4-8 0-10M214 104c4-3 4-8 0-10"/>
+        </g>
+      </g>
+    </svg>
+
     <p class="anschlag klein">Schloss Benrath</p>
-    <p class="unterzeile">Benrather Schloßallee 104 · Düsseldorf</p>
-    <a class="linkpfeil" id="karte-link" href="#" target="_blank" rel="noopener">In Karten öffnen →</a>
+    <p class="unterzeile">Benrather Schloßallee 104 · 40597 Düsseldorf</p>
+
+    <div class="wegweiser">
+      <a class="wegknopf" id="weg-google" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 21s7-6.4 7-11.6A7 7 0 0 0 5 9.4C5 14.6 12 21 12 21z"/>
+          <circle cx="12" cy="9.4" r="2.6"/>
+        </svg>
+        Route mit Google Maps
+      </a>
+      <a class="wegknopf" id="weg-apple" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 7.5 9 5l6 2.5L21 5v11.5L15 19l-6-2.5L3 19z"/>
+          <path d="M9 5v11.5M15 7.5V19"/>
+        </svg>
+        Route mit Apple Karten
+      </a>
+      <button class="wegknopf leise" id="adresse-kopieren" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="9" y="9" width="12" height="12" rx="2"/>
+          <path d="M15 5H5a2 2 0 0 0-2 2v10"/>
+        </svg>
+        <span id="kopier-text">Adresse kopieren</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     7. ANREISE
+     ========================================================= -->
+<section class="bogen" id="anreise">
+  <div class="bogen-satz">
+    <p class="kicker mitte-t">Anreise</p>
+
+    <div class="posten seitlich links">
+      <p class="postenname">Mit dem Auto</p>
+      <p class="postenzeile">A59 bis Abfahrt Düsseldorf-Benrath, danach der
+        Beschilderung zum Schloss folgen. Von der Autobahn sind es
+        knapp fünf Minuten.</p>
+    </div>
+
+    <div class="posten seitlich rechts">
+      <p class="postenname">Mit der Bahn</p>
+      <p class="postenzeile">S6 bis Düsseldorf-Benrath. Von dort acht Minuten
+        zu Fuß durch den Schlosspark — der Weg ist ausgeschildert.</p>
+    </div>
+
+    <div class="posten seitlich links">
+      <p class="postenname">Parken</p>
+      <p class="postenzeile">Kostenfreie Plätze am Besucherparkplatz Süd,
+        direkt neben dem Parkeingang. Platz ist genug.</p>
+    </div>
+
+    <div class="posten seitlich rechts">
+      <p class="postenname">Mit dem Taxi</p>
+      <p class="postenzeile">Sagt einfach „Schloss Benrath, Haupteingang".
+        Aus der Innenstadt sind es rund 20 Minuten.</p>
+    </div>
   </div>
 </section>
 
@@ -295,6 +391,6 @@ if (!location.hash) {
 </footer>
 </main>
 
-<script src="js/siegel.js?v=202608211506"></script>
+<script src="js/siegel.js?v=202608211518"></script>
 </body>
 </html>

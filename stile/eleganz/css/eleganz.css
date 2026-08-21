@@ -394,6 +394,8 @@ body.offen .karte{opacity:1}
 .postenzeile{font-size:16.5px;line-height:1.62;color:#6d6355;margin:0 0 12px}
 .postenzeile b{font-weight:400;color:var(--tinte);font-size:18px}
 .posten.schmal .postenzeile{margin-bottom:0}
+/* Zwei Wege nebeneinander; auf schmalen Schirmen untereinander. */
+.wegpaar{display:flex;flex-wrap:wrap;gap:12px 26px}
 .linkpfeil{
   display:inline-block;text-decoration:none;color:var(--marine);
   font-family:'Manrope',system-ui,sans-serif;

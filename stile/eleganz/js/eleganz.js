@@ -106,14 +106,21 @@
   }
 
   /* =========================================================
-     4. Kartenlinks
-     Ein Suchlink statt fester Koordinaten - so oeffnet jedes
-     Geraet die App, die es ohnehin benutzt.
+     4. Der Weg dorthin
+     Zwei Ziele statt eines Kompromisses: wer ein iPhone hat, will
+     Apple Karten, alle anderen Google. Beides sind Links - eine
+     eingebettete Karte wuerde schon beim Oeffnen der Seite Daten
+     zum Anbieter schicken, ein Link erst beim Antippen.
      ========================================================= */
-  for (const [id, ort] of [['karte-trauung', DATEN.orte.trauung], ['karte-empfang', DATEN.orte.empfang]]) {
-    const a = $(id);
-    if (a) a.href = 'https://www.google.com/maps/search/?api=1&query=' +
-                    encodeURIComponent(ort.name + ', ' + ort.adresse);
+  const apfel = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+  for (const [kennung, ort] of [['trauung', DATEN.orte.trauung], ['empfang', DATEN.orte.empfang]]) {
+    const ziel = encodeURIComponent(ort.name + ', ' + ort.adresse);
+    const g = $('weg-google-' + kennung);
+    const a = $('weg-apple-' + kennung);
+    if (g) g.href = 'https://www.google.com/maps/dir/?api=1&destination=' + ziel + '&travelmode=driving';
+    if (a) a.href = 'https://maps.apple.com/?daddr=' + ziel + '&dirflg=d';
+    // Auf einem Apple-Geraet steht Apple Karten zuerst.
+    if (apfel && a && a.parentNode) a.parentNode.prepend(a);
   }
 
   /* =========================================================
